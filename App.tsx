@@ -1,20 +1,11 @@
-import React, { useState, useEffect, FC } from "react";
-import {
-  SafeAreaView,
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Alert,
-  ScrollView,
-} from "react-native";
+import React, { useState } from "react";
+import { SafeAreaView, View, Text, TouchableOpacity } from "react-native";
 import WORDS from "./src/quotes"; // Import word list from external file
 import { mainWindowStyles } from "./styles";
 import WordDisplay from "./quote-display";
 import LetterKeyboardDisplay from "./keyboard";
 import iconNamesToUse from "./icons";
 import { Ionicons } from "@expo/vector-icons";
-import { unescapeLeadingUnderscores } from "typescript";
 
 const getRandomQuote = () => {
   const keys = Object.keys(WORDS);
