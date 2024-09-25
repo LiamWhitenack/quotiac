@@ -8,7 +8,17 @@ import {
 } from "react-native";
 import sizing from "./sizing";
 
-const LetterKeyboardDisplay: React.FC = ({}) => {
+interface LetterKeyboardDisplayProps {
+  decodingMap: Map<string, string>;
+  setDecodingMap: (newMap: Map<string, string>) => void;
+  activeIcon: string;
+}
+
+const LetterKeyboardDisplay: React.FC<LetterKeyboardDisplayProps> = ({
+  decodingMap,
+  setDecodingMap,
+  activeIcon,
+}) => {
   const rows = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"];
 
   return (
@@ -16,7 +26,17 @@ const LetterKeyboardDisplay: React.FC = ({}) => {
       {rows.map((row, rowIndex) => (
         <View key={rowIndex} style={styles.row}>
           {row.split("").map((letter) => (
-            <TouchableOpacity key={letter} style={styles.key}>
+            <TouchableOpacity
+              key={letter}
+              style={styles.key}
+              onPress={() => {
+                if (activeIcon == "") {
+                  return;
+                } else {
+                  setDecodingMap(new Map(decodingMap).set(activeIcon, letter));
+                }
+              }}
+            >
               <Text style={styles.keyText}>{letter}</Text>
             </TouchableOpacity>
           ))}

@@ -36,7 +36,19 @@ const QuoteDisplay: React.FC<WordDisplayProps> = ({
           />
         );
       } else if (element.length == 1) {
-        return <Text>{element}</Text>;
+        return (
+          <View
+            style={{
+              alignItems: "center",
+              alignContent: "center",
+              justifyContent: "center",
+              height: iconSize,
+              width: iconSize,
+            }}
+          >
+            <Text style={{ fontSize: iconSize }}>{element}</Text>
+          </View>
+        );
       } else {
         iconSize;
 
@@ -46,7 +58,13 @@ const QuoteDisplay: React.FC<WordDisplayProps> = ({
             name={element}
             size={iconSize}
             color={element == activeIcon ? "blue" : "black"}
-            onPress={() => setActiveIcon(element)}
+            onPress={() => {
+              if (activeIcon == element) {
+                setActiveIcon("");
+              } else {
+                setActiveIcon(element);
+              }
+            }}
           />
         );
       }

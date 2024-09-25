@@ -84,8 +84,11 @@ const CodiacApp = () => {
         activeIcon={activeIcon}
         setActiveIcon={setActiveIcon}
       />
-      <LetterKeyboardDisplay />
-      {}
+      <LetterKeyboardDisplay
+        decodingMap={decodingMap}
+        setDecodingMap={setDecodingMap}
+        activeIcon={activeIcon}
+      />
     </SafeAreaView>
   );
 };

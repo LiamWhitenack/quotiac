@@ -54,7 +54,6 @@ const iconNames = [
   "cafe",
   "calculator",
   "calendar-clear",
-  "number",
   "calendar",
   "call",
   "camera-reverse",
