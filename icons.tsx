@@ -28,13 +28,6 @@ function shuffleArray<T>(array: T[]): T[] {
   }
   return array; // Return the shuffled array
 }
-const icons = shuffleArray(iconNames)
-  .slice(0, 26)
-  .map((iconName, index) => (
-    <View key={index} style={styles.iconContainer}>
-      {/* @ts-ignore */}
-      <Ionicons name={iconName} size={20} color="black" />
-    </View>
-  ));
+const iconNamesToUse = shuffleArray(iconNames);
 
-export default icons;
+export default iconNamesToUse;

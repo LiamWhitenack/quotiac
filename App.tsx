@@ -12,8 +12,9 @@ import WORDS from "./src/quotes"; // Import word list from external file
 import { mainWindowStyles } from "./styles";
 import WordDisplay from "./quote-display";
 import LetterKeyboardDisplay from "./keyboard";
-import icons from "./icons";
+import iconNamesToUse from "./icons";
 import { Ionicons } from "@expo/vector-icons";
+import { unescapeLeadingUnderscores } from "typescript";
 
 const getRandomQuote = () => {
   const keys = Object.keys(WORDS);
@@ -27,9 +28,7 @@ const CodiacApp = () => {
   );
   const [showSpaces, setSpaces] = useState(true);
 
-  function mapUniqueLettersToNumbers(
-    input: string
-  ): Map<string, React.JSX.Element | string> {
+  function mapUniqueLettersToNumbers(input: string): Map<string, string> {
     // Create a set to store unique letters
     const uniqueLetters = new Set<string>();
 
@@ -42,32 +41,28 @@ const CodiacApp = () => {
     }
 
     // Create a map to store letters and their corresponding numbers
-    const letterMap = new Map<string, React.JSX.Element>();
+    const letterMap = new Map<string, string>();
     let index = 1;
 
     // Populate the map with unique letters and their positions
     for (const letter of uniqueLetters) {
-      letterMap.set(letter, icons[index]);
+      letterMap.set(letter, iconNamesToUse[index]);
       index++;
     }
 
     return letterMap;
   }
 
-  const encodeStringToIcons = (
-    input: string
-  ): (React.JSX.Element | string)[] => {
+  const encodeStringToIcons = (input: string): string[] => {
     return input
       .split("")
-      .map((char, index) => {
+      .map((char) => {
         if (char == " " && showSpaces) {
-          return (
-            <View key={index} style={mainWindowStyles.iconContainer}>
-              <Ionicons name={"basketball"} size={20} color="transparent" />
-            </View>
-          );
+          return char;
+        } else if (char >= "a" && char <= "z") {
+          return encodingMap.get(char);
         }
-        return encodingMap.get(char);
+        return undefined;
       })
       .filter((icon) => icon !== undefined);
   };
@@ -85,7 +80,10 @@ const CodiacApp = () => {
           </TouchableOpacity>
         </View>
       </View>
-      <WordDisplay quote={encodeStringToIcons(targetQuote.toLowerCase())} />
+      <WordDisplay
+        quote={encodeStringToIcons(targetQuote.toLowerCase())}
+        showSpaces={showSpaces}
+      />
       <LetterKeyboardDisplay />
       {}
     </SafeAreaView>

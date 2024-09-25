@@ -1,24 +1,30 @@
+import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 const horizontalMargin = 15;
 
 interface WordDisplayProps {
-  quote: (React.JSX.Element | string)[];
+  quote: string[];
+  showSpaces: boolean;
 }
 
-const QuoteDisplay: React.FC<WordDisplayProps> = ({ quote }) => {
+const QuoteDisplay: React.FC<WordDisplayProps> = ({ quote, showSpaces }) => {
+  const display_quote = quote.map((element) => {
+    if (element == " " && showSpaces) {
+      return <Ionicons name={"basketball"} size={20} color="transparent" />;
+    } else if (element.length == 1) {
+      return <Text>{element}</Text>;
+    } else {
+      // @ts-ignore
+      return <Ionicons name={element} size={20} color="black" />;
+    }
+  });
   return (
     <View style={styles.verticalContainer}>
       <View style={styles.horizontalContainer}>
-        {quote.map((element, index) => (
-          <TouchableOpacity key={index}>
-            {typeof element === "string" ? (
-              <Text>{element}</Text> // Display the string
-            ) : (
-              element // Display the React element
-            )}
-          </TouchableOpacity>
+        {display_quote.map((element, index) => (
+          <TouchableOpacity key={index}>{element}</TouchableOpacity>
         ))}
       </View>
     </View>
