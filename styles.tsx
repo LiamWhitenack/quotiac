@@ -1,7 +1,8 @@
 import { StyleSheet } from "react-native";
+import sizing from "./sizing";
 export const mainWindowStyles = StyleSheet.create({
   topBarContainer: {
-    width: "100%",
+    width: sizing.maxWidth,
     flexDirection: "row", // Horizontally align items
     justifyContent: "space-between",
     alignItems: "center",
