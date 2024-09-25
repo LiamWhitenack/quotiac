@@ -5,6 +5,7 @@ import sizing from "./sizing";
 
 interface WordDisplayProps {
   quote: string[];
+  decodingMap: Map<string, string>;
   showSpaces: boolean;
   activeIcon: string;
   setActiveIcon: (icon: string) => void;
@@ -12,37 +13,44 @@ interface WordDisplayProps {
 
 const QuoteDisplay: React.FC<WordDisplayProps> = ({
   quote,
+  decodingMap,
   showSpaces,
   activeIcon,
   setActiveIcon,
 }) => {
   const numIconsInRow = Math.floor(Math.sqrt(quote.length));
   const iconSize = (sizing.maxWidth / (15 * numIconsInRow)) * 10;
-  const display_quote = quote.map((element) => {
-    if (element == " " && showSpaces) {
-      return (
-        <Ionicons
-          name={"basketball"}
-          size={iconSize}
-          style={styles.spaceIconStyle}
-        />
-      );
-    } else if (element.length == 1) {
-      return <Text>{element}</Text>;
-    } else {
-      iconSize;
+  const display_quote = quote
+    .map((element) => {
+      console.log(decodingMap);
+      const decoded = decodingMap.get(element);
+      return decoded !== undefined ? decoded : element;
+    })
+    .map((element) => {
+      if (element == " " && showSpaces) {
+        return (
+          <Ionicons
+            name={"bluetooth"}
+            size={iconSize}
+            style={styles.spaceIconStyle}
+          />
+        );
+      } else if (element.length == 1) {
+        return <Text>{element}</Text>;
+      } else {
+        iconSize;
 
-      return (
-        <Ionicons
-          // @ts-ignore
-          name={element}
-          size={iconSize}
-          color={element == activeIcon ? "blue" : "black"}
-          onPress={() => setActiveIcon(element)}
-        />
-      );
-    }
-  });
+        return (
+          <Ionicons
+            // @ts-ignore
+            name={element}
+            size={iconSize}
+            color={element == activeIcon ? "blue" : "black"}
+            onPress={() => setActiveIcon(element)}
+          />
+        );
+      }
+    });
 
   return (
     <View style={styles.verticalContainer}>

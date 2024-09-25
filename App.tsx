@@ -17,6 +17,9 @@ const CodiacApp = () => {
   const [encodingMap, setEncodingMap] = useState(
     mapUniqueLettersToNumbers(targetQuote)
   );
+  const [decodingMap, setDecodingMap] = useState<Map<string, string>>(
+    new Map()
+  );
   const [showSpaces, setSpaces] = useState(true);
   const [activeIcon, setActiveIcon] = useState("");
 
@@ -45,7 +48,7 @@ const CodiacApp = () => {
     return letterMap;
   }
 
-  const encodeStringToIcons = (input: string): string[] => {
+  const encodeQuote = (input: string): string[] => {
     return input
       .split("")
       .map((char) => {
@@ -58,6 +61,8 @@ const CodiacApp = () => {
       })
       .filter((icon) => icon !== undefined);
   };
+
+  const encodedQuote = encodeQuote(targetQuote.toLowerCase());
 
   return (
     <SafeAreaView style={mainWindowStyles.container}>
@@ -73,7 +78,8 @@ const CodiacApp = () => {
         </View>
       </View>
       <WordDisplay
-        quote={encodeStringToIcons(targetQuote.toLowerCase())}
+        quote={encodedQuote}
+        decodingMap={decodingMap}
         showSpaces={showSpaces}
         activeIcon={activeIcon}
         setActiveIcon={setActiveIcon}
