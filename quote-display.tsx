@@ -6,12 +6,18 @@ import sizing from "./sizing";
 interface WordDisplayProps {
   quote: string[];
   showSpaces: boolean;
+  activeIcon: string;
+  setActiveIcon: (icon: string) => void;
 }
 
-const QuoteDisplay: React.FC<WordDisplayProps> = ({ quote, showSpaces }) => {
+const QuoteDisplay: React.FC<WordDisplayProps> = ({
+  quote,
+  showSpaces,
+  activeIcon,
+  setActiveIcon,
+}) => {
   const numIconsInRow = Math.floor(Math.sqrt(quote.length));
-  const iconMarginSize = sizing.maxWidth / (12 * numIconsInRow);
-  const iconSize = iconMarginSize * 10;
+  const iconSize = (sizing.maxWidth / (15 * numIconsInRow)) * 10;
   const display_quote = quote.map((element) => {
     if (element == " " && showSpaces) {
       return (
@@ -27,8 +33,13 @@ const QuoteDisplay: React.FC<WordDisplayProps> = ({ quote, showSpaces }) => {
       iconSize;
 
       return (
-        // @ts-ignore
-        <Ionicons name={element} size={iconSize} style={styles.iconStyle} />
+        <Ionicons
+          // @ts-ignore
+          name={element}
+          size={iconSize}
+          color={element == activeIcon ? "blue" : "black"}
+          onPress={() => setActiveIcon(element)}
+        />
       );
     }
   });
@@ -49,10 +60,8 @@ const QuoteDisplay: React.FC<WordDisplayProps> = ({ quote, showSpaces }) => {
 const styles = StyleSheet.create({
   iconStyle: {
     color: "black",
-    // resizeMode: "contain", // Ensures the icon scales proportionally
   },
   spaceIconStyle: {
-    // flex: 1,
     color: "transparent",
   },
 
@@ -64,10 +73,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   horizontalContainer: {
-    maxWidth: 600,
+    maxWidth: sizing.maxWidth * 0.9,
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     marginBottom: 30,
   },
   quote: {

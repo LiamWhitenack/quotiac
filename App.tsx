@@ -18,6 +18,7 @@ const CodiacApp = () => {
     mapUniqueLettersToNumbers(targetQuote)
   );
   const [showSpaces, setSpaces] = useState(true);
+  const [activeIcon, setActiveIcon] = useState("");
 
   function mapUniqueLettersToNumbers(input: string): Map<string, string> {
     // Create a set to store unique letters
@@ -67,13 +68,15 @@ const CodiacApp = () => {
             <Ionicons name="bulb-outline" size={24} color="black" />
           </TouchableOpacity>
           <TouchableOpacity style={mainWindowStyles.iconContainer}>
-            <Ionicons name={"settings-outline"} size={24} color="black" />
+            <Ionicons name="settings-outline" size={24} color="black" />
           </TouchableOpacity>
         </View>
       </View>
       <WordDisplay
         quote={encodeStringToIcons(targetQuote.toLowerCase())}
         showSpaces={showSpaces}
+        activeIcon={activeIcon}
+        setActiveIcon={setActiveIcon}
       />
       <LetterKeyboardDisplay />
       {}
