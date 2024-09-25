@@ -18,16 +18,16 @@ class ScreenSizing {
     this.screenHeight = screenHeight;
     this.screenWidth = screenWidth;
 
-    this.keyboardMargin = Math.floor(screenWidth * 0.05);
-    this.keyboardKeyGap = Math.floor(screenWidth * 0.0075);
-    this.keyboardKeyWidth = Math.floor(
-      (screenWidth - this.keyboardMargin * 2 - this.keyboardKeyGap * 18) / 10
-    );
-    this.keyboardHeight = this.keyboardMargin * 6 + 150;
-
     this.maxHeight = Math.min(screenHeight, 600);
     this.maxWidth = Math.min(screenWidth, 600);
     this.isMobile = Platform.OS === "ios" || Platform.OS === "android";
+
+    this.keyboardMargin = Math.floor(this.maxWidth * 0.05);
+    this.keyboardKeyGap = Math.floor(this.maxWidth * 0.0075);
+    this.keyboardKeyWidth = Math.floor(
+      (this.maxWidth - this.keyboardMargin * 2 - this.keyboardKeyGap * 18) / 10
+    );
+    this.keyboardHeight = this.keyboardMargin * 6 + 150;
   }
 }
 

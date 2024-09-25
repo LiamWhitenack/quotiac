@@ -62,7 +62,7 @@ const CodiacApp = () => {
       .map((char, index) => {
         if (char == " " && showSpaces) {
           return (
-            <View key={index} style={mainWindowStyles.emptyIconContainer}>
+            <View key={index} style={mainWindowStyles.iconContainer}>
               <Ionicons name={"basketball"} size={20} color="transparent" />
             </View>
           );
@@ -74,7 +74,17 @@ const CodiacApp = () => {
 
   return (
     <SafeAreaView style={mainWindowStyles.container}>
-      <Text style={mainWindowStyles.title}>Codiac</Text>
+      <View style={mainWindowStyles.topBarContainer}>
+        <Text style={mainWindowStyles.title}>Codiac</Text>
+        <View style={mainWindowStyles.topBarIconContainer}>
+          <TouchableOpacity style={mainWindowStyles.iconContainer}>
+            <Ionicons name="bulb-outline" size={24} color="black" />
+          </TouchableOpacity>
+          <TouchableOpacity style={mainWindowStyles.iconContainer}>
+            <Ionicons name={"settings-outline"} size={24} color="black" />
+          </TouchableOpacity>
+        </View>
+      </View>
       <WordDisplay quote={encodeStringToIcons(targetQuote.toLowerCase())} />
       <LetterKeyboardDisplay />
       {}

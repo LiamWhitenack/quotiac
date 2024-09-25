@@ -1,17 +1,33 @@
 import { StyleSheet } from "react-native";
 export const mainWindowStyles = StyleSheet.create({
+  topBarContainer: {
+    width: "100%",
+    flexDirection: "row", // Horizontally align items
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 0,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
+  },
+  topBarIconContainer: {
+    width: 50,
+    flexDirection: "row", // Horizontally align items
+    alignItems: "center", // Vertically center the items
+    justifyContent: "flex-end",
+  },
+  title: {
+    fontSize: 24, // Size of the title text
+    fontWeight: "bold", // Bold text
+    textAlign: "center", // Center the title
+    marginHorizontal: 15,
+    color: "black",
+  },
   container: {
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
     paddingTop: 50,
     backgroundColor: "#F3F4F6",
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: "bold",
-    alignContent: "flex-start",
-    marginBottom: 20,
   },
   attemptsContainer: {
     flexGrow: 1,
@@ -51,7 +67,7 @@ export const mainWindowStyles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
   },
-  emptyIconContainer: {
+  iconContainer: {
     margin: 10,
     alignItems: "center",
   },

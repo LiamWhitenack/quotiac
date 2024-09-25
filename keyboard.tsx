@@ -28,7 +28,6 @@ const LetterKeyboardDisplay: React.FC = ({}) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
     flex: 1, // Ensure the main container takes the full height
     justifyContent: "flex-end",
     // alignItems: "flex-end",
@@ -39,7 +38,7 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
     justifyContent: "center",
-    marginBottom: sizing.keyboardMargin,
+    marginBottom: sizing.keyboardMargin / 2,
     marginHorizontal: sizing.keyboardMargin,
   },
   key: {
