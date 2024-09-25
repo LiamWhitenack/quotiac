@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "testApp",
-    "slug": "testApp",
+    "name": "codiac",
+    "slug": "codiac",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
