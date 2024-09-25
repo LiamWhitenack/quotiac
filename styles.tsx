@@ -1,5 +1,4 @@
 import { StyleSheet } from "react-native";
-
 export const mainWindowStyles = StyleSheet.create({
   container: {
     flex: 1,

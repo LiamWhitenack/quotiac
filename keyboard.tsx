@@ -6,13 +6,7 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
-
-const screenWidth = Dimensions.get("window").width; // Get the screen width
-const keyboardMargin = Math.floor(screenWidth * 0.02);
-const keyboardKeyGap = Math.floor(screenWidth * 0.0075);
-const usableKeyWidth = Math.floor(
-  (screenWidth - keyboardMargin * 2 - keyboardKeyGap * 18) / 10
-);
+import sizing from "./sizing";
 
 const LetterKeyboardDisplay: React.FC = ({}) => {
   const rows = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"];
@@ -40,20 +34,20 @@ const styles = StyleSheet.create({
     // alignItems: "flex-end",
     paddingTop: 50,
     backgroundColor: "#F3F4F6",
-    maxWidth: 600,
+    maxWidth: sizing.maxWidth,
   },
   row: {
     flexDirection: "row",
     justifyContent: "center",
-    marginBottom: keyboardMargin,
-    marginHorizontal: keyboardMargin,
+    marginBottom: sizing.keyboardMargin,
+    marginHorizontal: sizing.keyboardMargin,
   },
   key: {
-    width: usableKeyWidth, // Each key takes equal space in the row
+    width: sizing.keyboardKeyWidth, // Each key takes equal space in the row
     height: 50, // Fixed height for keys
     justifyContent: "center",
     alignItems: "center",
-    margin: keyboardKeyGap, // Adjust margin for spacing
+    margin: sizing.keyboardKeyGap, // Adjust margin for spacing
     backgroundColor: "#D3D6DA",
     borderRadius: 5,
   },
