@@ -29,7 +29,7 @@ const CodiacApp = () => {
   const [decodingMap, setDecodingMap] = useState<Map<string, string>>(
     new Map()
   );
-  const [showSpaces, setSpaces] = useState(true);
+  const [showSpaces, setShowSpaces] = useState(true);
   const [activeIcon, setActiveIcon] = useState("");
   const [keyRows, setKeyRows] = useState(KEYBOARD_LETTERS);
 
@@ -92,7 +92,12 @@ const CodiacApp = () => {
         <Text style={mainWindowStyles.title}>Codiac</Text>
         <View style={mainWindowStyles.topBarIconContainer}>
           <TouchableOpacity style={mainWindowStyles.iconContainer}>
-            <Ionicons name="bulb-outline" size={24} color="black" />
+            <Ionicons
+              name={showSpaces ? "bulb-outline" : "bulb"}
+              size={24}
+              color="black"
+              onPress={() => setShowSpaces(!showSpaces)}
+            />
           </TouchableOpacity>
           <TouchableOpacity style={mainWindowStyles.iconContainer}>
             <Ionicons name="settings-outline" size={24} color="black" />

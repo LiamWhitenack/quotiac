@@ -51,7 +51,6 @@ const LetterKeyboardDisplay: React.FC<LetterKeyboardDisplayProps> = ({
                 key={letter}
                 style={styles.key}
                 onPress={() => {
-                  console.log(decodingMap);
                   if (
                     activeIcon == "" ||
                     Array.from(decodingMap.values()).includes(letter)
