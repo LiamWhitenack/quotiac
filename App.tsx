@@ -80,6 +80,7 @@ const CodiacApp = () => {
       <WordDisplay
         quote={encodedQuote}
         decodingMap={decodingMap}
+        setDecodingMap={setDecodingMap}
         showSpaces={showSpaces}
         activeIcon={activeIcon}
         setActiveIcon={setActiveIcon}
