@@ -130,6 +130,7 @@ const styles = StyleSheet.create({
   spaceIconStyle: {
     color: "transparent",
   },
+  // TODO: Add a container to make the icon spaces larger
   verticalContainer: {
     flex: 3,
     flexDirection: "column",

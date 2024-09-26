@@ -94,9 +94,9 @@ const CodiacApp = () => {
               onPress={() => setShowSpaces(true)}
             />
           </TouchableOpacity>
-          <TouchableOpacity style={mainWindowStyles.iconContainer}>
+          {/* <TouchableOpacity style={mainWindowStyles.iconContainer}>
             <Ionicons name="settings-outline" size={24} color="black" />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
       <WordDisplay
