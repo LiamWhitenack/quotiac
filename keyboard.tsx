@@ -48,7 +48,6 @@ const LetterKeyboardDisplay: React.FC<LetterKeyboardDisplayProps> = ({
             }
             return (
               <TouchableOpacity
-                key={letter}
                 style={styles.key}
                 onPress={() => {
                   if (

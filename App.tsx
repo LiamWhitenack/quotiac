@@ -1,17 +1,13 @@
 import React, { useState } from "react";
 import { SafeAreaView, View, Text, TouchableOpacity } from "react-native";
-import WORDS from "./src/quotes"; // Import word list from external file
+import QUOTES from "./src/quotes"; // Import word list from external file
 import { mainWindowStyles } from "./styles";
 import WordDisplay from "./quote-display";
 import LetterKeyboardDisplay from "./keyboard";
 import iconNamesToUse from "./icons";
 import { Ionicons } from "@expo/vector-icons";
 import KEYBOARD_LETTERS from "./src/keyboard-letters";
-
-const getRandomQuote = () => {
-  const keys = Object.keys(WORDS);
-  return keys[Math.floor(Math.random() * keys.length)];
-};
+import puzzle from "./src/quotes";
 
 function inverseMap(map: Map<string, string>): Map<string, string> {
   const inverseDecodingMap = new Map<string, string>();
@@ -22,14 +18,13 @@ function inverseMap(map: Map<string, string>): Map<string, string> {
 }
 
 const CodiacApp = () => {
-  const [targetQuote, setTargetQuote] = useState(getRandomQuote());
   const [encodingMap, setEncodingMap] = useState(
-    mapUniqueLettersToNumbers(targetQuote)
+    mapUniqueLettersToNumbers(puzzle.quote)
   );
   const [decodingMap, setDecodingMap] = useState<Map<string, string>>(
     new Map()
   );
-  const [showSpaces, setShowSpaces] = useState(true);
+  const [showSpaces, setShowSpaces] = useState(false);
   const [activeIcon, setActiveIcon] = useState("");
   const [keyRows, setKeyRows] = useState(KEYBOARD_LETTERS);
 
@@ -84,7 +79,7 @@ const CodiacApp = () => {
     );
   };
 
-  const encodedQuote = encodeQuote(targetQuote.toLowerCase());
+  const encodedQuote = encodeQuote(puzzle.quote.toLowerCase());
 
   return (
     <SafeAreaView style={mainWindowStyles.container}>
@@ -96,7 +91,7 @@ const CodiacApp = () => {
               name={showSpaces ? "bulb-outline" : "bulb"}
               size={24}
               color="black"
-              onPress={() => setShowSpaces(!showSpaces)}
+              onPress={() => setShowSpaces(true)}
             />
           </TouchableOpacity>
           <TouchableOpacity style={mainWindowStyles.iconContainer}>
