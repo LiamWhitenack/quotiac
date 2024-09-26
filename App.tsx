@@ -6,11 +6,20 @@ import WordDisplay from "./quote-display";
 import LetterKeyboardDisplay from "./keyboard";
 import iconNamesToUse from "./icons";
 import { Ionicons } from "@expo/vector-icons";
+import KEYBOARD_LETTERS from "./src/keyboard-letters";
 
 const getRandomQuote = () => {
   const keys = Object.keys(WORDS);
   return keys[Math.floor(Math.random() * keys.length)];
 };
+
+function inverseMap(map: Map<string, string>): Map<string, string> {
+  const inverseDecodingMap = new Map<string, string>();
+  map.forEach((value, key) => {
+    inverseDecodingMap.set(value, key);
+  });
+  return inverseDecodingMap;
+}
 
 const CodiacApp = () => {
   const [targetQuote, setTargetQuote] = useState(getRandomQuote());
@@ -22,6 +31,7 @@ const CodiacApp = () => {
   );
   const [showSpaces, setSpaces] = useState(true);
   const [activeIcon, setActiveIcon] = useState("");
+  const [keyRows, setKeyRows] = useState(KEYBOARD_LETTERS);
 
   function mapUniqueLettersToNumbers(input: string): Map<string, string> {
     // Create a set to store unique letters
@@ -62,6 +72,18 @@ const CodiacApp = () => {
       .filter((icon) => icon !== undefined);
   };
 
+  const updateKeyRows = (map: Map<string, string>) => {
+    setKeyRows(
+      KEYBOARD_LETTERS.map((row) =>
+        row.map((char) => {
+          const inverseDecodingMap = inverseMap(map);
+          const associatedIconName = inverseDecodingMap.get(char);
+          return associatedIconName === undefined ? char : associatedIconName;
+        })
+      )
+    );
+  };
+
   const encodedQuote = encodeQuote(targetQuote.toLowerCase());
 
   return (
@@ -84,6 +106,7 @@ const CodiacApp = () => {
         showSpaces={showSpaces}
         activeIcon={activeIcon}
         setActiveIcon={setActiveIcon}
+        updateKeyRows={updateKeyRows}
       />
       <LetterKeyboardDisplay
         quote={encodedQuote}
@@ -91,6 +114,8 @@ const CodiacApp = () => {
         setDecodingMap={setDecodingMap}
         activeIcon={activeIcon}
         setActiveIcon={setActiveIcon}
+        keyRows={keyRows}
+        updateKeyRows={updateKeyRows}
       />
     </SafeAreaView>
   );

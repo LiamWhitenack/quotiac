@@ -30,6 +30,7 @@ interface WordDisplayProps {
   showSpaces: boolean;
   activeIcon: string;
   setActiveIcon: (icon: string) => void;
+  updateKeyRows: (map: Map<string, string>) => void;
 }
 
 const QuoteDisplay: React.FC<WordDisplayProps> = ({
@@ -39,6 +40,7 @@ const QuoteDisplay: React.FC<WordDisplayProps> = ({
   showSpaces,
   activeIcon,
   setActiveIcon,
+  updateKeyRows,
 }) => {
   const numIconsInRow = Math.floor(Math.sqrt(quote.length));
   const iconSize = (sizing.maxWidth / (15 * numIconsInRow)) * 10;
@@ -80,6 +82,7 @@ const QuoteDisplay: React.FC<WordDisplayProps> = ({
                       throw Error();
                     }
                     setDecodingMap(decodingMap);
+                    updateKeyRows(decodingMap);
                   }}
                 >
                   {element}

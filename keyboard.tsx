@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import sizing from "./sizing";
 import { Ionicons } from "@expo/vector-icons";
+import KEYBOARD_LETTERS from "./src/keyboard-letters";
 
 interface LetterKeyboardDisplayProps {
   quote: string[];
@@ -15,13 +16,9 @@ interface LetterKeyboardDisplayProps {
   setDecodingMap: (newMap: Map<string, string>) => void;
   activeIcon: string;
   setActiveIcon: (icon: string) => void;
+  keyRows: string[][];
+  updateKeyRows: (map: Map<string, string>) => void;
 }
-
-const KEYBOARD_LETTERS = [
-  ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
-  ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
-  ["Z", "X", "C", "V", "B", "N", "M"],
-];
 
 const LetterKeyboardDisplay: React.FC<LetterKeyboardDisplayProps> = ({
   quote,
@@ -29,20 +26,12 @@ const LetterKeyboardDisplay: React.FC<LetterKeyboardDisplayProps> = ({
   setDecodingMap,
   activeIcon,
   setActiveIcon,
+  keyRows,
+  updateKeyRows,
 }) => {
-  const [rows, setRows] = useState(KEYBOARD_LETTERS);
-
-  function inverseMap(map: Map<string, string>): Map<string, string> {
-    const inverseDecodingMap = new Map<string, string>();
-    decodingMap.forEach((value, key) => {
-      inverseDecodingMap.set(value, key);
-    });
-    return inverseDecodingMap;
-  }
-
   return (
     <View style={styles.container}>
-      {rows.map((row, rowIndex) => (
+      {keyRows.map((row, rowIndex) => (
         <View key={rowIndex} style={styles.row}>
           {row.map((element, index) => {
             const letter = KEYBOARD_LETTERS[rowIndex][index];
@@ -71,19 +60,8 @@ const LetterKeyboardDisplay: React.FC<LetterKeyboardDisplayProps> = ({
                   } else {
                     decodingMap = new Map(decodingMap).set(activeIcon, letter);
                     setDecodingMap(decodingMap);
-                    const inverseDecodingMap = inverseMap(decodingMap);
-                    setRows(
-                      KEYBOARD_LETTERS.map((row) =>
-                        row.map((char) => {
-                          const associatedIconName =
-                            inverseDecodingMap.get(char);
-                          console.log(inverseDecodingMap);
-                          return associatedIconName === undefined
-                            ? char
-                            : associatedIconName;
-                        })
-                      )
-                    );
+                    updateKeyRows(decodingMap);
+
                     setActiveIcon("");
                   }
                 }}
