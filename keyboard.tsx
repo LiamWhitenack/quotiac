@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -7,37 +7,90 @@ import {
   Dimensions,
 } from "react-native";
 import sizing from "./sizing";
+import { Ionicons } from "@expo/vector-icons";
 
 interface LetterKeyboardDisplayProps {
+  quote: string[];
   decodingMap: Map<string, string>;
   setDecodingMap: (newMap: Map<string, string>) => void;
   activeIcon: string;
+  setActiveIcon: (icon: string) => void;
 }
 
+const KEYBOARD_LETTERS = [
+  ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
+  ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
+  ["Z", "X", "C", "V", "B", "N", "M"],
+];
+
 const LetterKeyboardDisplay: React.FC<LetterKeyboardDisplayProps> = ({
+  quote,
   decodingMap,
   setDecodingMap,
   activeIcon,
+  setActiveIcon,
 }) => {
-  const rows = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"];
+  const [rows, setRows] = useState(KEYBOARD_LETTERS);
+
+  function inverseMap(map: Map<string, string>): Map<string, string> {
+    const inverseDecodingMap = new Map<string, string>();
+    decodingMap.forEach((value, key) => {
+      inverseDecodingMap.set(value, key);
+    });
+    return inverseDecodingMap;
+  }
 
   return (
     <View style={styles.container}>
       {rows.map((row, rowIndex) => (
         <View key={rowIndex} style={styles.row}>
-          {row.split("").map((letter) => (
+          {row.map((letter, index) => (
             <TouchableOpacity
-              key={letter}
-              style={styles.key}
+              key={KEYBOARD_LETTERS[rowIndex][index]}
+              style={{
+                width: sizing.keyboardKeyWidth, // Each key takes equal space in the row
+                height: 50, // Fixed height for keys
+                justifyContent: "center",
+                alignItems: "center",
+                margin: sizing.keyboardKeyGap, // Adjust margin for spacing
+                backgroundColor: letter.length == 1 ? "#D3D6DA" : "transparent",
+                borderRadius: 5,
+              }}
               onPress={() => {
-                if (activeIcon == "") {
+                if (
+                  activeIcon == "" ||
+                  Array.from(decodingMap.values()).includes(letter)
+                ) {
                   return;
                 } else {
-                  setDecodingMap(new Map(decodingMap).set(activeIcon, letter));
+                  decodingMap = new Map(decodingMap).set(
+                    activeIcon,
+                    KEYBOARD_LETTERS[rowIndex][index]
+                  );
+                  setDecodingMap(decodingMap);
+                  const inverseDecodingMap = inverseMap(decodingMap);
+                  setRows(
+                    rows.map((row, rowIndex) =>
+                      row.map((char, columnIndex) => {
+                        const associatedIconName = inverseDecodingMap.get(char);
+                        return associatedIconName === undefined
+                          ? KEYBOARD_LETTERS[rowIndex][columnIndex]
+                          : associatedIconName;
+                      })
+                    )
+                  );
+                  setActiveIcon("");
                 }
               }}
             >
-              <Text style={styles.keyText}>{letter}</Text>
+              <Text style={styles.keyText}>
+                {letter.length == 1 ? (
+                  letter
+                ) : (
+                  // @ts-ignore
+                  <Ionicons name={letter} size={15} />
+                )}
+              </Text>
             </TouchableOpacity>
           ))}
         </View>

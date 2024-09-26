@@ -79,7 +79,6 @@ const QuoteDisplay: React.FC<WordDisplayProps> = ({
                     if (!removed) {
                       throw Error();
                     }
-                    console.log(1);
                     setDecodingMap(decodingMap);
                   }}
                 >
@@ -128,7 +127,6 @@ const styles = StyleSheet.create({
   spaceIconStyle: {
     color: "transparent",
   },
-
   verticalContainer: {
     flex: 3,
     flexDirection: "column",
@@ -137,7 +135,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   horizontalContainer: {
-    maxWidth: sizing.maxWidth * 0.9,
+    maxWidth: sizing.maxWidth * 0.87,
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "flex-start",
