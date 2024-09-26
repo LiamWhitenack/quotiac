@@ -44,55 +44,64 @@ const LetterKeyboardDisplay: React.FC<LetterKeyboardDisplayProps> = ({
     <View style={styles.container}>
       {rows.map((row, rowIndex) => (
         <View key={rowIndex} style={styles.row}>
-          {row.map((letter, index) => (
-            <TouchableOpacity
-              key={KEYBOARD_LETTERS[rowIndex][index]}
-              style={{
-                width: sizing.keyboardKeyWidth, // Each key takes equal space in the row
-                height: 50, // Fixed height for keys
-                justifyContent: "center",
-                alignItems: "center",
-                margin: sizing.keyboardKeyGap, // Adjust margin for spacing
-                backgroundColor: letter.length == 1 ? "#D3D6DA" : "transparent",
-                borderRadius: 5,
-              }}
-              onPress={() => {
-                if (
-                  activeIcon == "" ||
-                  Array.from(decodingMap.values()).includes(letter)
-                ) {
-                  return;
-                } else {
-                  decodingMap = new Map(decodingMap).set(
-                    activeIcon,
-                    KEYBOARD_LETTERS[rowIndex][index]
-                  );
-                  setDecodingMap(decodingMap);
-                  const inverseDecodingMap = inverseMap(decodingMap);
-                  setRows(
-                    rows.map((row, rowIndex) =>
-                      row.map((char, columnIndex) => {
-                        const associatedIconName = inverseDecodingMap.get(char);
-                        return associatedIconName === undefined
-                          ? KEYBOARD_LETTERS[rowIndex][columnIndex]
-                          : associatedIconName;
-                      })
-                    )
-                  );
-                  setActiveIcon("");
-                }
-              }}
-            >
-              <Text style={styles.keyText}>
-                {letter.length == 1 ? (
-                  letter
-                ) : (
-                  // @ts-ignore
-                  <Ionicons name={letter} size={15} />
-                )}
-              </Text>
-            </TouchableOpacity>
-          ))}
+          {row.map((element, index) => {
+            const letter = KEYBOARD_LETTERS[rowIndex][index];
+            if (element != letter) {
+              return (
+                <View style={styles.disabledKey}>
+                  <Ionicons
+                    // @ts-ignore
+                    name={element}
+                    size={sizing.keyboardKeyWidth * 0.8}
+                  />
+                </View>
+              );
+            }
+            return (
+              <TouchableOpacity
+                key={letter}
+                style={styles.key}
+                onPress={() => {
+                  console.log(decodingMap);
+                  if (
+                    activeIcon == "" ||
+                    Array.from(decodingMap.values()).includes(letter)
+                  ) {
+                    return;
+                  } else {
+                    decodingMap = new Map(decodingMap).set(activeIcon, letter);
+                    setDecodingMap(decodingMap);
+                    const inverseDecodingMap = inverseMap(decodingMap);
+                    setRows(
+                      KEYBOARD_LETTERS.map((row) =>
+                        row.map((char) => {
+                          const associatedIconName =
+                            inverseDecodingMap.get(char);
+                          console.log(inverseDecodingMap);
+                          return associatedIconName === undefined
+                            ? char
+                            : associatedIconName;
+                        })
+                      )
+                    );
+                    setActiveIcon("");
+                  }
+                }}
+              >
+                <Text style={styles.keyText}>
+                  {element.length == 1 ? (
+                    element
+                  ) : (
+                    <Ionicons
+                      // @ts-ignore
+                      name={element}
+                      size={Math.min(0.8 * sizing.keyboardKeyWidth)}
+                    />
+                  )}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
         </View>
       ))}
     </View>
@@ -123,15 +132,21 @@ const styles = StyleSheet.create({
     backgroundColor: "#D3D6DA",
     borderRadius: 5,
   },
+  disabledKey: {
+    width: sizing.keyboardKeyWidth, // Each key takes equal space in the row
+    height: 50, // Fixed height for keys
+    justifyContent: "center",
+    alignItems: "center",
+    margin: sizing.keyboardKeyGap, // Adjust margin for spacing
+    backgroundColor: "transparent",
+    borderRadius: 5,
+  },
   keyText: {
     fontSize: 18,
     fontWeight: "bold",
   },
   activeKey: {
     backgroundColor: "#D3D6DA",
-  },
-  disabledKey: {
-    backgroundColor: "#787C7E",
   },
 });
 
