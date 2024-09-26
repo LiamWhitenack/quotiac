@@ -203,7 +203,6 @@ const iconNames = [
   "images",
   "infinite",
   "information-circle",
-  "information",
   "invert-mode",
   "journal",
   "key",
