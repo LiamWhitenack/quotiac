@@ -3,7 +3,7 @@ class PuzzleOfTheDay {
   attributedTo: string | undefined;
   source: string | undefined;
 
-  constructor(date: Date, quote: string, attributedTo: string | undefined = undefined, source: string | undefined = undefined) {
+  constructor(quote: string, attributedTo: string | undefined = undefined, source: string | undefined = undefined) {
     this.quote = quote;
     this.attributedTo = attributedTo;
     this.source = source;
