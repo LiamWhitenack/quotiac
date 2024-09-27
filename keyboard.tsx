@@ -32,8 +32,9 @@ const LetterKeyboardDisplay: React.FC<LetterKeyboardDisplayProps> = ({
   updateKeyRows,
 }) => {
   function getNextIconName(): string {
-    for (let iconName in encodedQuote.slice(quoteIndex)) {
-      console.log(quoteIndex);
+    for (let i = 0; i < encodedQuote.length; i++) {
+      let iconName = encodedQuote[i];
+      console.log(encodedQuote[i]);
       if (iconName == "bluetooth") {
         continue;
       }
