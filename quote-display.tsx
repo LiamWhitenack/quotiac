@@ -74,13 +74,13 @@ const QuoteDisplay: React.FC<WordDisplayProps> = ({
                 <Text
                   style={{ fontSize: iconSize }}
                   onPress={() => {
-                    setActiveIcon(element);
                     decodingMap = new Map(decodingMap);
                     const keyOfElement = getKeyByValue(decodingMap, element);
                     const removed = decodingMap.delete(keyOfElement);
                     if (!removed) {
                       throw Error();
                     }
+                    setActiveIcon(keyOfElement);
                     setDecodingMap(decodingMap);
                     updateKeyRows(decodingMap);
                   }}
