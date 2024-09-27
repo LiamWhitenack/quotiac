@@ -27,6 +27,7 @@ const CodiacApp = () => {
   const [showSpaces, setShowSpaces] = useState(false);
   const [activeIcon, setActiveIcon] = useState("");
   const [keyRows, setKeyRows] = useState(KEYBOARD_LETTERS);
+  const quoteIndex = 0;
 
   function mapUniqueLettersToNumbers(input: string): Map<string, string> {
     // Create a set to store unique letters
@@ -101,6 +102,7 @@ const CodiacApp = () => {
       </View>
       <WordDisplay
         quote={encodedQuote}
+        quoteIndex={quoteIndex}
         decodingMap={decodingMap}
         setDecodingMap={setDecodingMap}
         showSpaces={showSpaces}
@@ -109,7 +111,8 @@ const CodiacApp = () => {
         updateKeyRows={updateKeyRows}
       />
       <LetterKeyboardDisplay
-        quote={encodedQuote}
+        encodedQuote={encodedQuote}
+        quoteIndex={quoteIndex}
         decodingMap={decodingMap}
         setDecodingMap={setDecodingMap}
         activeIcon={activeIcon}

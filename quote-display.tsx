@@ -25,6 +25,7 @@ function getKeyByValue<T extends Map<string, string>>(
 
 interface WordDisplayProps {
   quote: string[];
+  quoteIndex: number;
   decodingMap: Map<string, string>;
   setDecodingMap: (newMap: Map<string, string>) => void;
   showSpaces: boolean;
@@ -35,6 +36,7 @@ interface WordDisplayProps {
 
 const QuoteDisplay: React.FC<WordDisplayProps> = ({
   quote,
+  quoteIndex,
   decodingMap,
   setDecodingMap,
   showSpaces,
@@ -49,7 +51,7 @@ const QuoteDisplay: React.FC<WordDisplayProps> = ({
       const decoded = decodingMap.get(element);
       return decoded !== undefined ? decoded : element;
     })
-    .map((element) => {
+    .map((element, index) => {
       if (element == " " && showSpaces) {
         return (
           <Ionicons
@@ -74,6 +76,7 @@ const QuoteDisplay: React.FC<WordDisplayProps> = ({
                 <Text
                   style={{ fontSize: iconSize }}
                   onPress={() => {
+                    // clear the active icon and the decoding selection
                     decodingMap = new Map(decodingMap);
                     const keyOfElement = getKeyByValue(decodingMap, element);
                     const removed = decodingMap.delete(keyOfElement);
@@ -102,6 +105,7 @@ const QuoteDisplay: React.FC<WordDisplayProps> = ({
               if (activeIcon == element) {
                 setActiveIcon("");
               } else {
+                quoteIndex = index;
                 setActiveIcon(element);
               }
             }}
