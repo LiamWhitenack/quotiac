@@ -115,8 +115,8 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
     justifyContent: "center",
-    marginBottom: sizing.keyboardMargin / 2,
-    marginHorizontal: sizing.keyboardMargin,
+    marginBottom: sizing.keyboardMargin / 8,
+    marginHorizontal: sizing.keyboardMargin / 8,
   },
   key: {
     width: sizing.keyboardKeyWidth, // Each key takes equal space in the row
