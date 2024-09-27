@@ -20,9 +20,27 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
 });
+function seededRandom(seed: number): () => number {
+  return function () {
+    // Use a simple pseudo-random number generator (PRNG)
+    seed = (seed * 9301 + 49297) % 233280; // Example seed formula
+    return seed / 233280;
+  };
+}
+
 function shuffleArray<T>(array: T[]): T[] {
+  // Get the current date as a seed
+  const today = new Date();
+  const seed =
+    today.getFullYear() * 10000 +
+    (today.getMonth() + 1) * 100 +
+    today.getDate();
+
+  // Create a seeded random number generator
+  const random = seededRandom(seed);
+
   for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1)); // Generate a random index
+    const j = Math.floor(random() * (i + 1)); // Generate a seeded random index
     // Swap array[i] with the element at random index
     [array[i], array[j]] = [array[j], array[i]];
   }
