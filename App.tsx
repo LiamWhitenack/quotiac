@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView, View, Text, TouchableOpacity } from "react-native";
 import QUOTES from "./src/quotes"; // Import word list from external file
 import { mainWindowStyles } from "./styles";
@@ -27,7 +27,7 @@ const CodiacApp = () => {
   const [showSpaces, setShowSpaces] = useState(false);
   const [activeIcon, setActiveIcon] = useState("");
   const [keyRows, setKeyRows] = useState(KEYBOARD_LETTERS);
-  const quoteIndex = 0;
+  const [quoteIndex, setQuoteIndex] = useState(0);
 
   function mapUniqueLettersToNumbers(input: string): Map<string, string> {
     // Create a set to store unique letters
@@ -68,6 +68,8 @@ const CodiacApp = () => {
       .filter((icon) => icon !== undefined);
   };
 
+  const encodedQuote = encodeQuote(puzzle.quote.toLowerCase());
+
   const updateKeyRows = (map: Map<string, string>) => {
     setKeyRows(
       KEYBOARD_LETTERS.map((row) =>
@@ -80,7 +82,62 @@ const CodiacApp = () => {
     );
   };
 
-  const encodedQuote = encodeQuote(puzzle.quote.toLowerCase());
+  function getNextIconName(): string {
+    for (let i = 0; i < encodedQuote.length; i++) {
+      let iconName = encodedQuote[i];
+      if (i <= quoteIndex || iconName == " " || iconName == activeIcon) {
+        continue;
+      }
+      const char = decodingMap.get(iconName);
+      if (char === undefined) {
+        setQuoteIndex(i);
+        return iconName;
+      }
+    }
+    setQuoteIndex(0);
+    return "";
+  }
+
+  function reactToKeyPress(letter: string) {
+    letter = letter.toUpperCase();
+    if (letter < "A" || letter > "Z") {
+      return;
+    }
+    if (letter.length != 1) {
+      throw Error();
+    }
+    // React to an key being pressed
+    if (
+      // if no key is selected or that letter has already been used
+      activeIcon == "" ||
+      Array.from(decodingMap.values()).includes(letter)
+    ) {
+      return;
+    } else {
+      // update decoding map and update the keyboard
+      let updatedDecodingMap = new Map(decodingMap).set(activeIcon, letter);
+      setDecodingMap(updatedDecodingMap);
+      updateKeyRows(updatedDecodingMap);
+      setActiveIcon(getNextIconName());
+    }
+  }
+
+  // Use effect to listen to key presses
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      const letter = event.key.toLowerCase();
+      if (letter >= "a" && letter <= "z") {
+        reactToKeyPress(letter);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyPress);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [activeIcon, decodingMap, quoteIndex]);
 
   return (
     <SafeAreaView style={mainWindowStyles.container}>
@@ -102,7 +159,7 @@ const CodiacApp = () => {
       </View>
       <WordDisplay
         quote={encodedQuote}
-        quoteIndex={quoteIndex}
+        setQuoteIndex={setQuoteIndex}
         decodingMap={decodingMap}
         setDecodingMap={setDecodingMap}
         showSpaces={showSpaces}
@@ -111,8 +168,10 @@ const CodiacApp = () => {
         updateKeyRows={updateKeyRows}
       />
       <LetterKeyboardDisplay
-        encodedQuote={encodedQuote}
+        reactToKeyPress={reactToKeyPress}
         quoteIndex={quoteIndex}
+        encodedQuote={encodedQuote}
+        setQuoteIndex={setQuoteIndex}
         decodingMap={decodingMap}
         setDecodingMap={setDecodingMap}
         activeIcon={activeIcon}

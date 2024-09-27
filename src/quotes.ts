@@ -12,9 +12,44 @@ class PuzzleOfTheDay {
 
 const QUOTES: PuzzleOfTheDay[] = [
   new PuzzleOfTheDay(
-    "You figuring this out is me kissing you on the mouth.",
+    "Awake, O north wind; and come, thou south; blow upon my garden, that the spices thereof may flow out.",
+    "Michael Scott",
+    "The Office",
+  ),
+  new PuzzleOfTheDay(
+    "Guilty Guilty Guilty",
+    "Michael Scott",
+    "The Office",
+  ),
+  new PuzzleOfTheDay(
+    "This is the skin of a killer, Bella",
+    "Michael Scott",
+    "The Office",
+  ),
+  new PuzzleOfTheDay(
+    "bella, where the hell have you been loca?",
+    "Michael Scott",
+    "The Office",
+  ),
+  new PuzzleOfTheDay(
+    "When youre feeling weary you are not alone",
+    "Michael Scott",
+    "The Office",
+  ),
+  new PuzzleOfTheDay(
+    "I'm not superstitious, but I am a little stitious.",
+    "Michael Scott",
+    "The Office",
+  ),
+  new PuzzleOfTheDay(
+    "Toby is in HR, which technically means he works for corporate, so he's really not a part of our family. Also, he's divorced, so he's really not a part of his family",
     "",
+    "Lord of the Rings: The Fellowship of the Ring",
+  ),
+  new PuzzleOfTheDay(
+    "One does not simply walk into Mordor",
     "",
+    "Lord of the Rings: The Fellowship of the Ring",
   ),
   new PuzzleOfTheDay(
     "If I had a nickel for every time, I'd have two nickels. Which isn't a lot, but it's weird that it happened twice",
@@ -75,7 +110,6 @@ const todayQuote = () => {
   const daysSinceEpoch = Math.floor(new Date().getTime() / (1000 * 60 * 60 * 24));
   const firstCodiacDaysSinceEphoch = Math.floor(new Date(2024, 8, 27).getTime() / (1000 * 60 * 60 * 24));
   const index = daysSinceEpoch - firstCodiacDaysSinceEphoch
-  console.log(index)
   return QUOTES[index]
 };
 

@@ -25,7 +25,7 @@ function getKeyByValue<T extends Map<string, string>>(
 
 interface WordDisplayProps {
   quote: string[];
-  quoteIndex: number;
+  setQuoteIndex: (index: number) => void;
   decodingMap: Map<string, string>;
   setDecodingMap: (newMap: Map<string, string>) => void;
   showSpaces: boolean;
@@ -36,7 +36,7 @@ interface WordDisplayProps {
 
 const QuoteDisplay: React.FC<WordDisplayProps> = ({
   quote,
-  quoteIndex,
+  setQuoteIndex,
   decodingMap,
   setDecodingMap,
   showSpaces,
@@ -105,7 +105,7 @@ const QuoteDisplay: React.FC<WordDisplayProps> = ({
               if (activeIcon == element) {
                 setActiveIcon("");
               } else {
-                quoteIndex = index;
+                setQuoteIndex(index);
                 setActiveIcon(element);
               }
             }}

@@ -12,7 +12,9 @@ import KEYBOARD_LETTERS from "./src/keyboard-letters";
 
 interface LetterKeyboardDisplayProps {
   encodedQuote: string[];
+  reactToKeyPress: (letter: string) => void;
   quoteIndex: number;
+  setQuoteIndex: (index: number) => void;
   decodingMap: Map<string, string>;
   setDecodingMap: (newMap: Map<string, string>) => void;
   activeIcon: string;
@@ -22,30 +24,9 @@ interface LetterKeyboardDisplayProps {
 }
 
 const LetterKeyboardDisplay: React.FC<LetterKeyboardDisplayProps> = ({
-  encodedQuote,
-  quoteIndex,
-  decodingMap,
-  setDecodingMap,
-  activeIcon,
-  setActiveIcon,
+  reactToKeyPress,
   keyRows,
-  updateKeyRows,
 }) => {
-  function getNextIconName(): string {
-    for (let i = 0; i < encodedQuote.length; i++) {
-      let iconName = encodedQuote[i];
-      console.log(encodedQuote[i]);
-      if (iconName == "bluetooth") {
-        continue;
-      }
-      const char = decodingMap.get(iconName);
-      if (char === undefined) {
-        return iconName;
-      }
-    }
-    return "";
-  }
-
   return (
     <View style={styles.container}>
       {keyRows.map((row, rowIndex) => (
@@ -67,20 +48,7 @@ const LetterKeyboardDisplay: React.FC<LetterKeyboardDisplayProps> = ({
               <TouchableOpacity
                 style={styles.key}
                 onPress={() => {
-                  // React to an key being pressed
-                  if (
-                    // if no key is selected or that letter has already been used
-                    activeIcon == "" ||
-                    Array.from(decodingMap.values()).includes(letter)
-                  ) {
-                    return;
-                  } else {
-                    // update decoding map and update the keyboard
-                    decodingMap = new Map(decodingMap).set(activeIcon, letter);
-                    setDecodingMap(decodingMap);
-                    updateKeyRows(decodingMap);
-                    setActiveIcon(getNextIconName());
-                  }
+                  reactToKeyPress(letter);
                 }}
               >
                 <Text style={styles.keyText}>
