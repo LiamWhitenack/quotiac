@@ -149,7 +149,10 @@ const CodiacApp = () => {
               name={"refresh-outline"}
               size={32}
               color="black"
-              onPress={() => setDecodingMap(new Map())}
+              onPress={() => {
+                setDecodingMap(new Map());
+                updateKeyRows(new Map());
+              }}
             />
           </TouchableOpacity>
           {/* <TouchableOpacity style={mainWindowStyles.iconContainer}>
