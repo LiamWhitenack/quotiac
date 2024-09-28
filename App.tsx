@@ -8,6 +8,7 @@ import iconNamesToUse from "./icons";
 import { Ionicons } from "@expo/vector-icons";
 import KEYBOARD_LETTERS from "./src/keyboard-letters";
 import puzzle from "./src/quotes";
+import sizing from "./sizing";
 
 function inverseMap(map: Map<string, string>): Map<string, string> {
   const inverseDecodingMap = new Map<string, string>();
@@ -123,21 +124,23 @@ const CodiacApp = () => {
   }
 
   // Use effect to listen to key presses
-  useEffect(() => {
-    const handleKeyPress = (event: KeyboardEvent) => {
-      const letter = event.key.toLowerCase();
-      if (letter >= "a" && letter <= "z") {
-        reactToKeyPress(letter);
-      }
-    };
+  if (!sizing.isMobile) {
+    useEffect(() => {
+      const handleKeyPress = (event: KeyboardEvent) => {
+        const letter = event.key.toLowerCase();
+        if (letter >= "a" && letter <= "z") {
+          reactToKeyPress(letter);
+        }
+      };
 
-    window.addEventListener("keydown", handleKeyPress);
+      window.addEventListener("keydown", handleKeyPress);
 
-    // Cleanup event listener on component unmount
-    return () => {
-      window.removeEventListener("keydown", handleKeyPress);
-    };
-  }, [activeIcon, decodingMap, quoteIndex]);
+      // Cleanup event listener on component unmount
+      return () => {
+        window.removeEventListener("keydown", handleKeyPress);
+      };
+    }, [activeIcon, decodingMap, quoteIndex]);
+  }
 
   return (
     <SafeAreaView style={mainWindowStyles.container}>
