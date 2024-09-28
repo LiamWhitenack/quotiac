@@ -13,6 +13,8 @@ class ScreenSizing {
   keyboardKeyGap: number;
   keyboardKeyWidth: number;
   keyboardHeight: number;
+  topBarHeight: number;
+  quoteHeight: number;
 
   constructor() {
     this.screenHeight = screenHeight;
@@ -28,6 +30,9 @@ class ScreenSizing {
       (this.maxWidth - this.keyboardMargin * 2 - this.keyboardKeyGap * 18) / 10
     );
     this.keyboardHeight = this.keyboardMargin * 6 + 150;
+
+    this.topBarHeight = 50;
+    this.quoteHeight = this.keyboardHeight - this.topBarHeight;
   }
 }
 

@@ -44,8 +44,14 @@ const QuoteDisplay: React.FC<WordDisplayProps> = ({
   setActiveIcon,
   updateKeyRows,
 }) => {
-  const numIconsInRow = Math.floor(Math.sqrt(quote.length));
-  const iconSize = (sizing.maxWidth / (15 * numIconsInRow)) * 10;
+  // console.log(sizing.screenHeight);
+  // console.log(sizing.keyboardHeight);
+  // console.log(sizing.quoteHeight);
+  // console.log(sizing.screenWidth);
+  const iconSize =
+    ((sizing.quoteHeight * sizing.screenWidth) / quote.length) ** 0.5;
+  const numberOfIconsInColumn = sizing.quoteHeight / iconSize;
+  const numberOfIconsInRow = sizing.screenWidth / iconSize;
   const display_quote = quote
     .map((element) => {
       const decoded = decodingMap.get(element);
@@ -53,14 +59,10 @@ const QuoteDisplay: React.FC<WordDisplayProps> = ({
     })
     .map((element, index) => {
       if (element == " " && showSpaces) {
-        return (
-          <Ionicons
-            name={"bluetooth"}
-            size={iconSize}
-            style={styles.spaceIconStyle}
-          />
-        );
+        // empty space for space
+        return <View style={{ height: iconSize, width: iconSize }}></View>;
       } else if (element.length == 1) {
+        // display capital letter
         return (
           <View
             style={{
@@ -74,7 +76,7 @@ const QuoteDisplay: React.FC<WordDisplayProps> = ({
             <TouchableOpacity>
               {
                 <Text
-                  style={{ fontSize: iconSize }}
+                  style={{ fontSize: iconSize / 1.2 }}
                   onPress={() => {
                     // clear the active icon and the decoding selection
                     decodingMap = new Map(decodingMap);
@@ -96,20 +98,30 @@ const QuoteDisplay: React.FC<WordDisplayProps> = ({
         );
       } else {
         return (
-          <Ionicons
-            // @ts-ignore
-            name={element}
-            size={iconSize}
-            color={element == activeIcon ? "blue" : "black"}
-            onPress={() => {
-              if (activeIcon == element) {
-                setActiveIcon("");
-              } else {
-                setQuoteIndex(index);
-                setActiveIcon(element);
-              }
+          <View
+            style={{
+              alignItems: "center",
+              alignContent: "center",
+              justifyContent: "center",
+              height: iconSize,
+              width: iconSize,
             }}
-          />
+          >
+            <Ionicons
+              // @ts-ignore
+              name={element}
+              size={iconSize / 1.2}
+              color={element == activeIcon ? "blue" : "black"}
+              onPress={() => {
+                if (activeIcon == element) {
+                  setActiveIcon("");
+                } else {
+                  setQuoteIndex(index);
+                  setActiveIcon(element);
+                }
+              }}
+            />
+          </View>
         );
       }
     });
@@ -118,9 +130,14 @@ const QuoteDisplay: React.FC<WordDisplayProps> = ({
     <View style={styles.verticalContainer}>
       <View style={styles.horizontalContainer}>
         {display_quote.map((element, index) => (
-          // <View style={iconContainer.style}>
-          <TouchableOpacity key={index}>{element}</TouchableOpacity>
-          // </View>
+          <View
+            style={{
+              width: iconSize,
+              height: iconSize,
+            }}
+          >
+            <TouchableOpacity key={index}>{element}</TouchableOpacity>
+          </View>
         ))}
       </View>
     </View>
@@ -136,7 +153,7 @@ const styles = StyleSheet.create({
   },
   // TODO: Add a container to make the icon spaces larger
   verticalContainer: {
-    flex: 3,
+    flex: 5,
     flexDirection: "column",
     alignContent: "center",
     flexWrap: "wrap",
@@ -146,7 +163,7 @@ const styles = StyleSheet.create({
     maxWidth: sizing.maxWidth * 0.87,
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "flex-start",
+    justifyContent: "center",
     marginBottom: 30,
   },
   quote: {

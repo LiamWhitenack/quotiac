@@ -3,6 +3,7 @@ import sizing from "./sizing";
 export const mainWindowStyles = StyleSheet.create({
   topBarContainer: {
     width: sizing.maxWidth,
+    height: sizing.topBarHeight,
     flexDirection: "row", // Horizontally align items
     justifyContent: "space-between",
     alignItems: "center",
