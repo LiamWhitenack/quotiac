@@ -23,6 +23,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "sdkVersion": "51.0.0"
+    "sdkVersion": "53.0.0"
   }
 }
