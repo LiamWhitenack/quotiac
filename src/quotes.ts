@@ -108,7 +108,7 @@ const QUOTES: PuzzleOfTheDay[] = [
 
 const todayQuote = () => {
   const daysSinceEpoch = Math.floor(new Date().getTime() / (1000 * 60 * 60 * 24));
-  const firstCodiacDaysSinceEphoch = Math.floor(new Date(2024, 8, 27).getTime() / (1000 * 60 * 60 * 24));
+  const firstCodiacDaysSinceEphoch = Math.floor(new Date(2025, 5, 31).getTime() / (1000 * 60 * 60 * 24));
   const index = daysSinceEpoch - firstCodiacDaysSinceEphoch
   return QUOTES[index]
 };
