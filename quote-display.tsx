@@ -1,6 +1,12 @@
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  useWindowDimensions,
+} from "react-native";
 import sizing from "./sizing";
 
 function getKeyByValue<T extends Map<string, string>>(
@@ -44,27 +50,32 @@ const QuoteDisplay: React.FC<WordDisplayProps> = ({
   setActiveIcon,
   updateKeyRows,
 }) => {
-  // console.log(sizing.screenHeight);
-  // console.log(sizing.keyboardHeight);
-  // console.log(sizing.quoteHeight);
-  // console.log(sizing.screenWidth);
   const iconSize =
     ((sizing.quoteHeight * sizing.screenWidth) / quote.length) ** 0.5;
   const numberOfIconsInColumn = sizing.quoteHeight / iconSize;
   const numberOfIconsInRow = sizing.screenWidth / iconSize;
+  const { height, width, scale, fontScale } = useWindowDimensions();
+  sizing.screenHeight = height;
+  sizing.screenWidth = width;
   const display_quote = quote
     .map((element) => {
       const decoded = decodingMap.get(element);
       return decoded !== undefined ? decoded : element;
     })
     .map((element, index) => {
-      if (element == " " && showSpaces) {
+      if (element === " " && showSpaces) {
         // empty space for space
-        return <View style={{ height: iconSize, width: iconSize }}></View>;
-      } else if (element.length == 1) {
+        return (
+          <View
+            key={element}
+            style={{ height: iconSize, width: iconSize }}
+          ></View>
+        );
+      } else if (element.length === 1) {
         // display capital letter
         return (
           <View
+            key={element}
             style={{
               alignItems: "center",
               alignContent: "center",
@@ -99,6 +110,7 @@ const QuoteDisplay: React.FC<WordDisplayProps> = ({
       } else {
         return (
           <View
+            key={element + index}
             style={{
               alignItems: "center",
               alignContent: "center",
@@ -131,6 +143,7 @@ const QuoteDisplay: React.FC<WordDisplayProps> = ({
       <View style={styles.horizontalContainer}>
         {display_quote.map((element, index) => (
           <View
+            key={element + index}
             style={{
               width: iconSize,
               height: iconSize,

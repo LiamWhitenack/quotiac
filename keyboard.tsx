@@ -33,9 +33,12 @@ const LetterKeyboardDisplay: React.FC<LetterKeyboardDisplayProps> = ({
         <View key={rowIndex} style={styles.row}>
           {row.map((element, index) => {
             const letter = KEYBOARD_LETTERS[rowIndex][index];
-            if (element != letter) {
+            if (element !== letter) {
               return (
-                <View style={styles.disabledKey}>
+                <View
+                  key={[rowIndex + element + index]}
+                  style={styles.disabledKey}
+                >
                   <Ionicons
                     // @ts-ignore
                     name={element}
@@ -46,13 +49,14 @@ const LetterKeyboardDisplay: React.FC<LetterKeyboardDisplayProps> = ({
             }
             return (
               <TouchableOpacity
+                key={element}
                 style={styles.key}
                 onPress={() => {
                   reactToKeyPress(letter);
                 }}
               >
                 <Text style={styles.keyText}>
-                  {element.length == 1 ? (
+                  {element.length === 1 ? (
                     element
                   ) : (
                     <Ionicons
