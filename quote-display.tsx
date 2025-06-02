@@ -143,7 +143,7 @@ const QuoteDisplay: React.FC<WordDisplayProps> = ({
       <View style={styles.horizontalContainer}>
         {display_quote.map((element, index) => (
           <View
-            key={element + index}
+            key={index}
             style={{
               width: iconSize,
               height: iconSize,
