@@ -12,59 +12,24 @@ class PuzzleOfTheDay {
 
 const QUOTES: PuzzleOfTheDay[] = [
   new PuzzleOfTheDay(
-    "Awake, O north wind; and come, thou south; blow upon my garden, that the spices thereof may flow out.",
-    "Michael Scott",
-    "The Office",
-  ),
-  new PuzzleOfTheDay(
-    "Guilty Guilty Guilty",
-    "Michael Scott",
-    "The Office",
-  ),
-  new PuzzleOfTheDay(
-    "This is the skin of a killer, Bella",
-    "Michael Scott",
-    "The Office",
-  ),
-  new PuzzleOfTheDay(
-    "bella, where the hell have you been loca?",
-    "Michael Scott",
-    "The Office",
-  ),
-  new PuzzleOfTheDay(
-    "When youre feeling weary you are not alone",
-    "Michael Scott",
-    "The Office",
-  ),
-  new PuzzleOfTheDay(
     "I'm not superstitious, but I am a little stitious.",
     "Michael Scott",
     "The Office",
   ),
   new PuzzleOfTheDay(
     "Toby is in HR, which technically means he works for corporate, so he's really not a part of our family. Also, he's divorced, so he's really not a part of his family",
-    "",
-    "Lord of the Rings: The Fellowship of the Ring",
+    "Michael Scott",
+    "The office",
   ),
   new PuzzleOfTheDay(
     "One does not simply walk into Mordor",
-    "",
+    "Boromir",
     "Lord of the Rings: The Fellowship of the Ring",
   ),
   new PuzzleOfTheDay(
     "If I had a nickel for every time, I'd have two nickels. Which isn't a lot, but it's weird that it happened twice",
     "Dr. Doofenshmirtz",
     "Phineas and Ferb the Movie: Across the 2nd Dimension",
-  ),
-  new PuzzleOfTheDay(
-    "Well I think my outfit is pretty gorg.  Raquelle, did you mean gorgelicious, or gorgetastic?  No, Barbie. I meant gorg!",
-    "MAIRE PUT YOUR speaker HERE",
-    " ",
-  ),
-  new PuzzleOfTheDay(
-    "A surprise to be sure, but a welcome one.",
-    "Chancellor Palpetine",
-    "Star Wars Episode 1: The Phantom Menace",
   ),
   new PuzzleOfTheDay(
     "Not all those who wander are lost, Bilbo Baggins.",
@@ -108,7 +73,7 @@ const QUOTES: PuzzleOfTheDay[] = [
 
 const todayQuote = () => {
   const daysSinceEpoch = Math.floor(new Date().getTime() / (1000 * 60 * 60 * 24));
-  const firstCodiacDaysSinceEphoch = Math.floor(new Date(2025, 5, 31).getTime() / (1000 * 60 * 60 * 24));
+  const firstCodiacDaysSinceEphoch = Math.floor(new Date(2025, 4, 31).getTime() / (1000 * 60 * 60 * 24));
   const index = daysSinceEpoch - firstCodiacDaysSinceEphoch
   return QUOTES[index]
 };
