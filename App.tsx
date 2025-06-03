@@ -86,7 +86,7 @@ const CodiacApp = () => {
   function getNextIconName(): string {
     for (let i = 0; i < encodedQuote.length; i++) {
       let iconName = encodedQuote[i];
-      if (i <= quoteIndex || iconName == " " || iconName == activeIcon) {
+      if (i <= quoteIndex || iconName === " " || iconName === activeIcon) {
         continue;
       }
       const char = decodingMap.get(iconName);
@@ -100,13 +100,26 @@ const CodiacApp = () => {
   }
 
   function reactToKeyPress(element: string) {
-    if (element >= "A" && element <= "Z") {
+    // if no key is selected
+    if (activeIcon === "") {
+      return;
+    } else if (element >= "A" && element <= "Z") {
       // add letter mapping
       if (
-        // if no key is selected or that letter has already been used
-        activeIcon !== "" ||
-        !Array.from(decodingMap.values()).includes(element)
+        // if that letter has already been used
+        Array.from(decodingMap.values()).includes(element)
       ) {
+        // remove letter mapping
+        const icon = [...decodingMap].find(([k, v]) => v === element)?.[0];
+        if (icon === undefined) {
+          throw Error;
+        }
+        decodingMap.delete(icon);
+        setDecodingMap(decodingMap);
+        updateKeyRows(decodingMap);
+        setActiveIcon(icon);
+        setQuoteIndex(encodedQuote.indexOf(icon));
+      } else {
         let updatedDecodingMap = new Map(decodingMap).set(activeIcon, element);
         setDecodingMap(updatedDecodingMap);
         updateKeyRows(updatedDecodingMap);
@@ -118,6 +131,7 @@ const CodiacApp = () => {
       setDecodingMap(decodingMap);
       updateKeyRows(decodingMap);
       setActiveIcon(element);
+      setQuoteIndex(encodedQuote.indexOf(element));
     }
   }
 
@@ -125,7 +139,7 @@ const CodiacApp = () => {
   if (!sizing.isMobile) {
     useEffect(() => {
       const handleKeyPress = (event: KeyboardEvent) => {
-        reactToKeyPress(event.key);
+        reactToKeyPress(event.key.toUpperCase());
       };
 
       window.addEventListener("keydown", handleKeyPress);

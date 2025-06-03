@@ -88,18 +88,18 @@ const QuoteDisplay: React.FC<WordDisplayProps> = ({
               {
                 <Text
                   style={{ fontSize: iconSize / 1.2 }}
-                  onPress={() => {
-                    // clear the active icon and the decoding selection
-                    decodingMap = new Map(decodingMap);
-                    const keyOfElement = getKeyByValue(decodingMap, element);
-                    const removed = decodingMap.delete(keyOfElement);
-                    if (!removed) {
-                      throw Error();
-                    }
-                    setActiveIcon(keyOfElement);
-                    setDecodingMap(decodingMap);
-                    updateKeyRows(decodingMap);
-                  }}
+                  // onPress={() => {
+                  //   // clear the active icon and the decoding selection
+                  //   decodingMap = new Map(decodingMap);
+                  //   const keyOfElement = getKeyByValue(decodingMap, element);
+                  //   const removed = decodingMap.delete(keyOfElement);
+                  //   if (!removed) {
+                  //     throw Error();
+                  //   }
+                  //   setActiveIcon(keyOfElement);
+                  //   setDecodingMap(decodingMap);
+                  //   updateKeyRows(decodingMap);
+                  // }}
                 >
                   {element}
                 </Text>
@@ -123,9 +123,9 @@ const QuoteDisplay: React.FC<WordDisplayProps> = ({
               // @ts-ignore
               name={element}
               size={iconSize / 1.2}
-              color={element == activeIcon ? "blue" : "black"}
+              color={element === activeIcon ? "blue" : "black"}
               onPress={() => {
-                if (activeIcon == element) {
+                if (activeIcon === element) {
                   setActiveIcon("");
                 } else {
                   setQuoteIndex(index);
