@@ -31,13 +31,12 @@ function keyboardKey(
 ) {
   const letter = KEYBOARD_LETTERS[rowIndex][index];
   const isMatch = element === letter;
-
   return (
     <TouchableOpacity
       key={element}
       style={styles.key}
       onPress={() => {
-        reaction(letter);
+        reaction(element);
       }}
     >
       {!isMatch ? (

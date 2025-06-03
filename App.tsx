@@ -99,27 +99,25 @@ const CodiacApp = () => {
     return "";
   }
 
-  function reactToKeyPress(letter: string) {
-    letter = letter.toUpperCase();
-    if (letter < "A" || letter > "Z") {
-      return;
-    }
-    if (letter.length != 1) {
-      throw Error();
-    }
-    // React to an key being pressed
-    if (
-      // if no key is selected or that letter has already been used
-      activeIcon == "" ||
-      Array.from(decodingMap.values()).includes(letter)
-    ) {
-      return;
+  function reactToKeyPress(element: string) {
+    if (element >= "A" && element <= "Z") {
+      // add letter mapping
+      if (
+        // if no key is selected or that letter has already been used
+        activeIcon !== "" ||
+        !Array.from(decodingMap.values()).includes(element)
+      ) {
+        let updatedDecodingMap = new Map(decodingMap).set(activeIcon, element);
+        setDecodingMap(updatedDecodingMap);
+        updateKeyRows(updatedDecodingMap);
+        setActiveIcon(getNextIconName());
+      }
     } else {
-      // update decoding map and update the keyboard
-      let updatedDecodingMap = new Map(decodingMap).set(activeIcon, letter);
-      setDecodingMap(updatedDecodingMap);
-      updateKeyRows(updatedDecodingMap);
-      setActiveIcon(getNextIconName());
+      // remove letter mapping
+      decodingMap.delete(element);
+      setDecodingMap(decodingMap);
+      updateKeyRows(decodingMap);
+      setActiveIcon(element);
     }
   }
 
@@ -127,10 +125,7 @@ const CodiacApp = () => {
   if (!sizing.isMobile) {
     useEffect(() => {
       const handleKeyPress = (event: KeyboardEvent) => {
-        const letter = event.key.toLowerCase();
-        if (letter >= "a" && letter <= "z") {
-          reactToKeyPress(letter);
-        }
+        reactToKeyPress(event.key);
       };
 
       window.addEventListener("keydown", handleKeyPress);
