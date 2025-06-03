@@ -50,17 +50,21 @@ const QuoteDisplay: React.FC<WordDisplayProps> = ({
   setActiveIcon,
   updateKeyRows,
 }) => {
-  const iconSize =
-    ((sizing.quoteHeight * sizing.screenWidth) / quote.length) ** 0.5;
-  const numberOfIconsInColumn = sizing.quoteHeight / iconSize;
-  const numberOfIconsInRow = sizing.screenWidth / iconSize;
+  const iconSize = 32;
+    // ((sizing.quoteHeight * sizing.screenWidth) / quote.length) ** 0.5;
+  // const numberOfIconsInColumn = sizing.quoteHeight / iconSize;
+  const numberOfIconsInRow = sizing.maxWidth-20 / iconSize; // Subtract 20 to account for 10px padding
+  console.log(numberOfIconsInRow)
+
+  // Dynamic sized display
   const { height, width, scale, fontScale } = useWindowDimensions();
   sizing.screenHeight = height;
   sizing.screenWidth = width;
+
   const display_quote = quote
+  
     .map((element) => {
       const decoded = decodingMap.get(element);
-      console.log(decoded)
       return decoded !== undefined ? decoded : element;
     })
     .map((element, index) => {
@@ -174,7 +178,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   horizontalContainer: {
-    maxWidth: sizing.maxWidth * 0.87,
+    maxWidth: sizing.maxWidth-20,
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "center",

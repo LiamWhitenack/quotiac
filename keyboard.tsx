@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   },
   key: {
     width: sizing.keyboardKeyWidth, // Each key takes equal space in the row
-    height: 50, // Fixed height for keys
+    height: 55, // Fixed height for keys
     justifyContent: "center",
     alignItems: "center",
     margin: sizing.keyboardKeyGap, // Adjust margin for spacing
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   },
   disabledKey: {
     width: sizing.keyboardKeyWidth, // Each key takes equal space in the row
-    height: 50, // Fixed height for keys
+    height: 55, // Fixed height for keys
     justifyContent: "center",
     alignItems: "center",
     margin: sizing.keyboardKeyGap, // Adjust margin for spacing
