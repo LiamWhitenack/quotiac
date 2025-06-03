@@ -23,6 +23,51 @@ interface LetterKeyboardDisplayProps {
   updateKeyRows: (map: Map<string, string>) => void;
 }
 
+function keyboardKey(
+  reaction: (letter: string) => void,
+  rowIndex: number,
+  index: number,
+  element: string
+) {
+  const letter = KEYBOARD_LETTERS[rowIndex][index];
+  const isMatch = element === letter;
+
+  return (
+    <TouchableOpacity
+      key={element}
+      style={styles.key}
+      onPress={() => {
+        reaction(letter);
+      }}
+    >
+      {!isMatch ? (
+        <View
+          key={`${rowIndex}-${element}-${index}`}
+          style={styles.disabledKey}
+        >
+          <Ionicons
+            // @ts-ignore
+            name={element}
+            size={sizing.keyboardKeyWidth * 0.8}
+          />
+        </View>
+      ) : (
+        <Text style={styles.keyText}>
+          {element.length === 1 ? (
+            element
+          ) : (
+            <Ionicons
+              // @ts-ignore
+              name={element}
+              size={Math.min(0.8 * sizing.keyboardKeyWidth)}
+            />
+          )}
+        </Text>
+      )}
+    </TouchableOpacity>
+  );
+}
+
 const LetterKeyboardDisplay: React.FC<LetterKeyboardDisplayProps> = ({
   reactToKeyPress,
   keyRows,
@@ -31,44 +76,9 @@ const LetterKeyboardDisplay: React.FC<LetterKeyboardDisplayProps> = ({
     <View style={styles.container}>
       {keyRows.map((row, rowIndex) => (
         <View key={rowIndex} style={styles.row}>
-          {row.map((element, index) => {
-            const letter = KEYBOARD_LETTERS[rowIndex][index];
-            if (element !== letter) {
-              return (
-                <View
-                  key={[rowIndex + element + index]}
-                  style={styles.disabledKey}
-                >
-                  <Ionicons
-                    // @ts-ignore
-                    name={element}
-                    size={sizing.keyboardKeyWidth * 0.8}
-                  />
-                </View>
-              );
-            }
-            return (
-              <TouchableOpacity
-                key={element}
-                style={styles.key}
-                onPress={() => {
-                  reactToKeyPress(letter);
-                }}
-              >
-                <Text style={styles.keyText}>
-                  {element.length === 1 ? (
-                    element
-                  ) : (
-                    <Ionicons
-                      // @ts-ignore
-                      name={element}
-                      size={Math.min(0.8 * sizing.keyboardKeyWidth)}
-                    />
-                  )}
-                </Text>
-              </TouchableOpacity>
-            );
-          })}
+          {row.map((element, index) =>
+            keyboardKey(reactToKeyPress, rowIndex, index, element)
+          )}
         </View>
       ))}
     </View>
