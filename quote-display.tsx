@@ -60,7 +60,6 @@ const QuoteDisplay: React.FC<WordDisplayProps> = ({
   const display_quote = quote
     .map((element) => {
       const decoded = decodingMap.get(element);
-      console.log(decoded)
       return decoded !== undefined ? decoded : element;
     })
     .map((element, index) => {

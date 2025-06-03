@@ -23,50 +23,6 @@ interface LetterKeyboardDisplayProps {
   updateKeyRows: (map: Map<string, string>) => void;
 }
 
-function keyboardKey(
-  reaction: (letter: string) => void,
-  rowIndex: number,
-  index: number,
-  element: string
-) {
-  const letter = KEYBOARD_LETTERS[rowIndex][index];
-  const isMatch = element === letter;
-  return (
-    <TouchableOpacity
-      key={element}
-      style={styles.key}
-      onPress={() => {
-        reaction(element);
-      }}
-    >
-      {!isMatch ? (
-        <View
-          key={`${rowIndex}-${element}-${index}`}
-          style={styles.disabledKey}
-        >
-          <Ionicons
-            // @ts-ignore
-            name={element}
-            size={sizing.keyboardKeyWidth * 0.8}
-          />
-        </View>
-      ) : (
-        <Text style={styles.keyText}>
-          {element.length === 1 ? (
-            element
-          ) : (
-            <Ionicons
-              // @ts-ignore
-              name={element}
-              size={Math.min(0.8 * sizing.keyboardKeyWidth)}
-            />
-          )}
-        </Text>
-      )}
-    </TouchableOpacity>
-  );
-}
-
 const LetterKeyboardDisplay: React.FC<LetterKeyboardDisplayProps> = ({
   reactToKeyPress,
   keyRows,
@@ -125,5 +81,44 @@ const styles = StyleSheet.create({
     backgroundColor: "#D3D6DA",
   },
 });
+
+function keyboardKey(
+  reaction: (letter: string) => void,
+  rowIndex: number,
+  index: number,
+  element: string
+) {
+  const letter = KEYBOARD_LETTERS[rowIndex][index];
+  const isLetter = element === letter;
+  return (
+    <TouchableOpacity
+      key={element}
+      style={isLetter ? styles.key : styles.disabledKey}
+      onPress={() => {
+        reaction(element);
+      }}
+    >
+      {isLetter ? (
+        <Text style={styles.keyText}>
+          {element.length === 1 ? (
+            element
+          ) : (
+            <Ionicons
+              // @ts-ignore
+              name={element}
+              size={Math.min(0.8 * sizing.keyboardKeyWidth)}
+            />
+          )}
+        </Text>
+      ) : (
+        <Ionicons
+          // @ts-ignore
+          name={element}
+          size={sizing.keyboardKeyWidth * 0.8}
+        />
+      )}
+    </TouchableOpacity>
+  );
+}
 
 export default LetterKeyboardDisplay;
