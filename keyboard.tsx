@@ -21,18 +21,20 @@ interface LetterKeyboardDisplayProps {
   setActiveIcon: (icon: string) => void;
   keyRows: string[][];
   updateKeyRows: (map: Map<string, string>) => void;
+  solved: boolean;
 }
 
 const LetterKeyboardDisplay: React.FC<LetterKeyboardDisplayProps> = ({
   reactToKeyPress,
   keyRows,
+  solved,
 }) => {
   return (
     <View style={styles.container}>
       {keyRows.map((row, rowIndex) => (
         <View key={rowIndex} style={styles.row}>
           {row.map((element, index) =>
-            keyboardKey(reactToKeyPress, rowIndex, index, element)
+            keyboardKey(reactToKeyPress, solved, rowIndex, index, element)
           )}
         </View>
       ))}
@@ -84,6 +86,7 @@ const styles = StyleSheet.create({
 
 function keyboardKey(
   reaction: (letter: string) => void,
+  solved: boolean,
   rowIndex: number,
   index: number,
   element: string
@@ -93,6 +96,7 @@ function keyboardKey(
   return (
     <TouchableOpacity
       key={element}
+      disabled={solved}
       style={isLetter ? styles.key : styles.disabledKey}
       onPress={() => {
         reaction(element);

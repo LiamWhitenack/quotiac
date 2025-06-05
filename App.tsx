@@ -33,6 +33,7 @@ const CodiacApp = () => {
   );
   const [fireConfetti, setFireConfetti] = useState(false);
   const solution = capitalizeValues(inverseMap(encodingMap));
+  const [solved, setSolved] = useState(false);
   const [decodingMap, setDecodingMap] = useState<Map<string, string>>(
     new Map()
   );
@@ -111,7 +112,7 @@ const CodiacApp = () => {
   }
 
   function reactToKeyPress(element: string) {
-    if (mapsAreEqual(decodingMap, solution)) {
+    if (solved) {
       return;
     }
     // if no key is selected
@@ -149,8 +150,8 @@ const CodiacApp = () => {
     }
 
     if (mapsAreEqual(decodingMap, solution)) {
-      console.log("done!");
       setFireConfetti(true);
+      setSolved(true);
     }
   }
 
@@ -175,7 +176,10 @@ const CodiacApp = () => {
       <View style={mainWindowStyles.topBarContainer}>
         <Text style={mainWindowStyles.title}>Codiac</Text>
         <View style={mainWindowStyles.topBarIconContainer}>
-          <TouchableOpacity style={mainWindowStyles.iconContainer}>
+          <TouchableOpacity
+            style={mainWindowStyles.iconContainer}
+            disabled={solved}
+          >
             <Ionicons
               name={"refresh-outline"}
               size={32}
@@ -203,6 +207,7 @@ const CodiacApp = () => {
         activeIcon={activeIcon}
         setActiveIcon={setActiveIcon}
         updateKeyRows={updateKeyRows}
+        solved={solved}
       />
       <LetterKeyboardDisplay
         reactToKeyPress={reactToKeyPress}
@@ -215,6 +220,7 @@ const CodiacApp = () => {
         setActiveIcon={setActiveIcon}
         keyRows={keyRows}
         updateKeyRows={updateKeyRows}
+        solved={solved}
       />
     </SafeAreaView>
   );

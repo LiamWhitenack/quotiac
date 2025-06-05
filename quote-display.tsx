@@ -38,9 +38,10 @@ interface WordDisplayProps {
   activeIcon: string;
   setActiveIcon: (icon: string) => void;
   updateKeyRows: (map: Map<string, string>) => void;
+  solved: boolean;
 }
 
-const QuoteDisplay: React.FC<WordDisplayProps> = ({
+const WordDisplay: React.FC<WordDisplayProps> = ({
   quote,
   setQuoteIndex,
   decodingMap,
@@ -49,12 +50,13 @@ const QuoteDisplay: React.FC<WordDisplayProps> = ({
   activeIcon,
   setActiveIcon,
   updateKeyRows,
+  solved,
 }) => {
   const iconSize = 32;
-    // ((sizing.quoteHeight * sizing.screenWidth) / quote.length) ** 0.5;
+  // ((sizing.quoteHeight * sizing.screenWidth) / quote.length) ** 0.5;
   // const numberOfIconsInColumn = sizing.quoteHeight / iconSize;
-  const numberOfIconsInRow = sizing.maxWidth-20 / iconSize; // Subtract 20 to account for 10px padding
-  console.log(numberOfIconsInRow)
+  const numberOfIconsInRow = sizing.maxWidth - 20 / iconSize; // Subtract 20 to account for 10px padding
+  console.log(numberOfIconsInRow);
 
   // Dynamic sized display
   const { height, width, scale, fontScale } = useWindowDimensions();
@@ -62,7 +64,7 @@ const QuoteDisplay: React.FC<WordDisplayProps> = ({
   sizing.screenWidth = width;
 
   const display_quote = quote
-  
+
     .map((element) => {
       const decoded = decodingMap.get(element);
       return decoded !== undefined ? decoded : element;
@@ -89,26 +91,8 @@ const QuoteDisplay: React.FC<WordDisplayProps> = ({
               width: iconSize,
             }}
           >
-            <TouchableOpacity>
-              {
-                <Text
-                  style={{ fontSize: iconSize / 1.2 }}
-                  // onPress={() => {
-                  //   // clear the active icon and the decoding selection
-                  //   decodingMap = new Map(decodingMap);
-                  //   const keyOfElement = getKeyByValue(decodingMap, element);
-                  //   const removed = decodingMap.delete(keyOfElement);
-                  //   if (!removed) {
-                  //     throw Error();
-                  //   }
-                  //   setActiveIcon(keyOfElement);
-                  //   setDecodingMap(decodingMap);
-                  //   updateKeyRows(decodingMap);
-                  // }}
-                >
-                  {element}
-                </Text>
-              }
+            <TouchableOpacity disabled={solved}>
+              {<Text style={{ fontSize: iconSize / 1.2 }}>{element}</Text>}
             </TouchableOpacity>
           </View>
         );
@@ -154,7 +138,9 @@ const QuoteDisplay: React.FC<WordDisplayProps> = ({
               height: iconSize,
             }}
           >
-            <TouchableOpacity key={index}>{element}</TouchableOpacity>
+            <TouchableOpacity key={index} disabled={solved}>
+              <Text>{element}</Text>
+            </TouchableOpacity>
           </View>
         ))}
       </View>
@@ -178,7 +164,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   horizontalContainer: {
-    maxWidth: sizing.maxWidth-20,
+    maxWidth: sizing.maxWidth - 20,
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "center",
@@ -191,4 +177,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default QuoteDisplay;
+export default WordDisplay;
