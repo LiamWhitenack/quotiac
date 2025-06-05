@@ -187,6 +187,7 @@ const CodiacApp = () => {
               onPress={() => {
                 setDecodingMap(new Map());
                 updateKeyRows(new Map());
+                setSolved(false);
                 setFireConfetti(false); // reset confetti
               }}
             />
