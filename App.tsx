@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { act, useEffect, useState } from "react";
 import { SafeAreaView, View, Text, TouchableOpacity } from "react-native";
 import QUOTES from "./src/quotes"; // Import word list from external file
 import { mainWindowStyles } from "./styles";
@@ -9,6 +9,8 @@ import { Ionicons } from "@expo/vector-icons";
 import KEYBOARD_LETTERS from "./src/keyboard-letters";
 import puzzle from "./src/quotes";
 import sizing from "./sizing";
+import ConfettiCannon from "react-native-confetti-cannon";
+import { mapsAreEqual } from "./src/utils";
 
 function inverseMap(map: Map<string, string>): Map<string, string> {
   const inverseDecodingMap = new Map<string, string>();
@@ -17,11 +19,20 @@ function inverseMap(map: Map<string, string>): Map<string, string> {
   });
   return inverseDecodingMap;
 }
+function capitalizeValues(map: Map<string, string>): Map<string, string> {
+  const res = new Map<string, string>();
+  map.forEach((value, key) => {
+    res.set(key, value.toUpperCase());
+  });
+  return res;
+}
 
 const CodiacApp = () => {
   const [encodingMap, setEncodingMap] = useState(
     mapUniqueLettersToNumbers(puzzle.quote)
   );
+  const [fireConfetti, setFireConfetti] = useState(false);
+  const solution = capitalizeValues(inverseMap(encodingMap));
   const [decodingMap, setDecodingMap] = useState<Map<string, string>>(
     new Map()
   );
@@ -59,7 +70,7 @@ const CodiacApp = () => {
     return input
       .split("")
       .map((char) => {
-        if (char == " " && showSpaces) {
+        if (char === " " && showSpaces) {
           return char;
         } else if (char >= "a" && char <= "z") {
           return encodingMap.get(char);
@@ -100,15 +111,17 @@ const CodiacApp = () => {
   }
 
   function reactToKeyPress(element: string) {
-    // if no key is selected
-    if (activeIcon === "") {
+    if (mapsAreEqual(decodingMap, solution)) {
       return;
-    } else if (element >= "A" && element <= "Z") {
+    }
+    // if no key is selected
+    if (element >= "A" && element <= "Z") {
       // add letter mapping
       if (
         // if that letter has already been used
         Array.from(decodingMap.values()).includes(element)
       ) {
+        console.log("dfghn");
         // remove letter mapping
         const icon = [...decodingMap].find(([k, v]) => v === element)?.[0];
         if (icon === undefined) {
@@ -119,10 +132,11 @@ const CodiacApp = () => {
         updateKeyRows(decodingMap);
         setActiveIcon(icon);
         setQuoteIndex(encodedQuote.indexOf(icon));
-      } else {
-        let updatedDecodingMap = new Map(decodingMap).set(activeIcon, element);
-        setDecodingMap(updatedDecodingMap);
-        updateKeyRows(updatedDecodingMap);
+      } else if (activeIcon !== "") {
+        // remove letter mapping
+        decodingMap.set(activeIcon, element);
+        setDecodingMap(decodingMap);
+        updateKeyRows(decodingMap);
         setActiveIcon(getNextIconName());
       }
     } else {
@@ -132,6 +146,11 @@ const CodiacApp = () => {
       updateKeyRows(decodingMap);
       setActiveIcon(element);
       setQuoteIndex(encodedQuote.indexOf(element));
+    }
+
+    if (mapsAreEqual(decodingMap, solution)) {
+      console.log("done!");
+      setFireConfetti(true);
     }
   }
 
@@ -164,14 +183,17 @@ const CodiacApp = () => {
               onPress={() => {
                 setDecodingMap(new Map());
                 updateKeyRows(new Map());
+                setFireConfetti(false); // reset confetti
               }}
             />
           </TouchableOpacity>
-          {/* <TouchableOpacity style={mainWindowStyles.iconContainer}>
-            <Ionicons name="settings-outline" size={24} color="black" />
-          </TouchableOpacity> */}
         </View>
       </View>
+
+      {fireConfetti && (
+        <ConfettiCannon count={100} origin={{ x: 200, y: 0 }} fadeOut />
+      )}
+
       <WordDisplay
         quote={encodedQuote}
         setQuoteIndex={setQuoteIndex}

@@ -32,14 +32,19 @@ const QUOTES: PuzzleOfTheDay[] = [
     "Phineas and Ferb the Movie: Across the 2nd Dimension",
   ),
   new PuzzleOfTheDay(
-    "Not all those who wander are lost, Bilbo Baggins.",
-    "Gandalf",
-    "The Hobbit",
-  ),
-  new PuzzleOfTheDay(
     "Hello, my name is Inigo Montoya. You killed my father. Prepare to die.",
     "Inigo Montoya",
     "The Princess Bride",
+  ),
+  new PuzzleOfTheDay(
+    "Ez TO GUESS",
+    "Liam",
+    "Testing",
+  ),
+  new PuzzleOfTheDay(
+    "Not all those who wander are lost, Bilbo Baggins.",
+    "Gandalf",
+    "The Hobbit",
   ),
   new PuzzleOfTheDay(
     "The quick brown fox jumped over the lazy brown dog",
