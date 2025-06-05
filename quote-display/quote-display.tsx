@@ -7,27 +7,8 @@ import {
   TouchableOpacity,
   useWindowDimensions,
 } from "react-native";
-import sizing from "./sizing";
-
-function getKeyByValue<T extends Map<string, string>>(
-  map: T,
-  value: string
-): string {
-  // Get array of object values
-  const values = Array.from(map.values());
-
-  // Find the index of the target value
-  const index = values.indexOf(value);
-  // If the value is found
-  if (index != -1) {
-    // Get array of object keys
-    const keys = Array.from(map.keys());
-    // Return the key at the same index
-    return keys[index];
-  }
-  // If value is not found, return null or handle accordingly
-  throw Error();
-}
+import styles from "./styles";
+import sizing from "../sizing/sizing";
 
 interface WordDisplayProps {
   quote: string[];
@@ -63,7 +44,50 @@ const WordDisplay: React.FC<WordDisplayProps> = ({
   sizing.screenHeight = height;
   sizing.screenWidth = width;
 
-  const display_quote = quote
+  const display_quote = quoteIconDisplay(
+    quote,
+    decodingMap,
+    showSpaces,
+    iconSize,
+    solved,
+    activeIcon,
+    setActiveIcon,
+    setQuoteIndex
+  );
+
+  return (
+    <View style={styles.verticalContainer}>
+      <View style={styles.horizontalContainer}>
+        {display_quote.map((element, index) => (
+          <View
+            key={index}
+            style={{
+              width: iconSize,
+              height: iconSize,
+            }}
+          >
+            <TouchableOpacity key={index} disabled={solved}>
+              <Text>{element}</Text>
+            </TouchableOpacity>
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+};
+
+export default WordDisplay;
+function quoteIconDisplay(
+  quote: string[],
+  decodingMap: Map<string, string>,
+  showSpaces: boolean,
+  iconSize: number,
+  solved: boolean,
+  activeIcon: string,
+  setActiveIcon: (icon: string) => void,
+  setQuoteIndex: (index: number) => void
+) {
+  return quote
 
     .map((element) => {
       const decoded = decodingMap.get(element);
@@ -126,55 +150,4 @@ const WordDisplay: React.FC<WordDisplayProps> = ({
         );
       }
     });
-
-  return (
-    <View style={styles.verticalContainer}>
-      <View style={styles.horizontalContainer}>
-        {display_quote.map((element, index) => (
-          <View
-            key={index}
-            style={{
-              width: iconSize,
-              height: iconSize,
-            }}
-          >
-            <TouchableOpacity key={index} disabled={solved}>
-              <Text>{element}</Text>
-            </TouchableOpacity>
-          </View>
-        ))}
-      </View>
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({
-  iconStyle: {
-    color: "black",
-  },
-  spaceIconStyle: {
-    color: "transparent",
-  },
-  // TODO: Add a container to make the icon spaces larger
-  verticalContainer: {
-    flex: 5,
-    flexDirection: "column",
-    alignContent: "center",
-    flexWrap: "wrap",
-    justifyContent: "center",
-  },
-  horizontalContainer: {
-    maxWidth: sizing.maxWidth - 20,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    marginBottom: 30,
-  },
-  quote: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#333",
-  },
-});
-
-export default WordDisplay;
+}

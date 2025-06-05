@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
-import sizing from "./sizing";
-export const mainWindowStyles = StyleSheet.create({
+import sizing from "./sizing/sizing";
+const mainWindowStyles = StyleSheet.create({
   topBarContainer: {
     width: sizing.maxWidth,
     height: sizing.topBarHeight,
@@ -74,3 +74,5 @@ export const mainWindowStyles = StyleSheet.create({
     alignItems: "center",
   },
 });
+
+export default mainWindowStyles;

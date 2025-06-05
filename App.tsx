@@ -1,16 +1,15 @@
-import React, { act, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView, View, Text, TouchableOpacity } from "react-native";
-import QUOTES from "./src/quotes"; // Import word list from external file
-import { mainWindowStyles } from "./styles";
-import WordDisplay from "./quote-display";
-import LetterKeyboardDisplay from "./keyboard";
-import iconNamesToUse from "./icons";
+import mainWindowStyles from "./styles";
+import WordDisplay from "./quote-display/quote-display";
+import LetterKeyboardDisplay from "./keyboard/keyboard";
 import { Ionicons } from "@expo/vector-icons";
 import KEYBOARD_LETTERS from "./src/keyboard-letters";
 import puzzle from "./src/quotes";
-import sizing from "./sizing";
+import sizing from "./sizing/sizing";
 import ConfettiCannon from "react-native-confetti-cannon";
 import { mapsAreEqual } from "./src/utils";
+import { mapUniqueLettersToNumbers } from "./src/encoded-quotes";
 
 function inverseMap(map: Map<string, string>): Map<string, string> {
   const inverseDecodingMap = new Map<string, string>();
@@ -41,31 +40,6 @@ const CodiacApp = () => {
   const [activeIcon, setActiveIcon] = useState("");
   const [keyRows, setKeyRows] = useState(KEYBOARD_LETTERS);
   const [quoteIndex, setQuoteIndex] = useState(0);
-
-  function mapUniqueLettersToNumbers(input: string): Map<string, string> {
-    // Create a set to store unique letters
-    const uniqueLetters = new Set<string>();
-
-    // Iterate over each character in the input string
-    for (const char of input.toLowerCase()) {
-      if (char >= "a" && char <= "z") {
-        // Check if the character is a letter
-        uniqueLetters.add(char);
-      }
-    }
-
-    // Create a map to store letters and their corresponding numbers
-    const letterMap = new Map<string, string>();
-    let index = 1;
-
-    // Populate the map with unique letters and their positions
-    for (const letter of uniqueLetters) {
-      letterMap.set(letter, iconNamesToUse[index]);
-      index++;
-    }
-
-    return letterMap;
-  }
 
   const encodeQuote = (input: string): string[] => {
     return input
@@ -156,8 +130,9 @@ const CodiacApp = () => {
   }
 
   // Use effect to listen to key presses
-  if (!sizing.isMobile) {
-    useEffect(() => {
+
+  useEffect(() => {
+    if (!sizing.isMobile) {
       const handleKeyPress = (event: KeyboardEvent) => {
         reactToKeyPress(event.key.toUpperCase());
       };
@@ -168,8 +143,8 @@ const CodiacApp = () => {
       return () => {
         window.removeEventListener("keydown", handleKeyPress);
       };
-    }, [activeIcon, decodingMap, quoteIndex]);
-  }
+    }
+  }); //, [activeIcon, decodingMap, quoteIndex, reactToKeyPress]);
 
   return (
     <SafeAreaView style={mainWindowStyles.container}>
