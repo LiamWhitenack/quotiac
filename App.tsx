@@ -19,7 +19,8 @@ const CodiacApp = () => {
   const [state, setGameState] = useState(new GameState(puzzle));
 
   function updateState() {
-    setGameState(state.clone());
+    let clone = state.clone();
+    setGameState(clone);
   }
 
   // Use effect to listen to key presses

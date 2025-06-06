@@ -21,30 +21,13 @@ const QuoteDisplay: React.FC<QuoteDisplayProps> = ({ state, updateState }) => {
   const numberOfIconsInRow = sizing.maxWidth - 20 / sizing.iconSize; // Subtract 20 to account for 10px padding
   console.log(numberOfIconsInRow);
 
-  const displayQuote = getIcons(state, updateState);
-
-  function putIconsInBoxes(display_quote: React.JSX.Element[]) {
-    return (
-      <View style={styles.verticalContainer}>
-        <View style={styles.horizontalContainer}>
-          {display_quote.map((element, index) => (
-            <View
-              key={index}
-              style={{
-                width: sizing.iconSize,
-                height: sizing.iconSize,
-              }}
-            >
-              <TouchableOpacity key={index} disabled={state.solved}>
-                <Text>{element}</Text>
-              </TouchableOpacity>
-            </View>
-          ))}
-        </View>
+  return (
+    <View style={styles.verticalContainer}>
+      <View style={styles.horizontalContainer}>
+        {getIcons(state, updateState)}
       </View>
-    );
-  }
-  return putIconsInBoxes(displayQuote);
+    </View>
+  );
 };
 
 function wrapWords(input: string[], iconsPerRow: number): string[][] {

@@ -25,7 +25,13 @@ function getIcons(state: GameState, updateState: () => void) {
         width: sizing.iconSize,
       }}
     >
-      <TouchableOpacity disabled={state.solved}>
+      <TouchableOpacity
+        disabled={state.solved}
+        onPress={() => {
+          state.reactToKeyPress(letter);
+          updateState();
+        }}
+      >
         <Text style={{ fontSize: sizing.iconSize / 1.2 }}>{letter}</Text>
       </TouchableOpacity>
     </View>
