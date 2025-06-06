@@ -1,13 +1,14 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import React from "react";
+import { Text, TouchableOpacity } from "react-native";
 import sizing from "../sizing/sizing";
 import { Ionicons } from "@expo/vector-icons";
 import KEYBOARD_LETTERS from "../src/keyboard-letters";
 import styles from "./styles";
+import GameState from "@/state/state";
 
 function keyboardKey(
-  reaction: (letter: string) => void,
-  solved: boolean,
+  state: GameState,
+  setGameState: React.Dispatch<React.SetStateAction<GameState>>,
   rowIndex: number,
   index: number,
   element: string
@@ -17,10 +18,12 @@ function keyboardKey(
   return (
     <TouchableOpacity
       key={element}
-      disabled={solved}
+      disabled={state.solved}
       style={isLetter ? styles.key : styles.disabledKey}
       onPress={() => {
-        reaction(element);
+        state.reactToKeyPress(element);
+        let stateCopy = state.clone();
+        setGameState(stateCopy);
       }}
     >
       {isLetter ? (

@@ -85,4 +85,4 @@ const todayQuote = () => {
 
 const puzzle = todayQuote()
 
-export default puzzle;
+export { puzzle, PuzzleOfTheDay };

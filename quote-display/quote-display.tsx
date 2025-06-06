@@ -2,49 +2,31 @@ import React from "react";
 import {
   View,
   Text,
-  StyleSheet,
   TouchableOpacity,
   useWindowDimensions,
 } from "react-native";
 import styles from "./styles";
 import sizing from "../sizing/sizing";
 import getIcons from "./get-icons";
+import GameState from "@/state/state";
 
 interface QuoteDisplayProps {
-  quote: string[];
-  setQuoteIndex: (index: number) => void;
-  decodingMap: Map<string, string>;
-  activeIcon: string;
-  setActiveIcon: (icon: string) => void;
-  solved: boolean;
+  state: GameState;
+  setGameState: React.Dispatch<React.SetStateAction<GameState>>;
 }
 
-const QuoteDisplay: React.FC<QuoteDisplayProps> = ({
-  quote,
-  setQuoteIndex,
-  decodingMap,
-  activeIcon,
-  setActiveIcon,
-  solved,
-}) => {
+const QuoteDisplay: React.FC<QuoteDisplayProps> = ({ state, setGameState }) => {
   // ((sizing.quoteHeight * sizing.screenWidth) / quote.length) ** 0.5;
   // const numberOfIconsInColumn = sizing.quoteHeight / sizing.iconSize;
   const numberOfIconsInRow = sizing.maxWidth - 20 / sizing.iconSize; // Subtract 20 to account for 10px padding
   console.log(numberOfIconsInRow);
 
   // Dynamic sized display
-  const { height, width, scale, fontScale } = useWindowDimensions();
+  const { height, width } = useWindowDimensions();
   sizing.screenHeight = height;
   sizing.screenWidth = width;
 
-  const display_quote = getIcons(
-    quote,
-    decodingMap,
-    solved,
-    activeIcon,
-    setActiveIcon,
-    setQuoteIndex
-  );
+  const displayQuote = getIcons(state, setGameState);
 
   function putIconsInBoxes(display_quote: React.JSX.Element[]) {
     return (
@@ -58,7 +40,7 @@ const QuoteDisplay: React.FC<QuoteDisplayProps> = ({
                 height: sizing.iconSize,
               }}
             >
-              <TouchableOpacity key={index} disabled={solved}>
+              <TouchableOpacity key={index} disabled={state.solved}>
                 <Text>{element}</Text>
               </TouchableOpacity>
             </View>
@@ -67,7 +49,7 @@ const QuoteDisplay: React.FC<QuoteDisplayProps> = ({
       </View>
     );
   }
-  return putIconsInBoxes(display_quote);
+  return putIconsInBoxes(displayQuote);
 };
 
 export default QuoteDisplay;

@@ -1,17 +1,14 @@
 import { Ionicons } from "@expo/vector-icons";
 import { View, Text, TouchableOpacity } from "react-native";
 import sizing from "../sizing/sizing";
+import GameState from "@/state/state";
 
 function getIcons(
-  quote: string[],
-  decodingMap: Map<string, string>,
-  solved: boolean,
-  activeIcon: string,
-  setActiveIcon: (icon: string) => void,
-  setQuoteIndex: (index: number) => void
+  state: GameState,
+  setGameState: React.Dispatch<React.SetStateAction<GameState>>
 ) {
   const decodeQuote = (quote: string[]): string[] => {
-    return quote.map((char) => decodingMap.get(char) ?? char);
+    return quote.map((char) => state.decodingMap.get(char) ?? char);
   };
 
   const renderSpace = (key: string) => (
@@ -31,7 +28,7 @@ function getIcons(
         width: sizing.iconSize,
       }}
     >
-      <TouchableOpacity disabled={solved}>
+      <TouchableOpacity disabled={state.solved}>
         <Text style={{ fontSize: sizing.iconSize / 1.2 }}>{letter}</Text>
       </TouchableOpacity>
     </View>
@@ -51,20 +48,17 @@ function getIcons(
         // @ts-ignore
         name={iconName}
         size={sizing.iconSize / 1.2}
-        color={iconName === activeIcon ? "blue" : "black"}
+        color={iconName === state.activeIcon ? "blue" : "black"}
         onPress={() => {
-          if (activeIcon === iconName) {
-            setActiveIcon("");
-          } else {
-            setQuoteIndex(index);
-            setActiveIcon(iconName);
-          }
+          state.reactToQuoteIconPress(index, iconName);
+          let stateCopy = state.clone();
+          setGameState(stateCopy);
         }}
       />
     </View>
   );
 
-  const decodedQuote = decodeQuote(quote);
+  const decodedQuote = decodeQuote(state.encodedQuote);
 
   return decodedQuote.map((element, index) => {
     if (element === " ") {

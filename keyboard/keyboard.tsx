@@ -2,32 +2,23 @@ import React from "react";
 import { View } from "react-native";
 import styles from "./styles";
 import keyboardKey from "./key";
+import GameState from "@/state/state";
 
 interface LetterKeyboardDisplayProps {
-  encodedQuote: string[];
-  reactToKeyPress: (letter: string) => void;
-  quoteIndex: number;
-  setQuoteIndex: (index: number) => void;
-  decodingMap: Map<string, string>;
-  setDecodingMap: (newMap: Map<string, string>) => void;
-  activeIcon: string;
-  setActiveIcon: (icon: string) => void;
-  keyRows: string[][];
-  updateKeyRows: (map: Map<string, string>) => void;
-  solved: boolean;
+  state: GameState;
+  setGameState: React.Dispatch<React.SetStateAction<GameState>>;
 }
 
 const LetterKeyboardDisplay: React.FC<LetterKeyboardDisplayProps> = ({
-  reactToKeyPress,
-  keyRows,
-  solved,
+  state,
+  setGameState,
 }) => {
   return (
     <View style={styles.container}>
-      {keyRows.map((row, rowIndex) => (
+      {state.keyboardValues.map((row, rowIndex) => (
         <View key={rowIndex} style={styles.row}>
           {row.map((element, index) =>
-            keyboardKey(reactToKeyPress, solved, rowIndex, index, element)
+            keyboardKey(state, setGameState, rowIndex, index, element)
           )}
         </View>
       ))}
