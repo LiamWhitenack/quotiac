@@ -3,10 +3,7 @@ import { View, Text, TouchableOpacity } from "react-native";
 import sizing from "../sizing/sizing";
 import GameState from "@/state/state";
 
-function getIcons(
-  state: GameState,
-  setGameState: React.Dispatch<React.SetStateAction<GameState>>
-) {
+function getIcons(state: GameState, updateState: () => void) {
   const decodeQuote = (quote: string[]): string[] => {
     return quote.map((char) => state.decodingMap.get(char) ?? char);
   };
@@ -51,7 +48,7 @@ function getIcons(
         color={iconName === state.activeIcon ? "blue" : "black"}
         onPress={() => {
           state.reactToQuoteIconPress(index, iconName);
-          setGameState(state.clone());
+          updateState();
         }}
       />
     </View>

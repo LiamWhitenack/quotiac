@@ -12,16 +12,16 @@ import GameState from "@/state/state";
 
 interface QuoteDisplayProps {
   state: GameState;
-  setGameState: React.Dispatch<React.SetStateAction<GameState>>;
+  updateState: () => void;
 }
 
-const QuoteDisplay: React.FC<QuoteDisplayProps> = ({ state, setGameState }) => {
+const QuoteDisplay: React.FC<QuoteDisplayProps> = ({ state, updateState }) => {
   // ((sizing.quoteHeight * sizing.screenWidth) / quote.length) ** 0.5;
   // const numberOfIconsInColumn = sizing.quoteHeight / sizing.iconSize;
   const numberOfIconsInRow = sizing.maxWidth - 20 / sizing.iconSize; // Subtract 20 to account for 10px padding
   console.log(numberOfIconsInRow);
 
-  const displayQuote = getIcons(state, setGameState);
+  const displayQuote = getIcons(state, updateState);
 
   function putIconsInBoxes(display_quote: React.JSX.Element[]) {
     return (

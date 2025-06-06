@@ -8,7 +8,7 @@ import GameState from "@/state/state";
 
 function keyboardKey(
   state: GameState,
-  setGameState: React.Dispatch<React.SetStateAction<GameState>>,
+  updateState: () => void,
   rowIndex: number,
   index: number,
   element: string
@@ -22,7 +22,7 @@ function keyboardKey(
       style={isLetter ? styles.key : styles.disabledKey}
       onPress={() => {
         state.reactToKeyPress(element);
-        setGameState(state.clone());
+        updateState();
       }}
     >
       {isLetter ? (

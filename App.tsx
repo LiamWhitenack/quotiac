@@ -18,13 +18,17 @@ import GameState from "./state/state";
 const CodiacApp = () => {
   const [state, setGameState] = useState(new GameState(puzzle));
 
+  function updateState() {
+    setGameState(state.clone());
+  }
+
   // Use effect to listen to key presses
 
   useEffect(() => {
     if (!sizing.isMobile) {
       const handleKeyPress = (event: KeyboardEvent) => {
         state.reactToKeyPress(event.key.toUpperCase());
-        setGameState(state.clone());
+        updateState();
       };
 
       window.addEventListener("keydown", handleKeyPress);
@@ -51,7 +55,7 @@ const CodiacApp = () => {
               color="black"
               onPress={() => {
                 state.reactToResetButton();
-                setGameState(state.clone());
+                updateState();
               }}
             />
           </TouchableOpacity>
@@ -62,8 +66,8 @@ const CodiacApp = () => {
         <ConfettiCannon count={100} origin={{ x: 200, y: 0 }} fadeOut />
       )}
 
-      <QuoteDisplay state={state} setGameState={setGameState} />
-      <LetterKeyboardDisplay state={state} setGameState={setGameState} />
+      <QuoteDisplay state={state} updateState={updateState} />
+      <LetterKeyboardDisplay state={state} updateState={updateState} />
     </SafeAreaView>
   );
 };
