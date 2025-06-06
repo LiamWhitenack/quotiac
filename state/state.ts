@@ -10,6 +10,13 @@ function inverseMap(map: Map<string, string>): Map<string, string> {
     });
     return inverseDecodingMap;
 }
+function capitalizeValues(map: Map<string, string>): Map<string, string> {
+    const res = new Map<string, string>();
+    map.forEach((value, key) => {
+        res.set(key, value.toUpperCase());
+    });
+    return res;
+}
 
 class GameState {
     puzzle: PuzzleOfTheDay;
@@ -29,7 +36,7 @@ class GameState {
         this.puzzle = puzzle
         this.quote = puzzle.quote.split("")
         this.encodingMap = mapUniqueLettersToNumbers(puzzle.quote);
-        this.solution = inverseMap(this.encodingMap)
+        this.solution = capitalizeValues(inverseMap(this.encodingMap));
         this.fireConfetti = false;
         this.solved = false;
         this.decodingMap = new Map();
@@ -57,9 +64,6 @@ class GameState {
         this.encodingMap = map;
     }
 
-    setFireConfetti(val: boolean) {
-
-    }
 
     checkSolved() {
         this.solved = mapsAreEqual(this.solution, this.decodingMap);
@@ -185,7 +189,6 @@ class GameState {
         this.setDecodingMap(new Map());
         this.updateKeyboardValues(new Map());
         this.checkSolved();
-        this.setFireConfetti(false); // reset confetti
     }
 }
 
