@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { SafeAreaView, View, Text, TouchableOpacity } from "react-native";
 import mainWindowStyles from "./styles";
-import WordDisplay from "./quote-display/quote-display";
+import QuoteDisplay from "./quote-display/quote-display";
 import LetterKeyboardDisplay from "./keyboard/keyboard";
 import { Ionicons } from "@expo/vector-icons";
 import KEYBOARD_LETTERS from "./src/keyboard-letters";
@@ -36,7 +36,6 @@ const CodiacApp = () => {
   const [decodingMap, setDecodingMap] = useState<Map<string, string>>(
     new Map()
   );
-  const [showSpaces, setShowSpaces] = useState(true);
   const [activeIcon, setActiveIcon] = useState("");
   const [keyRows, setKeyRows] = useState(KEYBOARD_LETTERS);
   const [quoteIndex, setQuoteIndex] = useState(0);
@@ -45,7 +44,7 @@ const CodiacApp = () => {
     return input
       .split("")
       .map((char) => {
-        if (char === " " && showSpaces) {
+        if (char === " ") {
           return char;
         } else if (char >= "a" && char <= "z") {
           return encodingMap.get(char);
@@ -96,7 +95,6 @@ const CodiacApp = () => {
         // if that letter has already been used
         Array.from(decodingMap.values()).includes(element)
       ) {
-        console.log("dfghn");
         // remove letter mapping
         const icon = [...decodingMap].find(([k, v]) => v === element)?.[0];
         if (icon === undefined) {
@@ -174,15 +172,12 @@ const CodiacApp = () => {
         <ConfettiCannon count={100} origin={{ x: 200, y: 0 }} fadeOut />
       )}
 
-      <WordDisplay
+      <QuoteDisplay
         quote={encodedQuote}
         setQuoteIndex={setQuoteIndex}
         decodingMap={decodingMap}
-        setDecodingMap={setDecodingMap}
-        showSpaces={showSpaces}
         activeIcon={activeIcon}
         setActiveIcon={setActiveIcon}
-        updateKeyRows={updateKeyRows}
         solved={solved}
       />
       <LetterKeyboardDisplay
