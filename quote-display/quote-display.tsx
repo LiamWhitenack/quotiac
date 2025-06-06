@@ -33,16 +33,12 @@ const WordDisplay: React.FC<WordDisplayProps> = ({
   updateKeyRows,
   solved,
 }) => {
+  // Statically sized icons for now. We will worry about scrolling later.
   const iconSize = 32;
+
   // ((sizing.quoteHeight * sizing.screenWidth) / quote.length) ** 0.5;
   // const numberOfIconsInColumn = sizing.quoteHeight / iconSize;
-  const numberOfIconsInRow = sizing.maxWidth - 20 / iconSize; // Subtract 20 to account for 10px padding
-  console.log(numberOfIconsInRow);
 
-  // Dynamic sized display
-  const { height, width, scale, fontScale } = useWindowDimensions();
-  sizing.screenHeight = height;
-  sizing.screenWidth = width;
 
   const display_quote = quoteIconDisplay(
     quote,
@@ -87,6 +83,14 @@ function quoteIconDisplay(
   setActiveIcon: (icon: string) => void,
   setQuoteIndex: (index: number) => void
 ) {
+  // determine number of icons per row for wordwrap
+  const numberOfIconsInRow = Math.floor((sizing.maxWidth - 20) / iconSize); // Subtract 20 to account for 10px padding
+  console.log(numberOfIconsInRow)
+
+  // Format quote for word wrapping
+  quote = wrapWords(quote, numberOfIconsInRow);
+  console.log(quote)
+
   return quote
 
     .map((element) => {
@@ -150,4 +154,49 @@ function quoteIconDisplay(
         );
       }
     });
+}
+
+function wrapWords(input: string[], iconsPerRow: number): string[][] {
+  const rows: string[][] = [];
+  let currentRow: string[] = [];
+  let lineLength = 0;
+
+  let i = 0;
+  while (i < input.length) {
+    const token = input[i];
+
+    if (token === ' ') {
+      // Only add space if room on this line
+      if (lineLength < iconsPerRow) {
+        currentRow.push(token);
+        lineLength++;
+      }
+      i++;
+    } else {
+      // Get the entire word sequence
+      const wordStart = i;
+      const word: string[] = [];
+      while (i < input.length && input[i] !== ' ') {
+        word.push(input[i]);
+        i++;
+      }
+
+      // If it doesn't fit, push current row and start new
+      if (lineLength + word.length > iconsPerRow) {
+        rows.push(currentRow);
+        currentRow = [];
+        lineLength = 0;
+      }
+
+      // Add the word
+      currentRow.push(...word);
+      lineLength += word.length;
+    }
+  }
+
+  if (currentRow.length > 0) {
+    rows.push(currentRow);
+  }
+
+  return rows;
 }

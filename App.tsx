@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { SafeAreaView, View, Text, TouchableOpacity } from "react-native";
+import { SafeAreaView, View, Text, TouchableOpacity, useWindowDimensions } from "react-native";
 import mainWindowStyles from "./styles";
 import WordDisplay from "./quote-display/quote-display";
 import LetterKeyboardDisplay from "./keyboard/keyboard";
@@ -40,6 +40,11 @@ const CodiacApp = () => {
   const [activeIcon, setActiveIcon] = useState("");
   const [keyRows, setKeyRows] = useState(KEYBOARD_LETTERS);
   const [quoteIndex, setQuoteIndex] = useState(0);
+
+  // Dynamic sized display
+  const { height, width, scale, fontScale } = useWindowDimensions();
+  sizing.screenHeight = height;
+  sizing.screenWidth = width;
 
   const encodeQuote = (input: string): string[] => {
     return input
