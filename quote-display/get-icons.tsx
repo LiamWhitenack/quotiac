@@ -2,6 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { View, Text, TouchableOpacity } from "react-native";
 import sizing from "../sizing/sizing";
 import GameState from "@/state/state";
+import { splitOnPercent } from "@/sizing/wrap-words";
 
 function getIcons(state: GameState, updateState: () => void) {
   const decodeQuote = (quote: string[]): string[] => {
@@ -11,7 +12,7 @@ function getIcons(state: GameState, updateState: () => void) {
   const renderSpace = (key: string) => (
     <View
       key={key}
-      style={{ height: sizing.iconSize, width: sizing.iconSize }}
+      style={{ height: sizing.iconSize, width: sizing.iconSize / 2 }}
     />
   );
 
@@ -36,10 +37,23 @@ function getIcons(state: GameState, updateState: () => void) {
       </TouchableOpacity>
     </View>
   );
-
-  const renderIcon = (iconName: string, index: number) => (
+  const renderNonLetterCharacter = (char: string, key: string) => (
     <View
-      key={iconName + index}
+      key={key}
+      style={{
+        alignItems: "center",
+        justifyContent: "center",
+        height: sizing.iconSize,
+        width: sizing.iconSize / 2,
+      }}
+    >
+      <Text style={{ fontSize: sizing.iconSize / 1.2 }}>{char}</Text>
+    </View>
+  );
+
+  const renderIcon = (iconName: string, key: string, index: number) => (
+    <View
+      key={key}
       style={{
         alignItems: "center",
         justifyContent: "center",
@@ -62,15 +76,33 @@ function getIcons(state: GameState, updateState: () => void) {
 
   const decodedQuote = decodeQuote(state.encodedQuote);
 
-  return decodedQuote.map((element, index) => {
-    if (element === " ") {
-      return renderSpace(`space-${index}`);
-    } else if (element.length === 1) {
-      return renderLetter(element, `letter-${index}`);
-    } else {
-      return renderIcon(element, index);
-    }
-  });
+  return (
+    <View>
+      {splitOnPercent(decodedQuote).map((line, lineIndex) => (
+        <View
+          key={`line-${lineIndex}`}
+          style={{ flexDirection: "row", justifyContent: "center" }}
+        >
+          {line.map((element, charIndex) => {
+            const key = `line-${lineIndex}-char-${charIndex}`;
+            const flatIndex = lineIndex * 1000 + charIndex; // ensure unique and stable keys for icons
+
+            if (element === " ") {
+              return renderSpace(key);
+            } else if (element.length === 1) {
+              if (element >= "A" && element <= "Z") {
+                return renderLetter(element, key);
+              } else {
+                return renderNonLetterCharacter(element, key);
+              }
+            } else {
+              return renderIcon(element, key, flatIndex);
+            }
+          })}
+        </View>
+      ))}
+    </View>
+  );
 }
 
 export default getIcons;

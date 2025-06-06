@@ -2,6 +2,8 @@ import { mapUniqueLettersToNumbers } from "@/src/encoded-quotes";
 import KEYBOARD_LETTERS from "@/src/keyboard-letters";
 import { mapsAreEqual } from "@/src/utils";
 import { PuzzleOfTheDay } from "@/src/quotes"
+import { wrapWords } from "@/sizing/wrap-words";
+import sizing from "@/sizing/sizing";
 
 function inverseMap(map: Map<string, string>): Map<string, string> {
     const inverseDecodingMap = new Map<string, string>();
@@ -20,7 +22,7 @@ function capitalizeValues(map: Map<string, string>): Map<string, string> {
 
 class GameState {
     puzzle: PuzzleOfTheDay;
-    quote: string[];
+    quote: string;
     encodingMap: Map<string, string>;
     fireConfetti: boolean;
     solution: Map<string, string>;
@@ -34,7 +36,7 @@ class GameState {
 
     constructor(puzzle: PuzzleOfTheDay) {
         this.puzzle = puzzle
-        this.quote = puzzle.quote.split("")
+        this.quote = wrapWords(puzzle.quote.split(" "), sizing.maxWidth / sizing.iconSize);
         this.encodingMap = mapUniqueLettersToNumbers(puzzle.quote);
         this.solution = capitalizeValues(inverseMap(this.encodingMap));
         this.fireConfetti = false;
@@ -44,7 +46,7 @@ class GameState {
         this.activeIcon = "";
         this.keyboardValues = KEYBOARD_LETTERS;
         this.quoteIndex = 0;
-        this.encodedQuote = this.encodeQuote(puzzle.quote.toLowerCase());
+        this.encodedQuote = this.encodeQuote(this.quote.toLowerCase());
     }
 
     clone(): GameState {
@@ -98,19 +100,20 @@ class GameState {
         }
     }
 
-    encodeQuote(input: string): string[] {
-        return input
-            .split("")
-            .map((char) => {
-                if (char === " ") {
-                    return char;
-                } else if (char >= "a" && char <= "z") {
-                    return this.encodingMap.get(char);
-                }
-                return undefined;
-            })
-            .filter((icon) => icon !== undefined);
-    };
+    encodeQuote(quote: string): string[] {
+        return quote.split("").map((char, index) => {
+            if (index === 0) {
+                return;
+            }
+            char = char.toLowerCase()
+            if (char >= "a" && char <= "z") {
+                return this.encodingMap.get(char)!;
+            }
+            return char;
+        }).filter((icon) => icon !== undefined);
+    }
+
+
 
     updateKeyboardValues(map: Map<string, string>) {
         this.setKeyboardValues(
@@ -128,7 +131,7 @@ class GameState {
             let iconName = this.encodedQuote[i];
             if (
                 i <= this.quoteIndex ||
-                iconName === " " ||
+                iconName.length === 1 ||
                 iconName === this.activeIcon
             ) {
                 continue;
