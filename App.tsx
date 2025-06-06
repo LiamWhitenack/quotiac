@@ -18,8 +18,7 @@ const CodiacApp = () => {
     if (!sizing.isMobile) {
       const handleKeyPress = (event: KeyboardEvent) => {
         state.reactToKeyPress(event.key.toUpperCase());
-        let stateCopy = state.clone();
-        setGameState(stateCopy);
+        setGameState(state.clone());
       };
 
       window.addEventListener("keydown", handleKeyPress);
@@ -44,7 +43,10 @@ const CodiacApp = () => {
               name={"refresh-outline"}
               size={32}
               color="black"
-              onPress={() => {}}
+              onPress={() => {
+                state.reactToResetButton();
+                setGameState(state.clone());
+              }}
             />
           </TouchableOpacity>
         </View>

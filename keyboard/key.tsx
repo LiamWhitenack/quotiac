@@ -22,8 +22,7 @@ function keyboardKey(
       style={isLetter ? styles.key : styles.disabledKey}
       onPress={() => {
         state.reactToKeyPress(element);
-        let stateCopy = state.clone();
-        setGameState(stateCopy);
+        setGameState(state.clone());
       }}
     >
       {isLetter ? (

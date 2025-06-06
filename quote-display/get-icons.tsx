@@ -51,8 +51,7 @@ function getIcons(
         color={iconName === state.activeIcon ? "blue" : "black"}
         onPress={() => {
           state.reactToQuoteIconPress(index, iconName);
-          let stateCopy = state.clone();
-          setGameState(stateCopy);
+          setGameState(state.clone());
         }}
       />
     </View>

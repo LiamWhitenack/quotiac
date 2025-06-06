@@ -46,6 +46,7 @@ class GameState {
         for (const key of Object.keys(this) as (keyof GameState)[]) {
             const value = this[key];
 
+            // @ts-ignore
             cloned[key] = value
         }
 
@@ -180,7 +181,7 @@ class GameState {
         this.checkSolved();
     }
 
-    reactToRestButton() {
+    reactToResetButton() {
         this.setDecodingMap(new Map());
         this.updateKeyboardValues(new Map());
         this.checkSolved();
