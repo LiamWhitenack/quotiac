@@ -4,6 +4,7 @@ import { mapsAreEqual } from "@/src/utils";
 import { PuzzleOfTheDay } from "@/src/quotes"
 import { wrapWords } from "@/sizing/wrap-words";
 import sizing from "@/sizing/sizing";
+import { ActivityIndicator } from "react-native";
 
 function inverseMap(map: Map<string, string>): Map<string, string> {
     const inverseDecodingMap = new Map<string, string>();
@@ -92,11 +93,12 @@ class GameState {
     }
 
     reactToQuoteIconPress(index: number, iconName: string) {
+        // console.log(index)
         if (this.activeIcon === iconName) {
-            this.setActiveIcon("");
+            this.activeIcon = "";
         } else {
-            this.setQuoteIndex(index);
-            this.setActiveIcon(iconName);
+            this.quoteIndex = index;
+            this.activeIcon = iconName;
         }
     }
 
@@ -127,13 +129,9 @@ class GameState {
     };
 
     getNextIconName(): string {
-        for (let i = 0; i < this.encodedQuote.length; i++) {
+        for (let i = this.quoteIndex + 1; i < this.encodedQuote.length; i++) {
             let iconName = this.encodedQuote[i];
-            if (
-                i <= this.quoteIndex ||
-                iconName.length === 1 ||
-                iconName === this.activeIcon
-            ) {
+            if (iconName.length === 1) {
                 continue;
             }
             const char = this.decodingMap.get(iconName);
@@ -150,7 +148,7 @@ class GameState {
         if (this.solved) {
             return;
         }
-        // if no key is selected
+        // if a key is selected
         if (element >= "A" && element <= "Z") {
             // add letter mapping
             if (
@@ -168,7 +166,6 @@ class GameState {
                 this.setDecodingMap(this.decodingMap);
                 this.updateKeyboardValues(this.decodingMap);
                 this.setActiveIcon(icon);
-                this.setQuoteIndex(this.encodedQuote.indexOf(icon));
             } else if (this.activeIcon !== "") {
                 // remove letter mapping
                 this.decodingMap.set(this.activeIcon, element);
@@ -181,8 +178,8 @@ class GameState {
             this.decodingMap.delete(element);
             this.setDecodingMap(this.decodingMap);
             this.updateKeyboardValues(this.decodingMap);
+            this.quoteIndex = this.encodedQuote.indexOf(element);
             this.setActiveIcon(element);
-            this.setQuoteIndex(this.encodedQuote.indexOf(element));
         }
 
         this.checkSolved();
@@ -191,6 +188,8 @@ class GameState {
     reactToResetButton() {
         this.setDecodingMap(new Map());
         this.updateKeyboardValues(new Map());
+        this.setQuoteIndex(0);
+        this.setActiveIcon(this.encodedQuote.at(0));
         this.checkSolved();
     }
 }

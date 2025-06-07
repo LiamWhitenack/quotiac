@@ -12,7 +12,7 @@ function getIcons(state: GameState, updateState: () => void) {
   const renderSpace = (key: string) => (
     <View
       key={key}
-      style={{ height: sizing.iconSize, width: sizing.iconSize / 2 }}
+      style={{ height: sizing.iconSize, width: sizing.iconSize }}
     />
   );
 
@@ -44,7 +44,7 @@ function getIcons(state: GameState, updateState: () => void) {
         alignItems: "center",
         justifyContent: "center",
         height: sizing.iconSize,
-        width: sizing.iconSize / 2,
+        width: char === "%" ? sizing.iconSize / 1 : sizing.iconSize / 2,
       }}
     >
       <Text style={{ fontSize: sizing.iconSize / 1.2 }}>{char}</Text>
@@ -75,32 +75,35 @@ function getIcons(state: GameState, updateState: () => void) {
   );
 
   const decodedQuote = decodeQuote(state.encodedQuote);
-
+  let quoteIndex = -2;
   return (
     <View>
-      {splitOnPercent(decodedQuote).map((line, lineIndex) => (
-        <View
-          key={`line-${lineIndex}`}
-          style={{ flexDirection: "row", justifyContent: "center" }}
-        >
-          {line.map((element, charIndex) => {
-            const key = `line-${lineIndex}-char-${charIndex}`;
-            const flatIndex = lineIndex * 1000 + charIndex; // ensure unique and stable keys for icons
+      {splitOnPercent(decodedQuote).map((line, lineIndex) => {
+        quoteIndex++;
+        return (
+          <View
+            key={`line-${lineIndex}`}
+            style={{ flexDirection: "row", justifyContent: "center" }}
+          >
+            {line.map((element, charIndex) => {
+              quoteIndex++;
+              const key = `line-${lineIndex}-char-${charIndex}`;
 
-            if (element === " ") {
-              return renderSpace(key);
-            } else if (element.length === 1) {
-              if (element >= "A" && element <= "Z") {
-                return renderLetter(element, key);
+              if (element === " ") {
+                return renderSpace(key);
+              } else if (element.length === 1) {
+                if (element >= "A" && element <= "Z") {
+                  return renderLetter(element, key);
+                } else {
+                  return renderNonLetterCharacter(element, key);
+                }
               } else {
-                return renderNonLetterCharacter(element, key);
+                return renderIcon(element, key, quoteIndex);
               }
-            } else {
-              return renderIcon(element, key, flatIndex);
-            }
-          })}
-        </View>
-      ))}
+            })}
+          </View>
+        );
+      })}
     </View>
   );
 }

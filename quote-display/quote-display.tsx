@@ -1,7 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 import styles from "./styles";
-import sizing from "../sizing/sizing";
+// import sizing from "../sizing/sizing";
 import getIcons from "./get-icons";
 import GameState from "@/state/state";
 

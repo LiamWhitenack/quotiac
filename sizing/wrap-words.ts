@@ -2,17 +2,17 @@ function wrapWords(words: string[], maxWidth: number): string {
     let res: string = "";
     let currentLine: string[] = [];
     for (const word of words) {
-        const widthOfSpaces = 0.5 * currentLine.length;
+        const widthOfSpaces = currentLine.length;
         const lineLength =
             currentLine.reduce((sum, str) => sum + str.length, 0) + widthOfSpaces;
         if (currentLine.length === 0) { currentLine = [word]; } else if (lineLength + word.length <= maxWidth) {
             currentLine.push(word);
         } else {
-            res += "%" + currentLine.join(" ");
+            res += "@" + currentLine.join(" ");
             currentLine = [word];
         }
     }
-    return res + "%" + currentLine.join(" ");
+    return res + "@" + currentLine.join(" ");
 }
 
 function splitOnPercent(chars: string[]): string[][] {
@@ -20,7 +20,7 @@ function splitOnPercent(chars: string[]): string[][] {
     let currentLine: string[] = [];
 
     chars.forEach((char) => {
-        if (char === "%") {
+        if (char === "@") {
             lines.push(currentLine);
             currentLine = [];
         } else {
