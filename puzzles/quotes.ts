@@ -1,165 +1,170 @@
-class PuzzleOfTheDay {
-  quote: string;
-  attributedTo: string | undefined;
-  source: string | undefined;
+import CryptographBase from "./puzzle-types/base";
+import { CharacterQuote, DirectQuote, FamousDocumentQuote, GeneralPhrase, SongLyrics } from "./puzzle-types/quote";
 
-  constructor(quote: string, attributedTo: string | undefined = undefined, source: string | undefined = undefined) {
-    this.quote = quote;
-    this.attributedTo = attributedTo;
-    this.source = source;
-  }
-}
 
-const QUOTES: PuzzleOfTheDay[] = [
-  new PuzzleOfTheDay(
-    "i'm not superstitious, but i am a little stitious. - MICHAEL SCOTT",
+const PUZZLES: CryptographBase[] = [
+  new CharacterQuote(
+    "i'm not superstitious, but i am a little stitious.",
     "Michael Scott",
     "The Office",
-
+    2007
   ),
-  new PuzzleOfTheDay(
+  new CharacterQuote(
     "One does not simply walk into Mordor",
     "Boromir",
-    "Lord of the Rings: The Fellowship of the Ring",
+    "Lord of the Rings: The Fellowship of the Ring (Movie)",
+    2001
   ),
-  new PuzzleOfTheDay(
+  new CharacterQuote(
     "Hello, my name is Inigo Montoya. You killed my father. Prepare to die.",
     "Inigo Montoya",
     "The Princess Bride",
+    1987
   ),
-  new PuzzleOfTheDay(
-    "Ez TO GUESS",
-    "Liam",
-    "Testing",
-  ),
-  new PuzzleOfTheDay(
-    "If I had a gun with two bullets, and I was in a room with Hitler, Bin Laden and Toby, I would shoot Toby twice",
-    "Michael Scott",
-    "The Office S6E25"
-  ),
-  new PuzzleOfTheDay(
+  // new CryptographBase( // Taking this one out for now because Steve Carrell wasn't the first or the second person who famously used this quote
+  //   "If I had a gun with two bullets, and I was in a room with Hitler, Bin Laden and Toby, I would shoot Toby twice",
+  //   "Michael Scott",
+  //   "The Office"
+  //   new Date(2007, 8, 27),
+  // ),
+  new CharacterQuote(
     "If I had a nickel for every time, I'd have two nickels. Which isn't a lot, but it's weird that it happened twice",
     "Dr. Doofenshmirtz",
     "Phineas and Ferb the Movie: Across the 2nd Dimension",
+    2011
   ),
-  new PuzzleOfTheDay(
+  new CharacterQuote(
     "greater good? I am your wife! I'm the greatest good you are ever gonna get!",
     "Frozone's Wife",
     "The Incredibles",
+    2004,
   ),
-  new PuzzleOfTheDay(
+  new CharacterQuote(
     "I feel the need - the need for speed!",
     "Pete Mitchell",
-    "Top Gun"
+    "Top Gun",
+    1986,
   ),
-  new PuzzleOfTheDay(
+  new CharacterQuote(
     "I am a nice shark, not a mindless eating machine. If I am to change this image, I must first change myself. Fish are friends, not food.",
     "Bruce",
-    "Finding Nemo"
+    "Finding Nemo",
+    2003,
   ),
-  new PuzzleOfTheDay(
+  new CharacterQuote(
     "They may take our lives, but they'll never take our freedom!",
     "William Wilberforce",
-    "Braveheart"
+    "Braveheart",
+    1995
   ),
-  new PuzzleOfTheDay(
+  new CharacterQuote(
     "Fear is the path to the dark side. Fear leads to anger, anger leads to hate, hate leads to suffering.",
     "Yoda",
-    "Episode I: The Phantom Menace"
+    "Episode I: The Phantom Menace",
+    1999
   ),
-  new PuzzleOfTheDay(
+  new CharacterQuote(
     "I don't like sand. It's coarse and rough and irritating and it gets everywhere.",
     "Anakin Skywalker",
-    "Episode II: Attack of The Clones"
+    "Episode II: Attack of The Clones",
+    2002,
   ),
-  new PuzzleOfTheDay(
+  new GeneralPhrase(
     "A dyslexic man walks into a bra",
   ),
-  new PuzzleOfTheDay(
+  new GeneralPhrase(
     "It doesn't matter if you're tall or short, thin or fat, rich or poor, at the end of the day, it's night.",
   ),
-  new PuzzleOfTheDay(
+  new CharacterQuote(
     "You either die a hero, or you live long enough to see yourself become the villain.",
     "Commissioner Gordon",
     "The Dark Knight",
+    2008,
   ),
-  new PuzzleOfTheDay(
+  new CharacterQuote(
     "There's no place like home. There's no place like home. There's no place like home.",
+    "Dorothy Gale",
     "Wizard of Oz",
+    1939,
   ),
-  new PuzzleOfTheDay(
+  new CharacterQuote(
     "Life is like a box of chocolates... You never know what you're going to get.",
     "Forrest Gump",
     "Forrest Gump",
+    1994,
   ),
-  new PuzzleOfTheDay(
+  new GeneralPhrase(
     "What do boobs and model trains have in common? They're meant for kids but are primarily played with by grown men.",
   ),
-  new PuzzleOfTheDay(
+  new CharacterQuote(
     "I love the smell of napalm in the morning",
-    "Apocalypse Now"
+    "Colonel Bill Kilgore",
+    "Apocalypse Now",
+    1979
   ),
-  new PuzzleOfTheDay(
+  new CharacterQuote(
     "Good morning, and in case I don't see ya, good afternoon, good evening, and good night!",
-    "The Truman Show"
+    "Truman Burbank",
+    "The Truman Show",
+    1198,
   ),
-  new PuzzleOfTheDay(
+  new SongLyrics(
     "Hello from the other side I must've called a thousand times To tell you I'm sorry for everything that I've done But when I call, you never seem to be home",
-    "Hello by Adele"
+    "Adele",
+    "Hello",
+    2015
   ),
-  new PuzzleOfTheDay(
+  new GeneralPhrase(
     "The toothbrush was invented in West Virginia. Otherwise it would have been called the teethbrush.",
   ),
-  new PuzzleOfTheDay(
+  new CharacterQuote(
     "Toby is in HR, which technically means he works for corporate, so he's really not a part of our family. Also, he's divorced, so he's really not a part of his family",
     "Michael Scott",
-    "The office",
+    "The Office",
+    2005,
   ),
-  new PuzzleOfTheDay(
+  new DirectQuote(
     "You miss 100% of the shots you don't take",
+    "Wayne Gretzky",
+    1990,
   ),
-  new PuzzleOfTheDay(
+  new GeneralPhrase(
     "The quick brown fox jumps over the lazy brown dog",
   ),
-  new PuzzleOfTheDay(
+  new SongLyrics(
     "Never gonna give you up, never gonna let you down",
-    "Gandalf",
-    "The Hobbit",
+    "Rick Astley",
+    "Never Gonna Give You Up",
+    1987,
   ),
-  new PuzzleOfTheDay(
+  new CharacterQuote(
     "Not all those who wander are lost, Bilbo Baggins.",
     "Gandalf",
     "The Hobbit",
+    1937,
   ),
-  new PuzzleOfTheDay(
+  new CharacterQuote(
     "Why don't you make like a tree and get outta here",
     "Biff Tannen",
     "Back to The Future Part II",
+    1989,
   ),
-  new PuzzleOfTheDay(
+  new CharacterQuote(
     "There are only two things I can't stand in this world. People who are intolerant of other people's cultures. and the Dutch.",
     "Nigel Powers",
     "Austin Powers in Goldmember",
+    2002
   ),
-  new PuzzleOfTheDay(
+  new FamousDocumentQuote(
     "Four score and seven years ago our fathers brought forth on this continent, a new nation, conceived in Liberty, and dedicated to the proposition that all men are created equal.",
     "Abraham Lincoln",
     "The Gettysburg Address",
+    1863,
   ),
-  new PuzzleOfTheDay(
+  new DirectQuote(
     "You shouldn't believe everything you see on the internet.",
-    undefined,
-    "The internet",
+    "Abraham Lincoln"
   ),
 ]
 
-const todayQuote = () => {
-  const daysSinceEpoch = Math.floor(new Date().getTime() / (1000 * 60 * 60 * 24));
-  const firstCodiacDaysSinceEphoch = Math.floor(new Date(2025, 4, 31).getTime() / (1000 * 60 * 60 * 24));
-  const index = daysSinceEpoch - firstCodiacDaysSinceEphoch
-  return QUOTES[index]
-};
-
-const puzzle = todayQuote()
-
-export { puzzle, PuzzleOfTheDay };
+export { PUZZLES, CryptographBase as PuzzleOfTheDay };

@@ -1,10 +1,9 @@
 import { mapUniqueLettersToNumbers } from "@/src/encoded-quotes";
 import KEYBOARD_LETTERS from "@/src/keyboard-letters";
 import { mapsAreEqual } from "@/src/utils";
-import { PuzzleOfTheDay } from "@/src/quotes"
+import { PuzzleOfTheDay } from "@/puzzles/quotes"
 import { wrapWords } from "@/sizing/wrap-words";
 import sizing from "@/sizing/sizing";
-import { ActivityIndicator } from "react-native";
 
 function inverseMap(map: Map<string, string>): Map<string, string> {
     const inverseDecodingMap = new Map<string, string>();
@@ -37,8 +36,8 @@ class GameState {
 
     constructor(puzzle: PuzzleOfTheDay) {
         this.puzzle = puzzle
-        this.quote = wrapWords(puzzle.quote.split(" "), sizing.maxWidth / sizing.iconSize);
-        this.encodingMap = mapUniqueLettersToNumbers(puzzle.quote);
+        this.quote = wrapWords(puzzle.stringToEncrypt.split(" "), sizing.maxWidth / sizing.iconSize);
+        this.encodingMap = mapUniqueLettersToNumbers(puzzle.stringToEncrypt);
         this.solution = capitalizeValues(inverseMap(this.encodingMap));
         this.fireConfetti = false;
         this.solved = false;
@@ -189,7 +188,7 @@ class GameState {
         this.setDecodingMap(new Map());
         this.updateKeyboardValues(new Map());
         this.setQuoteIndex(0);
-        this.setActiveIcon(this.encodedQuote.at(0));
+        this.setActiveIcon(this.encodedQuote[0]);
         this.checkSolved();
     }
 }

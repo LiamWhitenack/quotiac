@@ -1,22 +1,16 @@
 import React, { useEffect, useState } from "react";
-import {
-  SafeAreaView,
-  View,
-  Text,
-  TouchableOpacity,
-  useWindowDimensions,
-} from "react-native";
+import { SafeAreaView, View, Text, TouchableOpacity } from "react-native";
 import mainWindowStyles from "./styles";
 import QuoteDisplay from "./quote-display/quote-display";
 import LetterKeyboardDisplay from "./keyboard/keyboard";
 import { Ionicons } from "@expo/vector-icons";
-import { puzzle } from "./src/quotes";
 import sizing from "./sizing/sizing";
 import ConfettiCannon from "react-native-confetti-cannon";
 import GameState from "./state/state";
+import { todayQuote } from "./puzzles/get-puzzle";
 
 const CodiacApp = () => {
-  const [state, setGameState] = useState(new GameState(puzzle));
+  const [state, setGameState] = useState(new GameState(todayQuote()));
 
   function updateState() {
     let clone = state.clone();
