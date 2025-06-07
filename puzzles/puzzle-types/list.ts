@@ -9,7 +9,7 @@ class List extends CryptographBase {
 
     constructor(setup: string, elements: string[],) {
         // @ts-ignore
-        super(elements)
+        super(elements, "List")
         this.setup = setup
     }
 }

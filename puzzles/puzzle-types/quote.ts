@@ -9,8 +9,8 @@ class CharacterQuote extends CryptographBase {
     characterName: string
     releaseDate: number
 
-    constructor(quote: string, sourceTitle: string, characterName: string, releaseDate: number) {
-        super(quote)
+    constructor(quote: string, sourceType: string, sourceTitle: string, characterName: string, releaseDate: number) {
+        super(quote, sourceTitle + " Quote")
         this.sourceTitle = sourceTitle
         this.characterName = characterName
         this.releaseDate = releaseDate
@@ -25,7 +25,7 @@ class FamousDocumentQuote extends CryptographBase {
     releaseDate: number
 
     constructor(quote: string, sourceTitle: string, authorName: string, publishDate: number) {
-        super(quote)
+        super(quote, "Famous Document")
         this.sourceTitle = sourceTitle
         this.AuthorName = authorName
         this.releaseDate = publishDate
@@ -39,7 +39,7 @@ class DirectQuote extends CryptographBase {
     date: number | undefined
 
     constructor(quote: string, author: string, date: number | undefined = undefined) {
-        super(quote)
+        super(quote, "Direct Quote")
         this.author = author
         this.date = date
     }
@@ -48,7 +48,7 @@ class DirectQuote extends CryptographBase {
 /**
  * Represents a general quote which has been used enough to have no recognizeable source (i.e. "If a Brooklyn man finds
  * himself in a room with Hitler, Stalin, and O'Malley, but has only two bullets, what does he do? Shoot O'Malley 
- * twice." - This could also be a riddle)
+ * twice." (This could also be a riddle))
  */
 class GeneralPhrase extends CryptographBase { }
 
@@ -61,7 +61,7 @@ class SongLyrics extends CryptographBase {
     date: number
 
     constructor(lyric: string, artist: string, songName: string, date: number) {
-        super(lyric)
+        super(lyric, "Song Lyric")
         this.songName = songName
         this.artist = artist
         this.date = date
