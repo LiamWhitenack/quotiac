@@ -38,7 +38,7 @@ const CodiacApp = () => {
   return (
     <SafeAreaView style={mainWindowStyles.container}>
       <View style={mainWindowStyles.topBarContainer}>
-        <Text style={mainWindowStyles.title}>Codiac</Text>
+        <Text style={mainWindowStyles.title}>{state.puzzle.puzzleType}</Text>
         <View style={mainWindowStyles.topBarIconContainer}>
           <TouchableOpacity
             style={mainWindowStyles.iconContainer}

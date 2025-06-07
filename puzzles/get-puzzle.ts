@@ -1,4 +1,4 @@
-import { PUZZLES } from "./quotes";
+import { PUZZLES } from "./puzzles";
 
 const todayQuote = () => {
     const daysSinceEpoch = Math.floor(new Date().getTime() / (1000 * 60 * 60 * 24));

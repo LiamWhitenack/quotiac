@@ -4,19 +4,22 @@ import { CharacterQuote, DirectQuote, FamousDocumentQuote, GeneralPhrase, SongLy
 
 const PUZZLES: CryptographBase[] = [
   new CharacterQuote(
-    "i'm not superstitious, but i am a little stitious.",
+    "I'm not superstitious, but I am a little stitious.",
+    "Sitcom",
     "Michael Scott",
     "The Office",
     2007
   ),
   new CharacterQuote(
     "One does not simply walk into Mordor",
+    "Film",
     "Boromir",
-    "Lord of the Rings: The Fellowship of the Ring (Movie)",
+    "Lord of the Rings: The Fellowship of the Ring (Film)",
     2001
   ),
   new CharacterQuote(
     "Hello, my name is Inigo Montoya. You killed my father. Prepare to die.",
+    "Film",
     "Inigo Montoya",
     "The Princess Bride",
     1987
@@ -29,42 +32,49 @@ const PUZZLES: CryptographBase[] = [
   // ),
   new CharacterQuote(
     "If I had a nickel for every time, I'd have two nickels. Which isn't a lot, but it's weird that it happened twice",
+    "Film",
     "Dr. Doofenshmirtz",
     "Phineas and Ferb the Movie: Across the 2nd Dimension",
     2011
   ),
   new CharacterQuote(
     "greater good? I am your wife! I'm the greatest good you are ever gonna get!",
+    "Film",
     "Frozone's Wife",
     "The Incredibles",
     2004,
   ),
   new CharacterQuote(
     "I feel the need - the need for speed!",
+    "Film",
     "Pete Mitchell",
     "Top Gun",
     1986,
   ),
   new CharacterQuote(
-    "I am a nice shark, not a mindless eating machine. If I am to change this image, I must first change myself. Fish are friends, not food.",
-    "Bruce",
-    "Finding Nemo",
-    2003,
-  ),
-  new CharacterQuote(
     "They may take our lives, but they'll never take our freedom!",
+    "Film",
     "William Wilberforce",
     "Braveheart",
     1995
   ),
   new CharacterQuote(
+    "I am a nice shark, not a mindless eating machine. If I am to change this image, I must first change myself. Fish are friends, not food.",
+    "Film",
+    "Bruce",
+    "Finding Nemo",
+    2003,
+  ),
+  new CharacterQuote(
     "Fear is the path to the dark side. Fear leads to anger, anger leads to hate, hate leads to suffering.",
+    "Film",
     "Yoda",
     "Episode I: The Phantom Menace",
     1999
   ),
   new CharacterQuote(
     "I don't like sand. It's coarse and rough and irritating and it gets everywhere.",
+    "Film",
     "Anakin Skywalker",
     "Episode II: Attack of The Clones",
     2002,
@@ -77,18 +87,21 @@ const PUZZLES: CryptographBase[] = [
   ),
   new CharacterQuote(
     "You either die a hero, or you live long enough to see yourself become the villain.",
+    "Film",
     "Commissioner Gordon",
     "The Dark Knight",
     2008,
   ),
   new CharacterQuote(
     "There's no place like home. There's no place like home. There's no place like home.",
+    "Film",
     "Dorothy Gale",
     "Wizard of Oz",
     1939,
   ),
   new CharacterQuote(
     "Life is like a box of chocolates... You never know what you're going to get.",
+    "Film",
     "Forrest Gump",
     "Forrest Gump",
     1994,
@@ -98,12 +111,14 @@ const PUZZLES: CryptographBase[] = [
   ),
   new CharacterQuote(
     "I love the smell of napalm in the morning",
+    "Film",
     "Colonel Bill Kilgore",
     "Apocalypse Now",
     1979
   ),
   new CharacterQuote(
     "Good morning, and in case I don't see ya, good afternoon, good evening, and good night!",
+    "Film",
     "Truman Burbank",
     "The Truman Show",
     1198,
@@ -119,6 +134,7 @@ const PUZZLES: CryptographBase[] = [
   ),
   new CharacterQuote(
     "Toby is in HR, which technically means he works for corporate, so he's really not a part of our family. Also, he's divorced, so he's really not a part of his family",
+    "Sitcom",
     "Michael Scott",
     "The Office",
     2005,
@@ -139,18 +155,21 @@ const PUZZLES: CryptographBase[] = [
   ),
   new CharacterQuote(
     "Not all those who wander are lost, Bilbo Baggins.",
+    "Novel",
     "Gandalf",
     "The Hobbit",
     1937,
   ),
   new CharacterQuote(
     "Why don't you make like a tree and get outta here",
+    "Film",
     "Biff Tannen",
     "Back to The Future Part II",
     1989,
   ),
   new CharacterQuote(
     "There are only two things I can't stand in this world. People who are intolerant of other people's cultures. and the Dutch.",
+    "Film",
     "Nigel Powers",
     "Austin Powers in Goldmember",
     2002
