@@ -33,6 +33,7 @@ class GameState {
     keyboardValues: string[][];
     quoteIndex: number;
     encodedQuote: string[];
+    showAppTitle: boolean;
 
     constructor(puzzle: PuzzleOfTheDay) {
         this.puzzle = puzzle
@@ -47,6 +48,7 @@ class GameState {
         this.keyboardValues = KEYBOARD_LETTERS;
         this.quoteIndex = 0;
         this.encodedQuote = this.encodeQuote(this.quote.toLowerCase());
+        this.showAppTitle = true
     }
 
     clone(): GameState {
