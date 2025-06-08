@@ -11,6 +11,13 @@ const PUZZLES: CryptographBase[] = [
     2007
   ),
   new CharacterQuote(
+    "There is no Easter Bunny, There is no Tooth Fairy, and there is no queen of England.",
+    "File",
+    "Tighten",
+    "Megamind",
+    2010
+  ),
+  new CharacterQuote(
     "One does not simply walk into Mordor",
     "Film",
     "Boromir",
@@ -57,6 +64,20 @@ const PUZZLES: CryptographBase[] = [
     "William Wilberforce",
     "Braveheart",
     1995
+  ),
+  new CharacterQuote(
+    "Why don't you make like a tree and get outta here",
+    "Film",
+    "Biff Tannen",
+    "Back to The Future Part II",
+    1989,
+  ),
+  new CharacterQuote(
+    "I love the smell of napalm in the morning",
+    "Film",
+    "Colonel Bill Kilgore",
+    "Apocalypse Now",
+    1979
   ),
   new CharacterQuote(
     "I am a nice shark, not a mindless eating machine. If I am to change this image, I must first change myself. Fish are friends, not food.",
@@ -109,13 +130,7 @@ const PUZZLES: CryptographBase[] = [
   new GeneralPhrase(
     "What do boobs and model trains have in common? They're meant for kids but are primarily played with by grown men.",
   ),
-  new CharacterQuote(
-    "I love the smell of napalm in the morning",
-    "Film",
-    "Colonel Bill Kilgore",
-    "Apocalypse Now",
-    1979
-  ),
+
   new CharacterQuote(
     "Good morning, and in case I don't see ya, good afternoon, good evening, and good night!",
     "Film",
@@ -160,13 +175,7 @@ const PUZZLES: CryptographBase[] = [
     "The Hobbit",
     1937,
   ),
-  new CharacterQuote(
-    "Why don't you make like a tree and get outta here",
-    "Film",
-    "Biff Tannen",
-    "Back to The Future Part II",
-    1989,
-  ),
+
   new CharacterQuote(
     "There are only two things I can't stand in this world. People who are intolerant of other people's cultures. and the Dutch.",
     "Film",
