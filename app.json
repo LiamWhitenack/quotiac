@@ -36,7 +36,12 @@
       ]
     ],
     "experiments": {
-      "typedRoutes": true
+      "typedRoutes": true,
+      "baseUrl": "/expo-gh-pages"
+    },
+    "scripts": {
+      "deploy": "gh-pages --nojekyll -d dist",
+      "predeploy": "expo export -p web"
     },
     "sdkVersion": "53.0.0"
   },

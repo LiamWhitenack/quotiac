@@ -36,10 +36,6 @@ I'm undecided on if the problem should start with spaces built-in or if that sho
 
 An auto-check method which highlights a letter as red if it's wrong would be nice, but this shouldn't always be on.
 
-## Add a new method to remove a letter mapping
-
-Some people intuitively click the letter in the wrong spot, there should be some settings which allow this to change but for now it should just be easier to remove a letter mapping.
-
 ## Add some quotes and make a sustainable way of pulling up quotes
 
 I doubt that we'll be able to make a new quote for every day, so we will need to reuse old quotes randomly, without using a quote that was just used.
