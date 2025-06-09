@@ -29,7 +29,7 @@ function getIcons(state: GameState, updateState: () => void) {
       <TouchableOpacity
         disabled={state.solved}
         onPress={() => {
-          state.reactToKeyPress(letter);
+          state.reactToQuoteLetterPress(letter);
           updateState();
         }}
       >

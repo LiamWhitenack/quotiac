@@ -4,6 +4,7 @@ import { mapsAreEqual } from "@/src/utils";
 import { PuzzleOfTheDay } from "@/puzzles/puzzles"
 import { wrapWords } from "@/sizing/wrap-words";
 import sizing from "@/sizing/sizing";
+import GiveALetterHint from "@/puzzles/hints/letter";
 
 function inverseMap(map: Map<string, string>): Map<string, string> {
     const inverseDecodingMap = new Map<string, string>();
@@ -19,6 +20,12 @@ function capitalizeValues(map: Map<string, string>): Map<string, string> {
     });
     return res;
 }
+function mergeMaps(map1: Map<string, string>, map2: Map<string, string>) {
+    return new Map([...map2, ...map1]);
+}
+function isACapitalLetter(x: string) {
+    return (x.length === 1 && x >= "A" && x <= "Z")
+}
 
 class GameState {
     puzzle: PuzzleOfTheDay;
@@ -29,6 +36,7 @@ class GameState {
     solved: boolean;
     decodingMap: Map<string, string>;
     inverseDecodingMap: Map<string, string>;
+    givenHintLetters: string[];
     activeIcon: string;
     keyboardValues: string[][];
     quoteIndex: number;
@@ -44,11 +52,41 @@ class GameState {
         this.solved = false;
         this.decodingMap = new Map();
         this.inverseDecodingMap = new Map();
+        this.givenHintLetters = [];
         this.activeIcon = "";
         this.keyboardValues = KEYBOARD_LETTERS;
         this.quoteIndex = 0;
         this.encodedQuote = this.encodeQuote(this.quote.toLowerCase());
         this.showAppTitle = true
+    }
+
+    userHasDiscoveredLetter(hint: GiveALetterHint) {
+        // console.log("USER DISCOVERED")
+        // console.log(hint.letter)
+        // console.log(this.inverseDecodingMap)
+        // console.log(this.encodingMap)
+        // console.log(this.inverseDecodingMap.get(hint.letter))
+        // console.log(this.encodingMap.get(hint.letter.toLowerCase()))
+        // console.log(this.inverseDecodingMap.get(hint.letter) === this.encodingMap.get(hint.letter.toLowerCase()))
+        return this.inverseDecodingMap.get(hint.letter) === this.encodingMap.get(hint.letter.toLowerCase());
+    }
+
+    giveAHint() {
+        for (const [i, hint] of this.puzzle.hints.entries()) {
+            if (hint instanceof GiveALetterHint && !this.userHasDiscoveredLetter(hint)) {
+                console.log(hint instanceof GiveALetterHint)
+                console.log(this.userHasDiscoveredLetter(hint))
+                this.givenHintLetters.push(hint.letter)
+                let updatedDecodingMap = new Map(this.decodingMap)
+                updatedDecodingMap.set(this.encodingMap.get(hint.letter.toLowerCase())!, hint.letter)
+                this.setDecodingMap(updatedDecodingMap)
+                this.updateKeyboardValues()
+                this.puzzle.hints.splice(i, 1)
+                this.checkSolved()
+                break
+            }
+        }
+
     }
 
     clone(): GameState {
@@ -118,7 +156,7 @@ class GameState {
 
 
 
-    updateKeyboardValues(map: Map<string, string>) {
+    updateKeyboardValues() {
         this.setKeyboardValues(
             KEYBOARD_LETTERS.map((row) =>
                 row.map((char) => {
@@ -145,50 +183,72 @@ class GameState {
         return "";
     }
 
+    reactToQuoteLetterPress(letter: string) {
+        console.log(this.givenHintLetters)
+        if (this.solved || this.givenHintLetters.includes(letter)) {
+            return
+        }
+        this.removeLetterMapping({ letter: letter });
+    }
+
+
     reactToKeyPress(element: string) {
-        if (this.solved) {
+        if (this.solved || this.activeIcon === "") {
             return;
         }
-        // if a key is selected
-        if (element >= "A" && element <= "Z") {
-            // add letter mapping
-            if (
-                // if that letter has already been used
-                Array.from(this.decodingMap.values()).includes(element)
-            ) {
-                // remove letter mapping
-                const icon = [...this.decodingMap].find(
-                    ([k, v]) => v === element
-                )?.[0];
-                if (icon === undefined) {
-                    throw Error;
-                }
-                this.decodingMap.delete(icon);
-                this.setDecodingMap(this.decodingMap);
-                this.updateKeyboardValues(this.decodingMap);
-                this.setActiveIcon(icon);
-            } else if (this.activeIcon !== "") {
-                // remove letter mapping
-                this.decodingMap.set(this.activeIcon, element);
-                this.setDecodingMap(this.decodingMap);
-                this.updateKeyboardValues(this.decodingMap);
-                this.setActiveIcon(this.getNextIconName());
+
+        console.log(element)
+        console.log(this.inverseDecodingMap)
+        if (isACapitalLetter(element)) {
+            if (this.givenHintLetters.includes(element)) {
+                return;
+            }
+            if (this.inverseDecodingMap.get(element) === undefined) {
+                this.addLetterMapping({ letter: element })
+                this.checkSolved();
+            }
+            else {
+                this.removeLetterMapping({ letter: element })
             }
         } else {
-            // remove letter mapping
-            this.decodingMap.delete(element);
-            this.setDecodingMap(this.decodingMap);
-            this.updateKeyboardValues(this.decodingMap);
-            this.quoteIndex = this.encodedQuote.indexOf(element);
-            this.setActiveIcon(element);
+            if (!this.givenHintLetters.includes(this.solution.get(element)!)) {
+                this.removeIconMapping({ icon: element })
+            }
+
         }
 
-        this.checkSolved();
+    }
+
+    private removeLetterMapping({ letter }: { letter: string }) {
+        const icon = [...this.decodingMap].find(
+            ([k, v]) => v === letter
+        )?.[0];
+        if (icon === undefined) {
+            throw Error;
+        }
+        this.decodingMap.delete(icon);
+        this.setDecodingMap(this.decodingMap);
+        this.updateKeyboardValues();
+        this.setActiveIcon(icon);
+    }
+    private removeIconMapping({ icon }: { icon: string }) {
+        this.decodingMap.delete(icon);
+        this.setDecodingMap(this.decodingMap);
+        this.updateKeyboardValues();
+        this.quoteIndex = this.encodedQuote.indexOf(icon);
+        this.setActiveIcon(icon);
+    }
+
+    private addLetterMapping({ letter }: { letter: string }) {
+        this.decodingMap.set(this.activeIcon, letter);
+        this.setDecodingMap(this.decodingMap);
+        this.updateKeyboardValues();
+        this.setActiveIcon(this.getNextIconName());
     }
 
     reactToResetButton() {
         this.setDecodingMap(new Map());
-        this.updateKeyboardValues(new Map());
+        this.updateKeyboardValues();
         this.setQuoteIndex(0);
         this.setActiveIcon(this.encodedQuote[0]);
         this.checkSolved();

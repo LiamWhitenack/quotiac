@@ -84,10 +84,18 @@ const CodiacApp = () => {
           {state.showAppTitle ? "Codiac" : state.puzzle.puzzleType}
         </Animated.Text>
         <View style={mainWindowStyles.topBarIconContainer}>
-          <TouchableOpacity
-            style={mainWindowStyles.iconContainer}
-            disabled={state.solved}
-          >
+          <TouchableOpacity style={mainWindowStyles.iconContainer}>
+            <Ionicons
+              name={"bulb-outline"}
+              size={32}
+              color="black"
+              onPress={() => {
+                state.giveAHint();
+                updateState();
+              }}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity style={mainWindowStyles.iconContainer}>
             <Ionicons
               name={"refresh-outline"}
               size={32}
