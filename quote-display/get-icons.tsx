@@ -33,7 +33,14 @@ function getIcons(state: GameState, updateState: () => void) {
           updateState();
         }}
       >
-        <Text style={{ fontSize: sizing.iconSize / 1.2 }}>{letter}</Text>
+        <Text
+          style={{
+            fontSize: sizing.iconSize / 1.2,
+            color: state.elementColor(letter),
+          }}
+        >
+          {letter}
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -72,7 +79,7 @@ function getIcons(state: GameState, updateState: () => void) {
           // @ts-ignore
           name={iconName}
           size={sizing.iconSize / 1.2}
-          color={iconName === state.activeIcon ? "blue" : "black"}
+          color={state.elementColor(iconName)}
         />
       </TouchableOpacity>
     </View>

@@ -175,6 +175,16 @@ class GameState {
         return "";
     }
 
+    elementColor(element: string): string {
+        if (this.elementIsPartOfHint(element)) {
+            return "green"
+        } else if (element === this.activeIcon) {
+            return "blue"
+        } else {
+            return "black"
+        }
+    }
+
     reactToQuoteLetterPress(letter: string) {
         if (this.solved || this.elementIsPartOfHint(letter)) {
             return

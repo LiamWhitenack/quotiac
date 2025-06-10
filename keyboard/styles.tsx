@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#D3D6DA",
     borderRadius: 5,
   },
-  disabledKey: {
+  iconKey: {
     width: sizing.keyboardKeyWidth, // Each key takes equal space in the row
     height: 55, // Fixed height for keys
     justifyContent: "center",

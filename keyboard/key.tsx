@@ -15,32 +15,24 @@ function keyboardKey(
 ) {
   const letter = KEYBOARD_LETTERS[rowIndex][index];
   const isLetter = element === letter;
+  console.log(element);
   return (
     <TouchableOpacity
       key={element}
       disabled={state.solved || state.elementIsPartOfHint(element)}
-      style={isLetter ? styles.key : styles.disabledKey}
+      style={isLetter ? styles.key : styles.iconKey}
       onPress={() => {
         state.reactToKeyPress(element);
         updateState();
       }}
     >
       {isLetter ? (
-        <Text style={styles.keyText}>
-          {element.length === 1 ? (
-            element
-          ) : (
-            <Ionicons
-              // @ts-ignore
-              name={element}
-              size={Math.min(0.8 * sizing.keyboardKeyWidth)}
-            />
-          )}
-        </Text>
+        <Text style={styles.keyText}>{element}</Text>
       ) : (
         <Ionicons
           // @ts-ignore
           name={element}
+          color={state.elementColor(element)}
           size={sizing.keyboardKeyWidth * 0.8}
         />
       )}
