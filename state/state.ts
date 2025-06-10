@@ -61,21 +61,12 @@ class GameState {
     }
 
     userHasDiscoveredLetter(hint: GiveALetterHint) {
-        // console.log("USER DISCOVERED")
-        // console.log(hint.letter)
-        // console.log(this.inverseDecodingMap)
-        // console.log(this.encodingMap)
-        // console.log(this.inverseDecodingMap.get(hint.letter))
-        // console.log(this.encodingMap.get(hint.letter.toLowerCase()))
-        // console.log(this.inverseDecodingMap.get(hint.letter) === this.encodingMap.get(hint.letter.toLowerCase()))
         return this.inverseDecodingMap.get(hint.letter) === this.encodingMap.get(hint.letter.toLowerCase());
     }
 
     giveAHint() {
         for (const [i, hint] of this.puzzle.hints.entries()) {
             if (hint instanceof GiveALetterHint && !this.userHasDiscoveredLetter(hint)) {
-                console.log(hint instanceof GiveALetterHint)
-                console.log(this.userHasDiscoveredLetter(hint))
                 this.givenHintLetters.push(hint.letter)
                 let updatedDecodingMap = new Map(this.decodingMap)
                 updatedDecodingMap.set(this.encodingMap.get(hint.letter.toLowerCase())!, hint.letter)
@@ -132,7 +123,6 @@ class GameState {
     }
 
     reactToQuoteIconPress(index: number, iconName: string) {
-        // console.log(index)
         if (this.activeIcon === iconName) {
             this.activeIcon = "";
         } else {
@@ -184,7 +174,6 @@ class GameState {
     }
 
     reactToQuoteLetterPress(letter: string) {
-        console.log(this.givenHintLetters)
         if (this.solved || this.givenHintLetters.includes(letter)) {
             return
         }
@@ -197,8 +186,6 @@ class GameState {
             return;
         }
 
-        console.log(element)
-        console.log(this.inverseDecodingMap)
         if (isACapitalLetter(element)) {
             if (this.givenHintLetters.includes(element)) {
                 return;
