@@ -157,8 +157,10 @@ class GameState {
         );
     };
 
-    getNextIconName(): string {
-        for (let i = this.quoteIndex + 1; i < this.encodedQuote.length; i++) {
+    getNextIconName(descending: boolean = false): string {
+        const stop = descending ? 0 : this.encodedQuote.length
+        const step = descending ? -1 : 1;
+        for (let i = this.quoteIndex + 1; descending ? i >= stop : i < stop; i += step) {
             let iconName = this.encodedQuote[i];
             if (iconName.length === 1) {
                 continue;
