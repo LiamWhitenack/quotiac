@@ -1,50 +1,46 @@
-# TO DO:
+# TO DO
 
-## Fix the spacing of encoded words
+## Before Deployment
 
-ChatGPT might be able to help.
+### Deactivate letters and icons which were given from hints
 
-There is a sizing class which should contain the width of the screen and also the useable width of the screen, but doesn't seem to be correct every time. It needs debugging.
+Also color them dark green
 
-One thing to consider is the probable need for a scrollbar in the case that long sentences are used, as well as the on-screen keyboard (which isn't as nice to code with as the built-in OS keyboards).
+### Enable Sharing with popup menu
 
-Solution ideas:
+About 3 seconds after you solve the puzzle and the confetti is done you solve the puzzle, there should be a popup that shows your results (however that works) and has a button that lets you share them. In this menu there should also be anecdotal information about the puzzle, like in the case of a movie quote showing who said it and in what movie.
 
-- Changing the encoded characters from icons into emojis so that they can be used in a text string. This would, however, ruin the spacing of the letters because an emoji becoming the letter "i" would take less horizontal space
-- Reading about it
-- Not making the font size as big as possible, so the problem isn't quite as bad
+### When you remove a letter mapping, the active icon should move differently
 
-## Reduce and Refactor
+it jumps around in a goofy way right now
 
-The code is a giant mess, and it would be great to reduce the nesting indentations
+### Next Quote Button
 
-## Add hints
+Should be temporary but for testing
 
-One idea I have is giving an introduction sentence. For example,
+### Deactivate hint button after finishing the puzzle
 
-```
-The Three Main food groups:
+ez
 
-*@($*%R
-@/*$($)#
-!@&#$($
-```
+## After first Deployment
 
-This could be in addition to giving the source of the quote, the author of the quote, the date of the quote, a hint regarding the quote and what it's about, or a free letter.
+### Dynamic Icon Sizing
 
-I'm undecided on if the problem should start with spaces built-in or if that should take a hint.
+Even if 32px is something we want to stick with on almost every occasion, we should be able to scale down the font size if the quote is too long to fit on the screen. Not a big deal regardless
 
-An auto-check method which highlights a letter as red if it's wrong would be nice, but this shouldn't always be on.
+### New hint types
 
-## Add some quotes and make a sustainable way of pulling up quotes
+Not sure where to store these. Maybe there would be a menu?
+
+### Add some quotes and make a sustainable way of pulling up quotes
 
 I doubt that we'll be able to make a new quote for every day, so we will need to reuse old quotes randomly, without using a quote that was just used.
 
-## Create an admin mode
+### Create an admin mode
 
 It would be nice to allow choosing new quotes and other helpful test features like activating hints or sharing or something
 
-## Sizing, Sizing, Sizing
+### Sizing, Sizing, Sizing
 
 How does the game look on other phones? Is the keyboard too big or too small? What is the minimum size an encoded letter should be? How big and where should the menu buttons be? How does the website look on a desktop? Does it work well on androids?
 
