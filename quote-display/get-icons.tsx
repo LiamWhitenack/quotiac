@@ -27,7 +27,7 @@ function getIcons(state: GameState, updateState: () => void) {
       }}
     >
       <TouchableOpacity
-        disabled={state.solved}
+        disabled={state.solved || state.elementIsPartOfHint(letter)}
         onPress={() => {
           state.reactToQuoteLetterPress(letter);
           updateState();
@@ -61,16 +61,20 @@ function getIcons(state: GameState, updateState: () => void) {
         width: sizing.iconSize,
       }}
     >
-      <Ionicons
-        // @ts-ignore
-        name={iconName}
-        size={sizing.iconSize / 1.2}
-        color={iconName === state.activeIcon ? "blue" : "black"}
+      <TouchableOpacity
+        disabled={state.solved || state.elementIsPartOfHint(iconName)}
         onPress={() => {
           state.reactToQuoteIconPress(index, iconName);
           updateState();
         }}
-      />
+      >
+        <Ionicons
+          // @ts-ignore
+          name={iconName}
+          size={sizing.iconSize / 1.2}
+          color={iconName === state.activeIcon ? "blue" : "black"}
+        />
+      </TouchableOpacity>
     </View>
   );
 

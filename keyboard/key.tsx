@@ -18,7 +18,7 @@ function keyboardKey(
   return (
     <TouchableOpacity
       key={element}
-      disabled={state.solved}
+      disabled={state.solved || state.elementIsPartOfHint(element)}
       style={isLetter ? styles.key : styles.disabledKey}
       onPress={() => {
         state.reactToKeyPress(element);

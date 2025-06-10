@@ -176,10 +176,14 @@ class GameState {
     }
 
     reactToQuoteLetterPress(letter: string) {
-        if (this.solved || this.givenHintLetters.includes(letter)) {
+        if (this.solved || this.elementIsPartOfHint(letter)) {
             return
         }
         this.removeLetterMapping({ letter: letter });
+    }
+
+    elementIsPartOfHint(element: string) {
+        return this.givenHintLetters.includes(element) || this.givenHintLetters.includes(this.solution.get(element)!)
     }
 
 
@@ -189,7 +193,7 @@ class GameState {
         }
 
         if (isACapitalLetter(element)) {
-            if (this.givenHintLetters.includes(element)) {
+            if (this.elementIsPartOfHint(element)) {
                 return;
             }
             if (this.inverseDecodingMap.get(element) === undefined) {
@@ -200,7 +204,7 @@ class GameState {
                 this.removeLetterMapping({ letter: element })
             }
         } else {
-            if (!this.givenHintLetters.includes(this.solution.get(element)!)) {
+            if (!this.elementIsPartOfHint(element)) {
                 this.removeIconMapping({ icon: element })
             }
 
