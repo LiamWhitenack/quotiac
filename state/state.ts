@@ -69,6 +69,7 @@ class GameState {
             if (hint instanceof GiveALetterHint && !this.userHasDiscoveredLetter(hint)) {
                 this.givenHintLetters.push(hint.letter)
                 let updatedDecodingMap = new Map(this.decodingMap)
+                updatedDecodingMap.delete(this.inverseDecodingMap.get(hint.letter)!)
                 updatedDecodingMap.set(this.encodingMap.get(hint.letter.toLowerCase())!, hint.letter)
                 this.setDecodingMap(updatedDecodingMap)
                 this.updateKeyboardValues()
