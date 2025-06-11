@@ -91,7 +91,6 @@ const CodiacApp = () => {
               color="black"
               onPress={() => {
                 state.giveAHint();
-                state.givenHintLetters = [];
                 updateState();
               }}
             />
@@ -103,6 +102,7 @@ const CodiacApp = () => {
               color="black"
               onPress={() => {
                 state.reactToResetButton();
+                state.givenHintLetters = [];
                 updateState();
               }}
             />
