@@ -51,7 +51,7 @@ const CodiacApp = () => {
   useOnCompleteModal(state, setModalVisible);
 
   return (
-    <SafeAreaView style={mainWindowStyles.container}>
+    <View style={mainWindowStyles.container}>
       <View style={mainWindowStyles.topBarContainer}>
         <Animated.Text
           style={[mainWindowStyles.title, { opacity: fadeTitleAnimation }]}
@@ -96,7 +96,7 @@ const CodiacApp = () => {
           onClose={() => {}}
         />
       }
-    </SafeAreaView>
+    </View>
   );
 };
 
