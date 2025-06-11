@@ -20,9 +20,6 @@ function capitalizeValues(map: Map<string, string>): Map<string, string> {
     });
     return res;
 }
-function mergeMaps(map1: Map<string, string>, map2: Map<string, string>) {
-    return new Map([...map2, ...map1]);
-}
 function isACapitalLetter(x: string) {
     return (x.length === 1 && x >= "A" && x <= "Z")
 }
@@ -221,6 +218,26 @@ class GameState {
 
         }
 
+    }
+
+    getResultChar(character: string) {
+        if (character >= "A" && character <= "Z") {
+            if (this.elementIsPartOfHint(character)) {
+                return "\u{1F4A1}";
+            } else {
+                return "\u{26AB}";
+            };
+        } else if (character === "@" || character === " ") {
+            return " ";
+        } else { return ""; }
+    }
+
+    getShareWorthyString() {
+        let res = ""
+        for (const character of this.quote.split("")) {
+            res += this.getResultChar(character.toUpperCase())
+        }
+        return res
     }
 
     private removeLetterMapping({ letter }: { letter: string }) {

@@ -77,7 +77,7 @@ const CodiacApp = () => {
               color="black"
               onPress={() => {
                 state.reactToResetButton();
-                state.givenHintLetters = [];
+                state.givenHintLetters.length = 0;
                 updateState();
               }}
             />
@@ -89,7 +89,13 @@ const CodiacApp = () => {
       )}
       <QuoteDisplay state={state} updateState={updateState} />
       <LetterKeyboardDisplay state={state} updateState={updateState} />
-      {<PuzzleCompleteModal visible={modalVisible} onClose={() => {}} />}
+      {
+        <PuzzleCompleteModal
+          state={state}
+          visible={modalVisible}
+          onClose={() => {}}
+        />
+      }
     </SafeAreaView>
   );
 };

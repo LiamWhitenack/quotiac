@@ -13,7 +13,7 @@ function useOnCompleteModal(
       }, 2000);
       return () => clearTimeout(timeout);
     } else {
-      setModalVisible(false); // Reset when puzzle is not solved
+      setModalVisible(false);
     }
   }, [setModalVisible, state.solved]);
 }
