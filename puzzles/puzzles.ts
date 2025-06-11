@@ -3,13 +3,7 @@ import { CharacterQuote, DirectQuote, FamousDocumentQuote, GeneralPhrase, SongLy
 
 
 const PUZZLES: CryptographBase[] = [
-  new CharacterQuote(
-    "I'm not superstitious, but I am a little stitious.",
-    "Sitcom",
-    "Michael Scott",
-    "The Office",
-    2007
-  ),
+
   new CharacterQuote(
     "There is no Easter Bunny, There is no Tooth Fairy, and there is no queen of England.",
     "File",
@@ -24,13 +18,7 @@ const PUZZLES: CryptographBase[] = [
     "Lord of the Rings: The Fellowship of the Ring (Film)",
     2001
   ),
-  new CharacterQuote(
-    "Hello, my name is Inigo Montoya. You killed my father. Prepare to die.",
-    "Film",
-    "Inigo Montoya",
-    "The Princess Bride",
-    1987
-  ),
+
   // new CryptographBase( // Taking this one out for now because Steve Carrell wasn't the first or the second person who famously used this quote
   //   "If I had a gun with two bullets, and I was in a room with Hitler, Bin Laden and Toby, I would shoot Toby twice",
   //   "Michael Scott",
@@ -99,6 +87,20 @@ const PUZZLES: CryptographBase[] = [
     "Anakin Skywalker",
     "Episode II: Attack of The Clones",
     2002,
+  ),
+  new CharacterQuote(
+    "Hello, my name is Inigo Montoya. You killed my father. Prepare to die.",
+    "Film",
+    "Inigo Montoya",
+    "The Princess Bride",
+    1987
+  ),
+  new CharacterQuote(
+    "I'm not superstitious, but I am a little stitious.",
+    "Sitcom",
+    "Michael Scott",
+    "The Office",
+    2007
   ),
   new GeneralPhrase(
     "A dyslexic man walks into a bra",

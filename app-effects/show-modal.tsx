@@ -1,0 +1,21 @@
+import GameState from "@/state/state";
+import { useEffect } from "react";
+import { Animated } from "react-native";
+
+function useOnCompleteModal(
+  state: GameState,
+  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>
+) {
+  useEffect(() => {
+    if (state.solved) {
+      const timeout = setTimeout(() => {
+        setModalVisible(true);
+      }, 2000);
+      return () => clearTimeout(timeout);
+    } else {
+      setModalVisible(false); // Reset when puzzle is not solved
+    }
+  }, [setModalVisible, state.solved]);
+}
+
+export default useOnCompleteModal;
