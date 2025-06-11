@@ -16,7 +16,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.liamwhitenack.codiac"
     },
     "web": {
       "bundler": "metro",
@@ -36,12 +37,7 @@
       ]
     ],
     "experiments": {
-      "typedRoutes": true,
-      "baseUrl": "/expo-gh-pages"
-    },
-    "scripts": {
-      "deploy": "gh-pages --nojekyll -d dist",
-      "predeploy": "expo export -p web"
+      "typedRoutes": true
     },
     "sdkVersion": "53.0.0",
     "extra": {
