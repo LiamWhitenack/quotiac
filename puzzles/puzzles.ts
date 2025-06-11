@@ -96,6 +96,13 @@ const PUZZLES: CryptographBase[] = [
     1987
   ),
   new CharacterQuote(
+    "Remember, Red, hope is a good thing, maybe the best of things, and no good thing ever dies.",
+    "Film",
+    "Andy Dufresne",
+    "The Shawshank Redemption",
+    1994
+  ),
+  new CharacterQuote(
     "I'm not superstitious, but I am a little stitious.",
     "Sitcom",
     "Michael Scott",
