@@ -103,6 +103,13 @@ const PUZZLES: CryptographBase[] = [
     1994
   ),
   new CharacterQuote(
+    "You want forgiveness? Get religion.",
+    "Film",
+    "Eddie Brock",
+    "SPIDER-MAN 3",
+    2007
+  ),
+  new CharacterQuote(
     "I'm not superstitious, but I am a little stitious.",
     "Sitcom",
     "Michael Scott",
