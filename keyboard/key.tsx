@@ -15,7 +15,6 @@ function keyboardKey(
 ) {
   const letter = KEYBOARD_LETTERS[rowIndex][index];
   const isLetter = element === letter;
-  console.log(element);
   return (
     <TouchableOpacity
       key={element}
