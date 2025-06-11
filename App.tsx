@@ -76,8 +76,10 @@ const CodiacApp = () => {
               size={32}
               color="black"
               onPress={() => {
+                if (state.solved) {
+                  state.givenHintLetters.length = 0;
+                }
                 state.reactToResetButton();
-                state.givenHintLetters.length = 0;
                 updateState();
               }}
             />
