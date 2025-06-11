@@ -220,22 +220,18 @@ class GameState {
 
     }
 
-    getResultChar(character: string) {
-        if (character >= "A" && character <= "Z") {
-            if (this.elementIsPartOfHint(character)) {
-                return "\u{1F4A1}";
-            } else {
-                return "\u{26AB}";
-            };
-        } else if (character === "@" || character === " ") {
-            return " ";
-        } else { return ""; }
-    }
-
     getShareWorthyString() {
         let res = ""
         for (const character of this.quote.split("")) {
-            res += this.getResultChar(character.toUpperCase())
+            if (character >= "A" && character <= "Z") {
+                if (this.elementIsPartOfHint(character)) {
+                    res += "\u{1F4A1}";
+                } else {
+                    res += "\u{26AB}";
+                };
+            } else if (character === "@" || character === " ") {
+                res += " ";
+            }
         }
         return res
     }
