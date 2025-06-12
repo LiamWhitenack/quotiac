@@ -1,5 +1,12 @@
 import React from "react";
-import { Modal, View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  Modal,
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Share,
+} from "react-native";
 import styles from "./styles";
 import GameState from "@/state/state";
 
@@ -14,21 +21,29 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
   visible,
   onClose,
 }) => {
+  const handleShare = async () => {
+    try {
+      await Share.share({
+        message: state.getShareWorthyString(),
+      });
+    } catch (error: any) {
+      console.error("Error sharing:", error.message);
+    }
+  };
+
   return (
     <Modal animationType="slide" transparent={true} visible={visible}>
       <View style={styles.modalOverlay}>
         <View style={styles.modalContent}>
           <Text style={styles.modalTitle}>Puzzle Solved!</Text>
-          <Text style={styles.resultsText}>
-            {state.solved ? state.getShareWorthyString() : ""}
-          </Text>
+          <Text style={styles.resultsText}>{state.getShareWorthyString()}</Text>
           <View style={styles.modalButtonContainer}>
-            <TouchableOpacity style={styles.modalButton}>
+            <TouchableOpacity style={styles.modalButton} onPress={handleShare}>
               <Text style={styles.modalButtonText}>Share</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.modalButton}>
-              <Text style={styles.modalButtonText}>Info</Text>
-            </TouchableOpacity>
+            {/* <TouchableOpacity style={styles.modalButton} onPress={onClose}>
+              <Text style={styles.modalButtonText}>Close</Text>
+            </TouchableOpacity> */}
           </View>
         </View>
       </View>

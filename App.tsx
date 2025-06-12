@@ -95,7 +95,9 @@ const CodiacApp = () => {
         <PuzzleCompleteModal
           state={state}
           visible={modalVisible}
-          onClose={() => {}}
+          onClose={() => {
+            setModalVisible(false);
+          }}
         />
       }
     </View>

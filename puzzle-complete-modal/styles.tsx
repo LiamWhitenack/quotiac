@@ -1,10 +1,11 @@
-import { Modal, StyleSheet } from "react-native";
+import sizing from "@/sizing/sizing";
+import { Modal, Platform, StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   modalContent: {
     backgroundColor: "white",
     borderRadius: 16,
     padding: 24,
-    width: "80%",
+    width: sizing.maxWidth * 0.8,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
@@ -18,9 +19,15 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   resultsText: {
-    fontSize: 16,
+    fontSize: 24, // bigger for clearer emoji
+    lineHeight: 32, // add vertical breathing room
     marginBottom: 24,
     textAlign: "center",
+    fontFamily: Platform.select({
+      ios: "Apple Color Emoji",
+      android: "Noto Color Emoji",
+      default: "Segoe UI Emoji",
+    }),
   },
   modalButtonContainer: {
     flexDirection: "row",
@@ -30,7 +37,7 @@ const styles = StyleSheet.create({
   modalButton: {
     flex: 1,
     marginHorizontal: 8,
-    backgroundColor: "#007AFF",
+    backgroundColor: "black",
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: "center",

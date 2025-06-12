@@ -222,18 +222,20 @@ class GameState {
 
     getShareWorthyString() {
         let res = ""
-        for (const character of this.quote.split("")) {
+        for (const character of this.quote.toUpperCase().split("")) {
             if (character >= "A" && character <= "Z") {
                 if (this.elementIsPartOfHint(character)) {
                     res += "\u{1F4A1}";
                 } else {
                     res += "\u{26AB}";
                 };
-            } else if (character === "@" || character === " ") {
-                res += " ";
+            } else if (character === " ") {
+                res += "\u3000"; // emoji-sized space
+            } else if (character === "@") {
+                res += "\n"
             }
         }
-        return res
+        return res.slice(1)
     }
 
     private removeLetterMapping({ letter }: { letter: string }) {
