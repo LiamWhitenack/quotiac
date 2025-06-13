@@ -1,14 +1,28 @@
-import React from "react";
-import {
-  Modal,
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Share,
-} from "react-native";
+import * as Sharing from "expo-sharing";
+import ViewShot from "react-native-view-shot";
+import React, { useRef } from "react";
+import { Modal, View, Text, TouchableOpacity, ViewProps } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import styles from "./styles";
 import GameState from "@/state/state";
+
+const YourComponentToShare: React.FC<ViewProps> = (props) => (
+  <View
+    {...props}
+    style={[
+      {
+        width: 200,
+        height: 200,
+        backgroundColor: "skyblue",
+        justifyContent: "center",
+        alignItems: "center",
+      },
+      props.style,
+    ]}
+  >
+    <Text>Hello PNG</Text>
+  </View>
+);
 
 type PuzzleCompleteModalProps = {
   state: GameState;
@@ -21,11 +35,18 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
   visible,
   onClose,
 }) => {
+  const viewShotRef = useRef<ViewShot>(null);
+
   const handleShare = async () => {
     try {
-      await Share.share({
-        message: state.getShareWorthyString(),
+      const uri = await viewShotRef.current?.capture?.({
+        format: "png",
+        quality: 1,
       });
+
+      if (!uri) throw new Error("Failed to capture image");
+
+      await Sharing.shareAsync(uri);
     } catch (error: any) {
       console.error("Error sharing:", error.message);
     }
@@ -35,15 +56,24 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
     <Modal animationType="slide" transparent={true} visible={visible}>
       <View style={styles.modalOverlay}>
         <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>Puzzle Solved!</Text>
-          <Text style={styles.resultsText}>{state.getShareWorthyString()}</Text>
+          <View style={styles.modalHeader}>
+            <Text style={styles.modalTitle}>Puzzle Solved!</Text>
+            <TouchableOpacity onPress={onClose}>
+              <Ionicons name="close" size={24} color="gray" />
+            </TouchableOpacity>
+          </View>
+
+          <ViewShot ref={viewShotRef} options={{ format: "png", quality: 1 }}>
+            <YourComponentToShare />
+            <Text style={styles.resultsText}>
+              {state.getShareWorthyString()}
+            </Text>
+          </ViewShot>
+
           <View style={styles.modalButtonContainer}>
             <TouchableOpacity style={styles.modalButton} onPress={handleShare}>
               <Text style={styles.modalButtonText}>Share</Text>
             </TouchableOpacity>
-            {/* <TouchableOpacity style={styles.modalButton} onPress={onClose}>
-              <Text style={styles.modalButtonText}>Close</Text>
-            </TouchableOpacity> */}
           </View>
         </View>
       </View>
