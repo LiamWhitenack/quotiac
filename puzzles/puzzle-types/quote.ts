@@ -50,7 +50,11 @@ class DirectQuote extends CryptographBase {
  * himself in a room with Hitler, Stalin, and O'Malley, but has only two bullets, what does he do? Shoot O'Malley 
  * twice." (This could also be a riddle))
  */
-class GeneralPhrase extends CryptographBase { }
+class GeneralPhrase extends CryptographBase {
+    constructor(quote: string) {
+        super(quote, "General Quote")
+    }
+}
 
 /**
  * Represents a general quote which has been used enough to have no recognizeable source (i.e. "What are thoooooose?")

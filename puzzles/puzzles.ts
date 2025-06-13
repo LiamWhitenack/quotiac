@@ -4,12 +4,8 @@ import { CharacterQuote, DirectQuote, FamousDocumentQuote, GeneralPhrase, SongLy
 
 const PUZZLES: CryptographBase[] = [
 
-  new CharacterQuote(
-    "There is no Easter Bunny, There is no Tooth Fairy, and there is no queen of England.",
-    "File",
-    "Tighten",
-    "Megamind",
-    2010
+  new GeneralPhrase(
+    "What do boobs and model trains have in common? They're meant for kids but are primarily played with by grown men.",
   ),
   new CharacterQuote(
     "One does not simply walk into Mordor",
@@ -25,13 +21,7 @@ const PUZZLES: CryptographBase[] = [
   //   "The Office"
   //   new Date(2007, 8, 27),
   // ),
-  new CharacterQuote(
-    "If I had a nickel for every time, I'd have two nickels. Which isn't a lot, but it's weird that it happened twice",
-    "Film",
-    "Dr. Doofenshmirtz",
-    "Phineas and Ferb the Movie: Across the 2nd Dimension",
-    2011
-  ),
+
   new CharacterQuote(
     "greater good? I am your wife! I'm the greatest good you are ever gonna get!",
     "Film",
@@ -103,21 +93,35 @@ const PUZZLES: CryptographBase[] = [
     1994
   ),
   new CharacterQuote(
-    "You want forgiveness? Get religion.",
-    "Film",
-    "Eddie Brock",
-    "SPIDER-MAN 3",
-    2007
-  ),
-  new CharacterQuote(
     "I'm not superstitious, but I am a little stitious.",
     "Sitcom",
     "Michael Scott",
     "The Office",
     2007
   ),
+  new CharacterQuote(
+    "If I had a nickel for every time, I'd have two nickels. Which isn't a lot, but it's weird that it happened twice",
+    "Film",
+    "Dr. Doofenshmirtz",
+    "Phineas and Ferb the Movie: Across the 2nd Dimension",
+    2011
+  ),
+  new CharacterQuote(
+    "There is no Easter Bunny, There is no Tooth Fairy, and there is no queen of England.",
+    "File",
+    "Tighten",
+    "Megamind",
+    2010
+  ),
   new GeneralPhrase(
     "A dyslexic man walks into a bra",
+  ),
+  new CharacterQuote(
+    "Life is like a box of chocolates... You never know what you're going to get.",
+    "Film",
+    "Forrest Gump",
+    "Forrest Gump",
+    1994,
   ),
   new GeneralPhrase(
     "It doesn't matter if you're tall or short, thin or fat, rich or poor, at the end of the day, it's night.",
@@ -137,14 +141,11 @@ const PUZZLES: CryptographBase[] = [
     1939,
   ),
   new CharacterQuote(
-    "Life is like a box of chocolates... You never know what you're going to get.",
+    "You want forgiveness? Get religion.",
     "Film",
-    "Forrest Gump",
-    "Forrest Gump",
-    1994,
-  ),
-  new GeneralPhrase(
-    "What do boobs and model trains have in common? They're meant for kids but are primarily played with by grown men.",
+    "Eddie Brock",
+    "SPIDER-MAN 3",
+    2007
   ),
 
   new CharacterQuote(
