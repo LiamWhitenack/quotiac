@@ -26,22 +26,19 @@ function getIcons(state: GameState, updateState: () => void) {
         width: sizing.iconSize,
       }}
     >
-      <TouchableOpacity
+      <Text
         disabled={state.solved || state.elementIsPartOfHint(letter)}
         onPress={() => {
           state.reactToQuoteLetterPress(letter);
           updateState();
         }}
+        style={{
+          fontSize: sizing.iconSize / 1.2,
+          color: state.elementColor(letter),
+        }}
       >
-        <Text
-          style={{
-            fontSize: sizing.iconSize / 1.2,
-            color: state.elementColor(letter),
-          }}
-        >
-          {letter}
-        </Text>
-      </TouchableOpacity>
+        {letter}
+      </Text>
     </View>
   );
   const renderNonLetterCharacter = (char: string, key: string) => (
@@ -68,20 +65,17 @@ function getIcons(state: GameState, updateState: () => void) {
         width: sizing.iconSize,
       }}
     >
-      <TouchableOpacity
+      <Ionicons
+        // @ts-ignore
+        name={iconName}
+        size={sizing.iconSize / 1.2}
+        color={state.elementColor(iconName)}
         disabled={state.solved || state.elementIsPartOfHint(iconName)}
         onPress={() => {
           state.reactToQuoteIconPress(index, iconName);
           updateState();
         }}
-      >
-        <Ionicons
-          // @ts-ignore
-          name={iconName}
-          size={sizing.iconSize / 1.2}
-          color={state.elementColor(iconName)}
-        />
-      </TouchableOpacity>
+      />
     </View>
   );
 
