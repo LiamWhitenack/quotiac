@@ -4,38 +4,32 @@ import React, { useRef } from "react";
 import { Modal, View, Text, TouchableOpacity, ViewProps } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import styles from "./styles";
+import quoteStyles from "../quote-display/styles";
 import GameState from "@/state/state";
-
-const YourComponentToShare: React.FC<ViewProps> = (props) => (
-  <View
-    {...props}
-    style={[
-      {
-        width: 200,
-        height: 200,
-        backgroundColor: "skyblue",
-        justifyContent: "center",
-        alignItems: "center",
-      },
-      props.style,
-    ]}
-  >
-    <Text>Hello PNG</Text>
-  </View>
-);
+import getIcons from "@/quote-display/get-icons";
 
 type PuzzleCompleteModalProps = {
   state: GameState;
   visible: boolean;
+  updateState: () => void;
   onClose: () => void;
 };
 
 const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
   state,
   visible,
+  updateState,
   onClose,
 }) => {
   const viewShotRef = useRef<ViewShot>(null);
+
+  const YourComponentToShare: React.FC<ViewProps> = (props) => (
+    <View style={quoteStyles.verticalContainer}>
+      <View style={quoteStyles.horizontalContainer}>
+        {getIcons(state, updateState)}
+      </View>
+    </View>
+  );
 
   const handleShare = async () => {
     try {
@@ -65,9 +59,6 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
 
           <ViewShot ref={viewShotRef} options={{ format: "png", quality: 1 }}>
             <YourComponentToShare />
-            <Text style={styles.resultsText}>
-              {state.getShareWorthyString()}
-            </Text>
           </ViewShot>
 
           <View style={styles.modalButtonContainer}>
