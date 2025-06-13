@@ -13,11 +13,20 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 8,
   },
-  modalTitle: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 16,
+  modalHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+    paddingHorizontal: 16, // or adjust to match your container padding
+    paddingBottom: 25,
   },
+
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+
   resultsText: {
     fontSize: 24, // bigger for clearer emoji
     lineHeight: 32, // add vertical breathing room
