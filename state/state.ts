@@ -23,6 +23,19 @@ function capitalizeValues(map: Map<string, string>): Map<string, string> {
 function isACapitalLetter(x: string) {
     return (x.length === 1 && x >= "A" && x <= "Z")
 }
+function findCharacterBackward(
+    charList: string[],
+    startingIndex: number,
+    searchForCharacter: string
+): number {
+    for (let i = startingIndex; i >= 0; i--) {
+        if (charList[i] === searchForCharacter) {
+            return i;
+        }
+    }
+    return -1; // Not found
+}
+
 
 class GameState {
     puzzle: PuzzleOfTheDay;
@@ -201,6 +214,7 @@ class GameState {
         }
 
         if (isACapitalLetter(element)) {
+            console.log(element)
             if (this.elementIsPartOfHint(element)) {
                 return;
             }
@@ -249,7 +263,9 @@ class GameState {
         this.setDecodingMap(this.decodingMap);
         this.updateKeyboardValues();
         this.setActiveIcon(icon);
+        this.quoteIndex = findCharacterBackward(this.encodedQuote, this.quoteIndex, letter)
     }
+
     private removeIconMapping({ icon }: { icon: string }) {
         this.decodingMap.delete(icon);
         this.setDecodingMap(this.decodingMap);
