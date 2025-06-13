@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     width: "100%",
-    paddingHorizontal: 16, // or adjust to match your container padding
+    paddingHorizontal: 0, // or adjust to match your container padding
     paddingBottom: 25,
   },
 
