@@ -31,27 +31,29 @@ const CodiacApp = () => {
 
   // Use effect to listen to key presses
   useEffect(() => {
-    const handleKeyPress = (event: KeyboardEvent) => {
-      const key = event.key;
+    if (!sizing.isMobile) {
+      const handleKeyPress = (event: KeyboardEvent) => {
+        const key = event.key;
 
-      if (key === "ArrowLeft") {
-        state.setActiveIcon(state.getNextIconName(true));
-      } else if (key === "ArrowRight") {
-        state.setActiveIcon(state.getNextIconName());
-      } else if (/^[a-z]$/i.test(key)) {
-        state.reactToKeyboardPress(key.toUpperCase());
-      } else {
-        return; // ignore unrecognized keys
-      }
+        if (key === "ArrowLeft") {
+          state.setActiveIcon(state.getNextIconName(true));
+        } else if (key === "ArrowRight") {
+          state.setActiveIcon(state.getNextIconName());
+        } else if (/^[a-z]$/i.test(key)) {
+          state.reactToKeyboardPress(key.toUpperCase());
+        } else {
+          return; // ignore unrecognized keys
+        }
 
-      updateState();
-    };
+        updateState();
+      };
 
-    window.addEventListener("keydown", handleKeyPress);
+      window.addEventListener("keydown", handleKeyPress);
 
-    return () => {
-      window.removeEventListener("keydown", handleKeyPress);
-    };
+      return () => {
+        window.removeEventListener("keydown", handleKeyPress);
+      };
+    }
   });
   //, [activeIcon, decodingMap, quoteIndex, reactToKeyPress]);
 
