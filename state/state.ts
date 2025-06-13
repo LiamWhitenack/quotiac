@@ -171,8 +171,10 @@ class GameState {
     getNextIconName(descending: boolean = false): string {
         const stop = descending ? 0 : this.encodedQuote.length
         const step = descending ? -1 : 1;
-        for (let i = this.quoteIndex + 1; descending ? i >= stop : i < stop; i += step) {
+        for (let i = this.quoteIndex + step; descending ? i >= stop : i < stop; i += step) {
             let iconName = this.encodedQuote[i];
+            console.log(i)
+            console.log(iconName)
             if (iconName.length === 1) {
                 continue;
             }
@@ -208,7 +210,7 @@ class GameState {
     }
 
 
-    reactToKeyPress(element: string) {
+    reactToKeyboardPress(element: string) {
         if (this.solved || this.activeIcon === "") {
             return;
         }

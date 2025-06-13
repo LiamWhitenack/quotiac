@@ -21,7 +21,7 @@ function keyboardKey(
       disabled={state.solved || state.elementIsPartOfHint(element)}
       style={isLetter ? styles.key : styles.iconKey}
       onPress={() => {
-        state.reactToKeyPress(element);
+        state.reactToKeyboardPress(element);
         updateState();
       }}
     >
