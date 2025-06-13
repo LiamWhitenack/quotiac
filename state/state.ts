@@ -173,8 +173,6 @@ class GameState {
         const step = descending ? -1 : 1;
         for (let i = this.quoteIndex + step; descending ? i >= stop : i < stop; i += step) {
             let iconName = this.encodedQuote[i];
-            console.log(i)
-            console.log(iconName)
             if (iconName.length === 1) {
                 continue;
             }
@@ -216,7 +214,6 @@ class GameState {
         }
 
         if (isACapitalLetter(element)) {
-            console.log(element)
             if (this.elementIsPartOfHint(element)) {
                 return;
             }
