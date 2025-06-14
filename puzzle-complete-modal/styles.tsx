@@ -21,6 +21,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 0, // or adjust to match your container padding
     paddingBottom: 25,
   },
+  shareHorizontalContainer: {
+    width: sizing.maxWidth * 0.7,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center", // optional centering
+  },
+
+  shareVerticalContainer: {
+    height: sizing.maxWidth * 0.7,
+    flexDirection: "column",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "hidden", // prevents overflow
+    // REMOVE height: "100%" and flex: 1
+  },
 
   modalTitle: {
     fontSize: 20,

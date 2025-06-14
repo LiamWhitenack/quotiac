@@ -4,35 +4,33 @@ import React, { useRef } from "react";
 import { Modal, View, Text, TouchableOpacity, ViewProps } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import styles from "./styles";
-import quoteStyles from "../quote-display/styles";
 import GameState from "@/state/state";
-import getIcons from "@/quote-display/get-icons";
+import getIcons from "./get-icons";
 
 type PuzzleCompleteModalProps = {
   state: GameState;
   visible: boolean;
-  updateState: () => void;
   onClose: () => void;
 };
 
 const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
   state,
   visible,
-  updateState,
   onClose,
 }) => {
   const viewShotRef = useRef<ViewShot>(null);
 
   const YourComponentToShare: React.FC<ViewProps> = (props) => (
-    <View style={quoteStyles.verticalContainer}>
-      <View style={quoteStyles.horizontalContainer}>
-        {getIcons(state, updateState)}
+    <View style={styles.shareHorizontalContainer}>
+      <View style={styles.shareVerticalContainer}>
+        {getIcons(state, () => {})}
       </View>
     </View>
   );
 
   const handleShare = async () => {
     try {
+      // @ts-ignore
       const uri = await viewShotRef.current?.capture?.({
         format: "png",
         quality: 1,
