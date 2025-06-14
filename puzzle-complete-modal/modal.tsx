@@ -88,8 +88,8 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
               </TouchableOpacity>
             </View>
 
+            {/* Just the clean share content, no ViewShot here */}
             <YourComponentToShare />
-            <View style={{ height: 20 }} />
 
             <View style={styles.modalButtonContainer}>
               <TouchableOpacity
