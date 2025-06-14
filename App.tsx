@@ -7,7 +7,7 @@ import {
   Animated,
   Easing,
 } from "react-native";
-import mainWindowStyles from "./styles";
+import { createMainWindowStyles } from "./styles";
 import QuoteDisplay from "./quote-display/quote-display";
 import LetterKeyboardDisplay from "./keyboard/keyboard";
 import { Ionicons } from "@expo/vector-icons";
@@ -19,6 +19,7 @@ import PuzzleCompleteModal from "./puzzle-complete-modal/modal";
 import useTitleFade from "./app-effects/title-fade";
 import useOnCompleteModal from "./app-effects/show-modal";
 import { StatusBar } from "react-native";
+import { useTheme } from "./theme/ThemeContext";
 
 const CodiacApp = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -64,9 +65,20 @@ const CodiacApp = () => {
   // Conditional render with view or safe area view based on platform
   const Wrapper = sizing.isMobile ? SafeAreaView : View;
 
+  const { theme, toggleTheme } = useTheme();
+
+  const backgroundColor = theme === "light" ? "#F3F4F6" : "#121212";
+
+  const mainWindowStyles = createMainWindowStyles(theme);
+
+  console.log
+
   return (
     <>
-      <StatusBar barStyle="dark-content" /> {/* This is needed to make the iPhone status bar dark colored */}
+      <StatusBar
+        barStyle={theme === "light" ? "dark-content" : "light-content"}
+        backgroundColor={backgroundColor}
+      />
       <Wrapper style={[
         mainWindowStyles.container,
         !sizing.isMobile && { padding: 20 },
@@ -83,7 +95,7 @@ const CodiacApp = () => {
               <Ionicons
                 name={"bulb-outline"}
                 size={32}
-                color="black"
+                color={theme === "light" ? "black" : "#F8F8F8"}
                 onPress={() => {
                   state.giveAHint();
                   updateState();
@@ -94,7 +106,7 @@ const CodiacApp = () => {
               <Ionicons
                 name={"refresh-outline"}
                 size={32}
-                color="black"
+                color={theme === "light" ? "black" : "#F8F8F8"}
                 onPress={() => {
                   if (state.solved) {
                     state.givenHintLetters.length = 0;
