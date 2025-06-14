@@ -66,7 +66,7 @@ const CodiacApp = () => {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" />{" "}
+      <StatusBar barStyle="dark-content" />
       {/* This is needed to make the iPhone status bar dark colored */}
       <Wrapper
         style={[
