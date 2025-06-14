@@ -289,7 +289,12 @@ class GameState {
     }
 
     reactToResetButton() {
-        this.setDecodingMap(new Map());
+        for (const key of this.decodingMap.keys()) {
+            if (!this.elementIsPartOfHint(key)) {
+                this.decodingMap.delete(key)
+            }
+        }
+
         this.updateKeyboardValues();
         this.setQuoteIndex(0);
         this.setActiveIcon(this.encodedQuote[0]);
