@@ -5,7 +5,7 @@ import GameState from "@/state/state";
 import { splitOnPercent, wrapWords } from "@/sizing/wrap-words";
 import styles from "./styles";
 
-function getIcons(state: GameState, updateState: () => void) {
+function getIcons(state: GameState) {
   const miniIconSize = sizing.iconSize * 0.7;
   const renderSpace = (key: string) => (
     <View key={key} style={{ height: miniIconSize, width: miniIconSize }} />

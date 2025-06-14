@@ -29,7 +29,8 @@ const styles = StyleSheet.create({
   },
 
   shareVerticalContainer: {
-    height: sizing.maxWidth * 0.7,
+    // height: sizing.maxWidth * 0.7,
+    maxHeight: sizing.maxWidth * 0.7,
     flexDirection: "column",
     flexWrap: "wrap",
     justifyContent: "center",
