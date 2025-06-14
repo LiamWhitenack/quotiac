@@ -3,8 +3,9 @@ import { View, Text, TouchableOpacity } from "react-native";
 import sizing from "../sizing/sizing";
 import GameState from "@/state/state";
 import { splitOnPercent } from "@/sizing/wrap-words";
+import type { Theme } from "@/theme/themes";
 
-function getIcons(state: GameState, updateState: () => void) {
+function getIcons(state: GameState, updateState: () => void, theme: Theme) {
   const decodeQuote = (quote: string[]): string[] => {
     return quote.map((char) => state.decodingMap.get(char) ?? char);
   };
@@ -51,7 +52,12 @@ function getIcons(state: GameState, updateState: () => void) {
         width: char === "%" ? sizing.iconSize / 1 : sizing.iconSize / 2,
       }}
     >
-      <Text style={{ fontSize: sizing.iconSize / 1.2 }}>{char}</Text>
+      <Text style={{ 
+        fontSize: sizing.iconSize / 1.2,
+        color: theme.text 
+      }}>
+        {char}
+      </Text>
     </View>
   );
 

@@ -1,7 +1,8 @@
 import { StyleSheet } from "react-native";
 import sizing from "./sizing/sizing";
+import type { Theme } from "./theme/themes";
 
-export const createMainWindowStyles = (theme: "light" | "dark") =>
+export const createMainWindowStyles = (theme: Theme) =>
   StyleSheet.create({
     topBarContainer: {
       width: sizing.maxWidth,
@@ -24,14 +25,13 @@ export const createMainWindowStyles = (theme: "light" | "dark") =>
       fontWeight: "bold", // Bold text
       textAlign: "center", // Center the title
       marginHorizontal: 15,
-      color: theme === "light" ? "black" : "#F8F8F8",
+      color: theme.text,
     },
     container: {
       flex: 1,
       justifyContent: "flex-start",
       alignItems: "center",
-      // paddingTop: 20,
-      backgroundColor: theme === "light" ? "#F3F4F6" : "#121212"
+      backgroundColor: theme.background,
     },
     attemptsContainer: {
       flexGrow: 1,

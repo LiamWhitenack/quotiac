@@ -16,7 +16,7 @@ function keyboardKey(
 ) {
   const letter = KEYBOARD_LETTERS[rowIndex][index];
   const isLetter = element === letter;
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
   const styles = createStyles(theme);
   return (
     <TouchableOpacity

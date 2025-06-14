@@ -1,7 +1,8 @@
 import { StyleSheet } from "react-native";
 import sizing from "../sizing/sizing";
+import type { Theme } from "@/theme/themes";
 
-export const createStyles = (theme: "light" | "dark") =>
+export const createStyles = (theme: Theme) =>
   StyleSheet.create({
   container: {
     flex: 1, // Ensure the main container takes the full height
@@ -22,7 +23,7 @@ export const createStyles = (theme: "light" | "dark") =>
     justifyContent: "center",
     alignItems: "center",
     margin: sizing.keyboardKeyGap, // Adjust margin for spacing
-    backgroundColor: theme === "light" ? "#D3D6DA" : "#818384",
+    backgroundColor: theme.surface,
     borderRadius: 5,
   },
   iconKey: {
@@ -37,9 +38,9 @@ export const createStyles = (theme: "light" | "dark") =>
   keyText: {
     fontSize: 18,
     fontWeight: "bold",
-    color: theme === "light" ? "black" : "#F8F8F8",
+    color: theme.text,
   },
   activeKey: {
-    backgroundColor: theme === "light" ? "#D3D6DA" : "#818384",
+    backgroundColor: theme.surface,
   },
 });

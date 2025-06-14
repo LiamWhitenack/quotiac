@@ -24,7 +24,12 @@ import { useTheme } from "./theme/ThemeContext";
 const CodiacApp = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const fadeTitleAnimation = useRef(new Animated.Value(1)).current;
-  const [state, setGameState] = useState(new GameState(todayQuote()));
+
+  // Get current theme from provider
+  const { theme, mode } = useTheme();
+
+  // Initialize game state
+  const [state, setGameState] = useState(new GameState(todayQuote(), theme));
 
   function updateState() {
     let clone = state.clone();
@@ -65,19 +70,14 @@ const CodiacApp = () => {
   // Conditional render with view or safe area view based on platform
   const Wrapper = sizing.isMobile ? SafeAreaView : View;
 
-  const { theme, toggleTheme } = useTheme();
-
-  const backgroundColor = theme === "light" ? "#F3F4F6" : "#121212";
-
+  // Create styles using theme
   const mainWindowStyles = createMainWindowStyles(theme);
-
-  console.log
 
   return (
     <>
       <StatusBar
-        barStyle={theme === "light" ? "dark-content" : "light-content"}
-        backgroundColor={backgroundColor}
+        barStyle={mode === "light" ? "dark-content" : "light-content"}
+        backgroundColor={theme.background}
       />
       <Wrapper style={[
         mainWindowStyles.container,
@@ -95,7 +95,7 @@ const CodiacApp = () => {
               <Ionicons
                 name={"bulb-outline"}
                 size={32}
-                color={theme === "light" ? "black" : "#F8F8F8"}
+                color={theme.text}
                 onPress={() => {
                   state.giveAHint();
                   updateState();
@@ -106,7 +106,7 @@ const CodiacApp = () => {
               <Ionicons
                 name={"refresh-outline"}
                 size={32}
-                color={theme === "light" ? "black" : "#F8F8F8"}
+                color={theme.text}
                 onPress={() => {
                   if (state.solved) {
                     state.givenHintLetters.length = 0;

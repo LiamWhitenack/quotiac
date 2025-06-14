@@ -14,7 +14,7 @@ const LetterKeyboardDisplay: React.FC<LetterKeyboardDisplayProps> = ({
   state,
   updateState,
 }) => {
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
   const styles = createStyles(theme);
   return (
     <View style={styles.container}>

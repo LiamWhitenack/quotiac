@@ -1,10 +1,11 @@
 import { StyleSheet } from "react-native";
 import sizing from "@/sizing/sizing";
+import type { Theme } from "@/theme/themes";
 
-export const createStyles = (theme: "light" | "dark") =>
+export const createStyles = (theme: Theme) =>
   StyleSheet.create({
     iconStyle: {
-      color: theme === "light" ? "black" : "#F8F8F8",
+      color: theme.text,
     },
     spaceIconStyle: {
       color: "transparent",

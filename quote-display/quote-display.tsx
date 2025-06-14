@@ -14,12 +14,12 @@ interface QuoteDisplayProps {
 const QuoteDisplay: React.FC<QuoteDisplayProps> = ({ state, updateState }) => {
   // ((sizing.quoteHeight * sizing.screenWidth) / quote.length) ** 0.5;
   // const numberOfIconsInColumn = sizing.quoteHeight / sizing.iconSize;
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
   const styles = createStyles(theme);
   return (
     <View style={styles.verticalContainer}>
       <View style={styles.horizontalContainer}>
-        {getIcons(state, updateState)}
+        {getIcons(state, updateState, theme)}
       </View>
     </View>
   );
