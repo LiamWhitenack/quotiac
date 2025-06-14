@@ -6,6 +6,7 @@ import { wrapWords } from "@/sizing/wrap-words";
 import sizing from "@/sizing/sizing";
 import GiveALetterHint from "@/puzzles/hints/letter";
 import type { Theme } from "@/theme/themes";
+import { randomQuote, todayQuote } from "@/puzzles/get-puzzle";
 
 function inverseMap(map: Map<string, string>): Map<string, string> {
     const inverseDecodingMap = new Map<string, string>();
@@ -91,7 +92,6 @@ class GameState {
                 updatedDecodingMap.set(this.encodingMap.get(hint.letter.toLowerCase())!, hint.letter)
                 this.setDecodingMap(updatedDecodingMap)
                 this.updateKeyboardValues()
-                this.puzzle.hints.splice(i, 1)
                 this.checkSolved()
                 break
             }
@@ -289,6 +289,20 @@ class GameState {
     }
 
     reactToResetButton() {
+        this.puzzle = randomQuote()
+        this.quote = wrapWords(this.puzzle.stringToEncrypt.split(" "), sizing.maxWidth / sizing.iconSize);
+        this.encodingMap = mapUniqueLettersToNumbers(this.puzzle.stringToEncrypt);
+        this.solution = capitalizeValues(inverseMap(this.encodingMap));
+        this.fireConfetti = false;
+        this.solved = false;
+        this.decodingMap = new Map();
+        this.inverseDecodingMap = new Map();
+        this.givenHintLetters = [];
+        this.activeIcon = "";
+        this.keyboardValues = KEYBOARD_LETTERS;
+        this.quoteIndex = 0;
+        this.encodedQuote = this.encodeQuote(this.quote.toLowerCase());
+        this.showAppTitle = true;
         this.setDecodingMap(new Map());
         this.updateKeyboardValues();
         this.setQuoteIndex(0);
