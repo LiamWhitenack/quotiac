@@ -5,6 +5,7 @@ import { PuzzleOfTheDay } from "@/puzzles/puzzles"
 import { wrapWords } from "@/sizing/wrap-words";
 import sizing from "@/sizing/sizing";
 import GiveALetterHint from "@/puzzles/hints/letter";
+import type { Theme } from "@/theme/themes";
 
 function inverseMap(map: Map<string, string>): Map<string, string> {
     const inverseDecodingMap = new Map<string, string>();
@@ -53,7 +54,9 @@ class GameState {
     encodedQuote: string[];
     showAppTitle: boolean;
 
-    constructor(puzzle: PuzzleOfTheDay) {
+    private theme: Theme;
+
+    constructor(puzzle: PuzzleOfTheDay, theme: Theme) {
         this.puzzle = puzzle
         this.quote = wrapWords(puzzle.stringToEncrypt.split(" "), sizing.maxWidth / sizing.iconSize);
         this.encodingMap = mapUniqueLettersToNumbers(puzzle.stringToEncrypt);
@@ -67,7 +70,12 @@ class GameState {
         this.keyboardValues = KEYBOARD_LETTERS;
         this.quoteIndex = 0;
         this.encodedQuote = this.encodeQuote(this.quote.toLowerCase());
-        this.showAppTitle = true
+        this.showAppTitle = true;
+        this.theme = theme;
+    }
+
+    setTheme(theme: Theme) {
+        this.theme = theme;
     }
 
     userHasDiscoveredLetter(hint: GiveALetterHint) {
@@ -92,7 +100,7 @@ class GameState {
     }
 
     clone(): GameState {
-        const cloned = new GameState(this.puzzle); // Use existing constructor
+        const cloned = new GameState(this.puzzle, this.theme); // Use existing constructor
 
         for (const key of Object.keys(this) as (keyof GameState)[]) {
             const value = this[key];
@@ -188,11 +196,11 @@ class GameState {
 
     elementColor(element: string): string {
         if (this.elementIsPartOfHint(element)) {
-            return "green"
+            return this.theme.secondary
         } else if (element === this.activeIcon) {
-            return "blue"
+            return this.theme.primary
         } else {
-            return "black"
+            return this.theme.text
         }
     }
 

@@ -7,7 +7,7 @@ import {
   Animated,
   Easing,
 } from "react-native";
-import mainWindowStyles from "./styles";
+import { createMainWindowStyles } from "./styles";
 import QuoteDisplay from "./quote-display/quote-display";
 import LetterKeyboardDisplay from "./keyboard/keyboard";
 import { Ionicons } from "@expo/vector-icons";
@@ -19,11 +19,17 @@ import PuzzleCompleteModal from "./puzzle-complete-modal/modal";
 import useTitleFade from "./app-effects/title-fade";
 import useOnCompleteModal from "./app-effects/show-modal";
 import { StatusBar } from "react-native";
+import { useTheme } from "./theme/ThemeContext";
 
 const CodiacApp = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const fadeTitleAnimation = useRef(new Animated.Value(1)).current;
-  const [state, setGameState] = useState(new GameState(todayQuote()));
+
+  // Get current theme from provider
+  const { theme, mode } = useTheme();
+
+  // Initialize game state
+  const [state, setGameState] = useState(new GameState(todayQuote(), theme));
 
   function updateState() {
     let clone = state.clone();
@@ -64,9 +70,15 @@ const CodiacApp = () => {
   // Conditional render with view or safe area view based on platform
   const Wrapper = sizing.isMobile ? SafeAreaView : View;
 
+  // Create styles using theme
+  const mainWindowStyles = createMainWindowStyles(theme);
+
   return (
     <>
-      <StatusBar barStyle="dark-content" /> {/* This is needed to make the iPhone status bar dark colored */}
+      <StatusBar
+        barStyle={mode === "light" ? "dark-content" : "light-content"}
+        backgroundColor={theme.background}
+      />
       <Wrapper style={[
         mainWindowStyles.container,
         !sizing.isMobile && { padding: 20 },
@@ -83,7 +95,7 @@ const CodiacApp = () => {
               <Ionicons
                 name={"bulb-outline"}
                 size={32}
-                color="black"
+                color={theme.text}
                 onPress={() => {
                   state.giveAHint();
                   updateState();
@@ -94,7 +106,7 @@ const CodiacApp = () => {
               <Ionicons
                 name={"refresh-outline"}
                 size={32}
-                color="black"
+                color={theme.text}
                 onPress={() => {
                   if (state.solved) {
                     state.givenHintLetters.length = 0;

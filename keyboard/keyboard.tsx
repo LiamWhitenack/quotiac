@@ -1,8 +1,9 @@
 import React from "react";
 import { View } from "react-native";
-import styles from "./styles";
+import { createStyles } from "./styles";
 import keyboardKey from "./key";
 import GameState from "@/state/state";
+import { useTheme } from "@/theme/ThemeContext";
 
 interface LetterKeyboardDisplayProps {
   state: GameState;
@@ -13,6 +14,8 @@ const LetterKeyboardDisplay: React.FC<LetterKeyboardDisplayProps> = ({
   state,
   updateState,
 }) => {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   return (
     <View style={styles.container}>
       {state.keyboardValues.map((row, rowIndex) => (
