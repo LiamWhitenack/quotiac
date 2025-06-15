@@ -10,6 +10,8 @@ import {
   Platform,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import * as Clipboard from "expo-clipboard";
+import html2canvas from "html2canvas";
 import styles from "./styles";
 import GameState from "@/state/state";
 import getIcons from "./get-icons";
@@ -26,94 +28,94 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
   onClose,
 }) => {
   const viewShotRef = useRef<ViewShot>(null);
+  const webRef = useRef<HTMLDivElement>(null); // DOM ref for web
 
   const YourComponentToShare: React.FC<ViewProps> = (props) => (
-    <View style={styles.shareHorizontalContainer}>
+    <View
+      style={styles.shareHorizontalContainer}
+      // On web, assign the ref to get DOM element
+      ref={Platform.OS === "web" ? webRef : undefined}
+      {...props}
+    >
       <View style={styles.shareVerticalContainer}>{getIcons(state)}</View>
+      <Text
+        style={{
+          marginTop: 10,
+          textAlign: "center",
+          color: "black",
+          fontSize: 16,
+          fontWeight: "600",
+        }}
+      >
+        Go to https://codiac.expo.app to play!
+      </Text>
     </View>
   );
 
   const handleShare = async () => {
-    console.log("Platform.OS:", Platform.OS);
-
-    try {
-      if (Platform.OS === "web") {
-        if (!viewShotRef.current) {
-          alert("Nothing to capture");
-          return;
-        }
-
-        const base64 = await viewShotRef.current.capture({
-          format: "png",
-          quality: 1,
-          result: "base64",
-        });
-
-        const response = await fetch(`data:image/png;base64,${base64}`);
-        const blob = await response.blob();
-
-        if (navigator.clipboard && navigator.clipboard.write) {
-          await navigator.clipboard.write([
-            new ClipboardItem({
-              "image/png": blob,
-            }),
-          ]);
-          alert("Image copied to clipboard!");
-        } else {
-          alert("Clipboard API not supported or permission denied.");
-        }
-
+    if (Platform.OS === "web") {
+      if (!webRef.current) {
+        alert("Could not find element to capture.");
         return;
       }
 
-      if (["ios", "android"].includes(Platform.OS)) {
-        //@ts-ignore
-        const uri = await viewShotRef.current?.capture?.({
-          format: "png",
-          quality: 1,
-        });
+      const canvas = await html2canvas(webRef.current, {
+        backgroundColor: null,
+        scale: window.devicePixelRatio,
+      });
 
-        if (!uri) throw new Error("Failed to capture image");
+      const blob = await new Promise<Blob | null>((resolve) =>
+        canvas.toBlob(resolve, "image/png", 1)
+      );
 
-        await Sharing.shareAsync(uri);
-      } else {
-        alert(`Sharing not supported on platform: ${Platform.OS}`);
+      if (!blob) {
+        alert("Failed to generate image.");
+        return;
       }
-    } catch (error: any) {
-      console.error("Error sharing:", error.message);
+
+      try {
+        // Use the native Clipboard API on web
+        await navigator.clipboard.write([
+          new ClipboardItem({
+            "image/png": blob,
+          }),
+        ]);
+        alert("Image copied to clipboard!");
+      } catch (err) {
+        alert("Failed to copy image to clipboard: " + err);
+      }
+    } else {
+      // Native platforms use react-native-view-shot
+      const uri = await viewShotRef.current!.capture!({
+        format: "png",
+        quality: 1,
+        result: "tmpfile",
+      });
+      await Clipboard.setImageAsync(uri);
+      alert("Image copied to clipboard!");
     }
   };
 
   return (
     <>
-      <ViewShot
-        ref={viewShotRef}
-        options={{ format: "png", quality: 1 }}
-        style={{
-          position: "absolute",
-          top: -9999,
-          left: -9999,
-          backgroundColor: "white",
-          padding: 20,
-          width: 300,
-          borderRadius: 8,
-        }}
-      >
-        <View style={styles.shareHorizontalContainer}>
-          <View style={styles.shareVerticalContainer}>{getIcons(state)}</View>
-        </View>
-        <Text
+      {/* Hidden ViewShot for native capture */}
+      {Platform.OS !== "web" && (
+        <ViewShot
+          ref={viewShotRef}
+          options={{ format: "png", quality: 1 }}
           style={{
-            marginTop: 10,
-            textAlign: "center",
-            color: "black",
-            fontSize: 16,
-            fontWeight: "600",
+            position: "absolute",
+            top: -9999,
+            left: -9999,
+            backgroundColor: "white",
+            padding: 20,
+            width: 300,
+            borderRadius: 8,
           }}
         >
-          Go to https://codiac.expo.app to play!
-        </Text>
-      </ViewShot>
+          <YourComponentToShare />
+        </ViewShot>
+      )}
 
       <Modal animationType="slide" transparent={true} visible={visible}>
         <View style={styles.modalOverlay}>
@@ -125,6 +127,7 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
               </TouchableOpacity>
             </View>
 
+            {/* Show the share component visually */}
             <YourComponentToShare />
             <View style={{ height: 20 }} />
 
