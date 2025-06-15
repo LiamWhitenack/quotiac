@@ -5,7 +5,7 @@ import type { Theme } from "@/theme/themes";
 export const createStyles = (theme: Theme) =>
   StyleSheet.create({
     modalContent: {
-      backgroundColor: "white",
+      backgroundColor: theme.elevatedSurface,
       borderRadius: 16,
       padding: 24,
       width: sizing.maxWidth * 0.8,
@@ -41,7 +41,7 @@ export const createStyles = (theme: Theme) =>
     shareMessage: {
       marginTop: 10,
       textAlign: "center",
-      color: "black",
+      color: theme.text,
       fontSize: 16,
       fontWeight: "600",
     },
@@ -49,6 +49,7 @@ export const createStyles = (theme: Theme) =>
       modalTitle: {
         fontSize: 20,
         fontWeight: "bold",
+        color: theme.text,
       },
 
       resultsText: {
@@ -70,7 +71,7 @@ export const createStyles = (theme: Theme) =>
       modalButton: {
         flex: 1,
         marginHorizontal: 8,
-        backgroundColor: "black",
+        backgroundColor: theme.elevatedButton,
         paddingVertical: 12,
         borderRadius: 8,
         alignItems: "center",

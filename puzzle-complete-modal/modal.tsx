@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import * as Clipboard from "expo-clipboard";
-import styles, { createStyles } from "./styles";
+import { createStyles } from "./styles";
 import GameState from "@/state/state";
 import getIcons from "./get-icons";
 import { useTheme } from "@/theme/ThemeContext";
@@ -29,6 +29,8 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
 }) => {
   const viewShotRef = useRef<ViewShot>(null);
   const webRef = useRef<HTMLDivElement>(null); // DOM ref for web
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
 
   const YourComponentToShare: React.FC<ViewProps> = (props) => (
     <View
@@ -38,7 +40,7 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
       {...props}
     >
       <View style={styles.shareVerticalContainer}>
-        {getIcons(state)}
+        {getIcons(state, theme)}
 
         <Text style={styles.shareMessage}>
           Go to https://codiac.expo.app to play!
@@ -91,9 +93,6 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
     }
   };
 
-  const { theme } = useTheme();
-  const styles = createStyles(theme);
-
   return (
     <>
       {/* Hidden ViewShot for native capture */}
@@ -105,7 +104,7 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
             position: "absolute",
             top: -9999,
             left: -9999,
-            backgroundColor: "white",
+            backgroundColor: theme.elevatedSurface,
             padding: 20,
             width: 300,
             borderRadius: 8,
