@@ -43,7 +43,7 @@ export const createStyles = (theme: Theme) =>
       marginTop: 10,
       textAlign: "center",
       color: theme.text,
-      fontSize: 16,
+      fontSize: 12,
       fontWeight: "600",
     },
 
