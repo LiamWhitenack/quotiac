@@ -7,7 +7,7 @@ export const lightTheme = {
   elevatedSurface: "#F3F4F6",
   border: "#CCC",
   lightBulbBorder: "#000000",
-  lightBulbFill: "yellow",
+  lightBulbFill: "#FFD700",
   elevatedButton: "black"
 };
 

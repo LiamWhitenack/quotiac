@@ -6,7 +6,17 @@ import { splitOnPercent, wrapWords } from "@/sizing/wrap-words";
 import { createStyles } from "./styles";
 import type { Theme } from "@/theme/themes";
 
-function getIcons(state: GameState, theme: Theme) {
+// Define fallback/default colors here
+const defaultTheme = {
+  text: "#000", // default icon color
+  lightBulbFill: "#FFD700", // default bulb fill (gold)
+  lightBulbBorder: "#000", // default bulb border (black)
+};
+
+function getIcons(state: GameState, theme: Partial<Theme> = {}) {
+  const noThemePassed = Object.keys(theme).length === 0;
+  const resolvedTheme = { ...defaultTheme, ...theme };
+
   const miniIconSize = sizing.iconSize * 0.7;
   const renderSpace = (key: string) => (
     <View key={key} style={{ height: miniIconSize, width: miniIconSize }} />
@@ -25,10 +35,11 @@ function getIcons(state: GameState, theme: Theme) {
       <Ionicons
         name={iconName as any}
         size={miniIconSize * 0.8}
-        color={theme.text}
+        color={resolvedTheme.text}
       />
     </View>
   );
+
   const renderHint = (iconName: string, key: string) => (
     <View
       key={key}
@@ -48,24 +59,27 @@ function getIcons(state: GameState, theme: Theme) {
       <Ionicons
         name="bulb"
         size={miniIconSize * 0.8}
-        color={theme.lightBulbFill}
+        color={resolvedTheme.lightBulbFill}
         style={{ position: "absolute", top: 0, left: 0 }}
       />
       <Ionicons
         name="bulb-outline"
         size={miniIconSize * 0.8}
-        color={theme.lightBulbBorder}
+        color={resolvedTheme.lightBulbBorder}
         style={{ position: "absolute", top: 0, left: 0 }}
       />
     </View>
   );
 
-  const quote = wrapWords(
-    state.puzzle.stringToEncrypt.split(" "),
-    (sizing.maxWidth / sizing.iconSize) * 0.7
-  )
+  const words = state.puzzle.stringToEncrypt.split(" ");
+  const maxLength = noThemePassed
+    ? Math.max(10, Math.max(...words.map((s) => s.length)))
+    : (sizing.maxWidth / sizing.iconSize) * 0.8;
+
+  const quote = wrapWords(words, maxLength, true)
     .split("")
     .map((char) => state.encodingMap.get(char.toLowerCase()) ?? char);
+
   return (
     <View>
       {splitOnPercent(quote).map((line, lineIndex) => {

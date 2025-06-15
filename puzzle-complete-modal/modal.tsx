@@ -29,32 +29,51 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
   onClose,
 }) => {
   const viewShotRef = useRef<ViewShot>(null);
-  const webRef = useRef<HTMLDivElement>(null); // DOM ref for web
+  const webRef = useRef<HTMLDivElement>(null);
   const { theme } = useTheme();
   const styles = createStyles(theme);
 
-  const YourComponentToShare: React.FC<ViewProps> = (props) => (
+  // Visible component shown in modal
+  const YourVisibleComponent: React.FC<ViewProps> = (props) => (
+    <View style={styles.resultsHorizontalContainer} {...props}>
+      <View style={styles.resultsVerticalContainer}>
+        <View style={{ height: 20 }} />
+        {getIcons(state, theme)}
+        <View style={{ height: 20 }} />
+      </View>
+    </View>
+  );
+
+  // Hidden component used for sharing/capture
+  const YourHiddenComponent: React.FC<ViewProps> = (props) => (
     <View
-      style={styles.shareHorizontalContainer}
+      style={[
+        styles.hiddenShareHorizontalContainer,
+        {
+          backgroundColor: "white",
+          padding: 20,
+          width: 300,
+          borderRadius: 8,
+        },
+      ]}
       // @ts-ignore
       ref={Platform.OS === "web" ? webRef : undefined}
       {...props}
     >
-      <View style={styles.shareVerticalContainer}>
-        <View style={{ height: 20 }} />
-        {getIcons(state, theme)}
-
-        <Text style={styles.shareMessage}>
-          Go to https://codiac.expo.app to play!
-        </Text>
-        <View style={{ height: 20 }} />
+      <View style={styles.hiddenShareVerticalContainer}>
+        {getIcons(state)}
+        {sizing.isMobile || !sizing.isMobileWeb(navigator) ? (
+          <Text style={styles.shareMessage}>
+            Go to https://codiac.expo.app to play!
+          </Text>
+        ) : undefined}
       </View>
     </View>
   );
 
   const handleShare = async () => {
     if (sizing.isMobile) {
-      // Native platforms use react-native-view-shot
+      // Native platforms: use react-native-view-shot
       // @ts-ignore
       const uri = await viewShotRef.current!.capture!({
         format: "png",
@@ -67,7 +86,9 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
         alert("Could not find element to capture.");
         return;
       }
+
       const html2canvas = (await import("html2canvas")).default;
+      await new Promise((resolve) => setTimeout(resolve, 100));
       const canvas = await html2canvas(webRef.current, {
         backgroundColor: null,
         scale: window.devicePixelRatio,
@@ -112,7 +133,7 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
 
   return (
     <>
-      {/* Hidden ViewShot for native capture */}
+      {/* Hidden component for ViewShot (mobile only) */}
       {sizing.isMobile && (
         <ViewShot
           ref={viewShotRef}
@@ -121,16 +142,20 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
             position: "absolute",
             top: -9999,
             left: -9999,
-            backgroundColor: theme.elevatedSurface,
-            padding: 20,
-            width: 300,
-            borderRadius: 8,
           }}
         >
-          <YourComponentToShare />
+          <YourHiddenComponent />
         </ViewShot>
       )}
 
+      {/* On web, the hidden component is rendered normally (off-screen or hidden via CSS) */}
+      {!sizing.isMobile && (
+        <View style={{ position: "absolute", top: -9999, left: -9999 }}>
+          <YourHiddenComponent />
+        </View>
+      )}
+
+      {/* Modal with visible component */}
       <Modal animationType="slide" transparent={true} visible={visible}>
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
@@ -141,8 +166,7 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
               </TouchableOpacity>
             </View>
 
-            {/* Show the share component visually */}
-            <YourComponentToShare />
+            <YourVisibleComponent />
             <View style={{ height: 20 }} />
 
             <View style={styles.modalButtonContainer}>

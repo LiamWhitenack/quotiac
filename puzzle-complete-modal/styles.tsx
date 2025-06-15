@@ -24,25 +24,36 @@ export const createStyles = (theme: Theme) =>
       paddingHorizontal: 0, // or adjust to match your container padding
       paddingBottom: 25,
     },
-    shareHorizontalContainer: {
+    resultsHorizontalContainer: {
       width: sizing.maxWidth * 0.7,
       flexDirection: "row",
       justifyContent: "center",
       alignItems: "center",
     },
 
-    shareVerticalContainer: {
+    resultsVerticalContainer: {
       flexDirection: "column",
       justifyContent: "center",
       alignItems: "center",
       overflow: "hidden",
-      transform: [{ scale: 1.2 }],
+    },
+    hiddenShareHorizontalContainer: {
+      flexDirection: "row",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+
+    hiddenShareVerticalContainer: {
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      overflow: "hidden",
     },
 
     shareMessage: {
       marginTop: 10,
       textAlign: "center",
-      color: theme.text,
+      color: "black",
       fontSize: 12,
       fontWeight: "600",
     },
