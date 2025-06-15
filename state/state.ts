@@ -64,10 +64,10 @@ class GameState {
         this.decodingMap = new Map();
         this.inverseDecodingMap = new Map();
         this.givenHintLetters = [];
-        this.activeIcon = "";
         this.keyboardValues = KEYBOARD_LETTERS;
-        this.quoteIndex = 0;
         this.encodedQuote = this.encodeQuote(this.quote.toLowerCase());
+        this.activeIcon = this.encodedQuote[0];
+        this.quoteIndex = 0;
         this.showAppTitle = true;
     }
 
