@@ -294,6 +294,7 @@ class GameState {
                 this.decodingMap.delete(key)
             }
         }
+        this.setDecodingMap(new Map(this.decodingMap))
 
         this.updateKeyboardValues();
         this.setQuoteIndex(0);
