@@ -100,35 +100,28 @@ const PUZZLES: CryptographBase[] = [
     1994
   ),
   new CharacterQuote(
-    "This isn't flying, this is falling with style!",
-    "Film",
-    "Buzz Lightyear",
-    "Toy Story",
-    1995,
-  ),
-  new CharacterQuote(
-    "I'm not superstitious, but I am a little stitious.",
-    "Sitcom",
-    "Michael Scott",
-    "The Office",
-    2007
-  ),
-  new CharacterQuote(
     "There is no Easter Bunny, There is no Tooth Fairy, and there is no queen of England.",
     "Film",
     "Tighten",
     "Megamind",
     2010
   ),
-  new GeneralPhrase(
-    "A dyslexic man walks into a bra",
-  ),
   new CharacterQuote(
-    "Life is like a box of chocolates... You never know what you're going to get.",
+    "Life is like a box of chocolates... You never know what you're gonna get.",
     "Film",
     "Forrest Gump",
     "Forrest Gump",
     1994,
+  ),
+  new CharacterQuote(
+    "This isn't flying, this is falling with style!",
+    "Film",
+    "Buzz Lightyear",
+    "Toy Story",
+    1995,
+  ),
+  new GeneralPhrase(
+    "A dyslexic man walks into a bra",
   ),
   new GeneralPhrase(
     "It doesn't matter if you're tall or short, thin or fat, rich or poor, at the end of the day, it's night.",
@@ -199,13 +192,19 @@ const PUZZLES: CryptographBase[] = [
     "The Hobbit",
     1937,
   ),
-
   new CharacterQuote(
     "There are only two things I can't stand in this world. People who are intolerant of other people's cultures. and the Dutch.",
     "Film",
     "Nigel Powers",
     "Austin Powers in Goldmember",
     2002
+  ),
+  new CharacterQuote(
+    "I'm not superstitious, but I am a little stitious.",
+    "Sitcom",
+    "Michael Scott",
+    "The Office",
+    2007
   ),
   new FamousDocumentQuote(
     "Four score and seven years ago our fathers brought forth on this continent, a new nation, conceived in Liberty, and dedicated to the proposition that all men are created equal.",

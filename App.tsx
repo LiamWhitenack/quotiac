@@ -79,10 +79,11 @@ const CodiacApp = () => {
         barStyle={mode === "light" ? "dark-content" : "light-content"}
         backgroundColor={theme.background}
       />
-      <Wrapper style={[
-        mainWindowStyles.container,
-        !sizing.isMobile && { padding: 20 },
-      ]}
+      <Wrapper
+        style={[
+          mainWindowStyles.container,
+          !sizing.isMobile && { padding: 20 },
+        ]}
       >
         <View style={mainWindowStyles.topBarContainer}>
           <Animated.Text
@@ -91,17 +92,34 @@ const CodiacApp = () => {
             {state.showAppTitle ? "Codiac" : state.puzzle.puzzleType}
           </Animated.Text>
           <View style={mainWindowStyles.topBarIconContainer}>
-            <TouchableOpacity style={mainWindowStyles.iconContainer}>
-              <Ionicons
-                name={"bulb-outline"}
-                size={32}
-                color={theme.text}
-                onPress={() => {
-                  state.giveAHint();
-                  updateState();
-                }}
-              />
+            <TouchableOpacity
+              style={mainWindowStyles.iconContainer}
+              onPress={() => {
+                state.giveAHint();
+                updateState();
+              }}
+            >
+              <View style={{ position: "relative", width: 32, height: 32 }}>
+                <Ionicons
+                  name="bulb"
+                  size={32}
+                  color="yellow"
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    opacity: 1.0,
+                  }}
+                />
+                <Ionicons
+                  name="bulb-outline"
+                  size={32}
+                  color={theme.text}
+                  style={{ position: "absolute", top: 0, left: 0 }}
+                />
+              </View>
             </TouchableOpacity>
+
             <TouchableOpacity style={mainWindowStyles.iconContainer}>
               <Ionicons
                 name={"refresh-outline"}
