@@ -12,7 +12,7 @@ export const createMainWindowStyles = (theme: Theme) =>
       alignItems: "center",
       paddingVertical: 0,
       borderBottomWidth: 1,
-      borderBottomColor: "#ccc",
+      borderBottomColor: theme.border,
     },
     topBarIconContainer: {
       width: 50,
