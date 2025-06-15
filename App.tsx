@@ -29,7 +29,7 @@ const CodiacApp = () => {
   const { theme, mode } = useTheme();
 
   // Initialize game state
-  const [state, setGameState] = useState(new GameState(todayQuote(), theme));
+  const [state, setGameState] = useState(new GameState(todayQuote()));
 
   function updateState() {
     let clone = state.clone();
