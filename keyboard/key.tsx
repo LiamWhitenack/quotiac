@@ -34,7 +34,7 @@ function keyboardKey(
         <Ionicons
           // @ts-ignore
           name={element}
-          color={state.elementColor(element)}
+          color={state.elementColor(element, theme)}
           size={sizing.keyboardKeyWidth * 0.8}
         />
       )}

@@ -55,9 +55,7 @@ class GameState {
     encodedQuote: string[];
     showAppTitle: boolean;
 
-    private theme: Theme;
-
-    constructor(puzzle: PuzzleOfTheDay, theme: Theme) {
+    constructor(puzzle: PuzzleOfTheDay) {
         this.puzzle = puzzle
         this.quote = wrapWords(puzzle.stringToEncrypt.split(" "), sizing.maxWidth / sizing.iconSize);
         this.encodingMap = mapUniqueLettersToNumbers(puzzle.stringToEncrypt);
@@ -67,16 +65,11 @@ class GameState {
         this.decodingMap = new Map();
         this.inverseDecodingMap = new Map();
         this.givenHintLetters = [];
-        this.activeIcon = "";
         this.keyboardValues = KEYBOARD_LETTERS;
-        this.quoteIndex = 0;
         this.encodedQuote = this.encodeQuote(this.quote.toLowerCase());
+        this.activeIcon = this.encodedQuote[0];
+        this.quoteIndex = 0;
         this.showAppTitle = true;
-        this.theme = theme;
-    }
-
-    setTheme(theme: Theme) {
-        this.theme = theme;
     }
 
     userHasDiscoveredLetter(hint: GiveALetterHint) {
@@ -100,7 +93,7 @@ class GameState {
     }
 
     clone(): GameState {
-        const cloned = new GameState(this.puzzle, this.theme); // Use existing constructor
+        const cloned = new GameState(this.puzzle); // Use existing constructor
 
         for (const key of Object.keys(this) as (keyof GameState)[]) {
             const value = this[key];
@@ -194,13 +187,13 @@ class GameState {
         return "";
     }
 
-    elementColor(element: string): string {
+    elementColor(element: string, theme: Theme): string {
         if (this.elementIsPartOfHint(element)) {
-            return this.theme.secondary
+            return theme.secondary
         } else if (element === this.activeIcon) {
-            return this.theme.primary
+            return theme.primary
         } else {
-            return this.theme.text
+            return theme.text
         }
     }
 

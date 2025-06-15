@@ -1,11 +1,19 @@
-function wrapWords(words: string[], maxWidth: number): string {
+function wrapWords(words: string[], maxWidth: number, ignoreNonAlphabetic: boolean = false): string {
     let res: string = "";
     let currentLine: string[] = [];
+
+    const getLength = (word: string): number => {
+        if (!ignoreNonAlphabetic) return word.length;
+        return word.replace(/[^a-zA-Z]/g, "").length;
+    };
+
     for (const word of words) {
         const widthOfSpaces = currentLine.length;
         const lineLength =
-            currentLine.reduce((sum, str) => sum + str.length, 0) + widthOfSpaces;
-        if (currentLine.length === 0) { currentLine = [word]; } else if (lineLength + word.length <= maxWidth) {
+            currentLine.reduce((sum, str) => sum + getLength(str), 0) + widthOfSpaces;
+        if (currentLine.length === 0) {
+            currentLine = [word];
+        } else if (lineLength + getLength(word) <= maxWidth) {
             currentLine.push(word);
         } else {
             res += "@" + currentLine.join(" ");

@@ -1,3 +1,4 @@
+import { Platform } from "react-native";
 import { screenWidth, screenHeight, isMobile } from "./screen-properties"
 
 class Sizing {
@@ -34,6 +35,11 @@ class Sizing {
 
         this.iconSize = 32;
     }
+
+    isMobileWeb(navigator: Navigator) {
+        if (Platform.OS !== "web") return false;
+        return /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
+    };
 }
 
 const sizing = new Sizing();
