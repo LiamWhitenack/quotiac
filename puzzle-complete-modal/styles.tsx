@@ -25,18 +25,22 @@ const styles = StyleSheet.create({
     width: sizing.maxWidth * 0.7,
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: "center", // optional centering
+    alignItems: "center",
   },
 
   shareVerticalContainer: {
-    // height: sizing.maxWidth * 0.7,
-    maxHeight: sizing.maxWidth * 0.7,
     flexDirection: "column",
-    flexWrap: "wrap",
     justifyContent: "center",
     alignItems: "center",
-    overflow: "hidden", // prevents overflow
-    // REMOVE height: "100%" and flex: 1
+    overflow: "hidden",
+  },
+
+  shareMessage: {
+    marginTop: 10,
+    textAlign: "center",
+    color: "black",
+    fontSize: 16,
+    fontWeight: "600",
   },
 
   modalTitle: {

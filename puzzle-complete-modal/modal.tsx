@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import * as Clipboard from "expo-clipboard";
-import html2canvas from "html2canvas";
 import styles from "./styles";
 import GameState from "@/state/state";
 import getIcons from "./get-icons";
@@ -33,21 +32,14 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
   const YourComponentToShare: React.FC<ViewProps> = (props) => (
     <View
       style={styles.shareHorizontalContainer}
-      // On web, assign the ref to get DOM element
+      // @ ts-ignore
       ref={Platform.OS === "web" ? webRef : undefined}
       {...props}
     >
       <View style={styles.shareVerticalContainer}>
         {getIcons(state)}
-        <Text
-          style={{
-            marginTop: 10,
-            textAlign: "center",
-            color: "black",
-            fontSize: 16,
-            fontWeight: "600",
-          }}
-        >
+
+        <Text style={styles.shareMessage}>
           Go to https://codiac.expo.app to play!
         </Text>
       </View>
@@ -60,7 +52,7 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
         alert("Could not find element to capture.");
         return;
       }
-
+      const html2canvas = (await import("html2canvas")).default;
       const canvas = await html2canvas(webRef.current, {
         backgroundColor: null,
         scale: window.devicePixelRatio,
@@ -88,13 +80,13 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
       }
     } else {
       // Native platforms use react-native-view-shot
+      // @ ts-ignore
       const uri = await viewShotRef.current!.capture!({
         format: "png",
         quality: 1,
         result: "tmpfile",
       });
-      await Clipboard.setImageAsync(uri);
-      alert("Image copied to clipboard!");
+      await Sharing.shareAsync(uri);
     }
   };
 
