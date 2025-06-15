@@ -41,11 +41,13 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
       {...props}
     >
       <View style={styles.shareVerticalContainer}>
+        <View style={{ height: 20 }} />
         {getIcons(state, theme)}
 
         <Text style={styles.shareMessage}>
           Go to https://codiac.expo.app to play!
         </Text>
+        <View style={{ height: 20 }} />
       </View>
     </View>
   );
