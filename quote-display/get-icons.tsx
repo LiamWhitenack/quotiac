@@ -35,7 +35,7 @@ function getIcons(state: GameState, updateState: () => void, theme: Theme) {
         }}
         style={{
           fontSize: sizing.iconSize * 0.8,
-          color: state.elementColor(letter),
+          color: state.elementColor(letter, theme),
         }}
       >
         {letter}
@@ -72,7 +72,7 @@ function getIcons(state: GameState, updateState: () => void, theme: Theme) {
         // @ts-ignore
         name={iconName}
         size={sizing.iconSize * 0.8}
-        color={state.elementColor(iconName)}
+        color={state.elementColor(iconName, theme)}
         disabled={state.solved || state.elementIsPartOfHint(iconName)}
         onPress={() => {
           state.reactToQuoteIconPress(index, iconName);
