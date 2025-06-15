@@ -34,7 +34,7 @@ function getIcons(state: GameState, updateState: () => void, theme: Theme) {
           updateState();
         }}
         style={{
-          fontSize: sizing.iconSize / 1.2,
+          fontSize: sizing.iconSize * 0.8,
           color: state.elementColor(letter),
         }}
       >
@@ -52,10 +52,7 @@ function getIcons(state: GameState, updateState: () => void, theme: Theme) {
         width: char === "%" ? sizing.iconSize / 1 : sizing.iconSize / 2,
       }}
     >
-      <Text style={{ 
-        fontSize: sizing.iconSize / 1.2,
-        color: theme.text 
-      }}>
+      <Text style={{ fontSize: sizing.iconSize * 0.8, color: theme.text }}>
         {char}
       </Text>
     </View>
@@ -74,7 +71,7 @@ function getIcons(state: GameState, updateState: () => void, theme: Theme) {
       <Ionicons
         // @ts-ignore
         name={iconName}
-        size={sizing.iconSize / 1.2}
+        size={sizing.iconSize * 0.8}
         color={state.elementColor(iconName)}
         disabled={state.solved || state.elementIsPartOfHint(iconName)}
         onPress={() => {
