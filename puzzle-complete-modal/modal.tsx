@@ -37,7 +37,13 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
       ref={Platform.OS === "web" ? webRef : undefined}
       {...props}
     >
-      <View style={styles.shareVerticalContainer}>{getIcons(state)}</View>
+      <View style={styles.shareVerticalContainer}>
+        {getIcons(state)}
+
+        <Text style={styles.shareMessage}>
+          Go to https://codiac.expo.app to play!
+        </Text>
+      </View>
     </View>
   );
 
@@ -57,9 +63,8 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
         return;
       }
       const html2canvas = (await import("html2canvas")).default;
-      await new Promise((r) => setTimeout(r, 100)); // small delay
       const canvas = await html2canvas(webRef.current, {
-        backgroundColor: "white",
+        backgroundColor: null,
         scale: window.devicePixelRatio,
       });
 
