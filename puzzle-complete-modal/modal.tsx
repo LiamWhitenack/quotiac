@@ -7,9 +7,10 @@ import {
   StyleSheet,
   Share,
 } from "react-native";
-import styles from "./styles";
+import { createStyles } from "./styles";
 import GameState from "@/state/state";
 import { Ionicons } from "@expo/vector-icons";
+import { useTheme } from "@/theme/ThemeContext";
 
 type PuzzleCompleteModalProps = {
   state: GameState;
@@ -32,6 +33,9 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
     }
   };
 
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
+
   return (
     <Modal animationType="slide" transparent={true} visible={visible}>
       <View style={styles.modalOverlay}>
@@ -39,7 +43,7 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
           <View style={styles.modalHeader}>
             <Text style={styles.modalTitle}>Puzzle Solved!</Text>
             <TouchableOpacity onPress={onClose}>
-              <Ionicons name="close" size={24} color="#888" />
+              <Ionicons name="close" size={24} color={theme.text} />
             </TouchableOpacity>
           </View>
           <Text style={styles.resultsText}>{state.getShareWorthyString()}</Text>

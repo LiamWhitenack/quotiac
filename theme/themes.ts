@@ -4,6 +4,7 @@ export const lightTheme = {
   background: "#F3F4F6",
   text: "#000000",
   surface: "#D3D6DA",
+  elevatedSurface: "#F3F4F6",
 };
 
 export const darkTheme = {
@@ -12,6 +13,7 @@ export const darkTheme = {
   background: "#121212",
   text: "#F8F8F8",
   surface: "#818384",
+  elevatedSurface: "#3C3C3C",
 };
 
 export type Theme = typeof lightTheme;
