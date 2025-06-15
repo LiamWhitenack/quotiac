@@ -29,7 +29,7 @@ const CodiacApp = () => {
   const { theme, mode } = useTheme();
 
   // Initialize game state
-  const [state, setGameState] = useState(new GameState(todayQuote(), theme));
+  const [state, setGameState] = useState(new GameState(todayQuote()));
 
   function updateState() {
     let clone = state.clone();
@@ -103,7 +103,7 @@ const CodiacApp = () => {
                 <Ionicons
                   name="bulb"
                   size={32}
-                  color="yellow"
+                  color={theme.lightBulbFill}
                   style={{
                     position: "absolute",
                     top: 0,
@@ -114,7 +114,7 @@ const CodiacApp = () => {
                 <Ionicons
                   name="bulb-outline"
                   size={32}
-                  color={theme.text}
+                  color={theme.lightBulbBorder}
                   style={{ position: "absolute", top: 0, left: 0 }}
                 />
               </View>

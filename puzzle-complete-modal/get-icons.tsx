@@ -3,9 +3,10 @@ import { View } from "react-native";
 import sizing from "../sizing/sizing";
 import GameState from "@/state/state";
 import { splitOnPercent, wrapWords } from "@/sizing/wrap-words";
-import styles from "./styles";
+import { createStyles } from "./styles";
+import type { Theme } from "@/theme/themes";
 
-function getIcons(state: GameState) {
+function getIcons(state: GameState, theme: Theme) {
   const miniIconSize = sizing.iconSize * 0.7;
   const renderSpace = (key: string) => (
     <View key={key} style={{ height: miniIconSize, width: miniIconSize }} />
@@ -24,7 +25,7 @@ function getIcons(state: GameState) {
       <Ionicons
         name={iconName as any}
         size={miniIconSize * 0.8}
-        color={"black"}
+        color={theme.text}
       />
     </View>
   );
@@ -47,13 +48,13 @@ function getIcons(state: GameState) {
       <Ionicons
         name="bulb"
         size={miniIconSize * 0.8}
-        color="yellow"
+        color={theme.lightBulbFill}
         style={{ position: "absolute", top: 0, left: 0 }}
       />
       <Ionicons
         name="bulb-outline"
         size={miniIconSize * 0.8}
-        color="black"
+        color={theme.lightBulbBorder}
         style={{ position: "absolute", top: 0, left: 0 }}
       />
     </View>
