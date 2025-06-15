@@ -1,29 +1,47 @@
 import sizing from "@/sizing/sizing";
 import { Modal, Platform, StyleSheet } from "react-native";
-import type { Theme } from "@/theme/themes";
+const styles = StyleSheet.create({
+  modalContent: {
+    backgroundColor: "white",
+    borderRadius: 16,
+    padding: 24,
+    width: sizing.maxWidth * 0.8,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 8,
+  },
+  modalHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+    paddingHorizontal: 0, // or adjust to match your container padding
+    paddingBottom: 25,
+  },
+  shareHorizontalContainer: {
+    width: sizing.maxWidth * 0.7,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 
-export const createStyles = (theme: Theme) =>
-  StyleSheet.create({
-    modalContent: {
-      backgroundColor: "white",
-      borderRadius: 16,
-      padding: 24,
-      width: sizing.maxWidth * 0.8,
-      alignItems: "center",
-      shadowColor: "#000",
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.3,
-      shadowRadius: 4,
-      elevation: 8,
-    },
-    modalHeader: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-      width: "100%",
-      paddingHorizontal: 0, // or adjust to match your container padding
-      paddingBottom: 25,
-    },
+  shareVerticalContainer: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "hidden",
+  },
+
+  shareMessage: {
+    marginTop: 10,
+    textAlign: "center",
+    color: "black",
+    fontSize: 16,
+    fontWeight: "600",
+  },
 
     modalTitle: {
       fontSize: 20,
