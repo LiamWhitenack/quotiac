@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     overflow: "hidden",
+    transform: [{ scale: 1.2 }],
   },
 
   shareMessage: {
