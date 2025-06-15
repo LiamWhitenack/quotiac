@@ -14,6 +14,7 @@ import * as Clipboard from "expo-clipboard";
 import styles from "./styles";
 import GameState from "@/state/state";
 import getIcons from "./get-icons";
+import sizing from "@/sizing/sizing";
 
 type PuzzleCompleteModalProps = {
   state: GameState;
@@ -32,7 +33,7 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
   const YourComponentToShare: React.FC<ViewProps> = (props) => (
     <View
       style={styles.shareHorizontalContainer}
-      // @ ts-ignore
+      // @ts-ignore
       ref={Platform.OS === "web" ? webRef : undefined}
       {...props}
     >
@@ -47,7 +48,16 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
   );
 
   const handleShare = async () => {
-    if (Platform.OS === "web") {
+    if (sizing.isMobile) {
+      // Native platforms use react-native-view-shot
+      // @ts-ignore
+      const uri = await viewShotRef.current!.capture!({
+        format: "png",
+        quality: 1,
+        result: "base64",
+      });
+      await Sharing.shareAsync(uri);
+    } else {
       if (!webRef.current) {
         alert("Could not find element to capture.");
         return;
@@ -67,7 +77,23 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
         return;
       }
 
-      try {
+      if (sizing.isMobileWeb(navigator)) {
+        const file = new File([blob], "image.png", { type: "image/png" });
+
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          try {
+            await navigator.share({
+              files: [file],
+              title: "Puzzle Image",
+              text: "https://codiac.expo.app",
+            });
+          } catch (err) {
+            alert("Sharing failed: " + err);
+          }
+        } else {
+          alert("Sharing not supported on this device or browser.");
+        }
+      } else {
         // Use the native Clipboard API on web
         await navigator.clipboard.write([
           new ClipboardItem({
@@ -75,25 +101,14 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
           }),
         ]);
         alert("Image copied to clipboard!");
-      } catch (err) {
-        alert("Failed to copy image to clipboard: " + err);
       }
-    } else {
-      // Native platforms use react-native-view-shot
-      // @ ts-ignore
-      const uri = await viewShotRef.current!.capture!({
-        format: "png",
-        quality: 1,
-        result: "tmpfile",
-      });
-      await Sharing.shareAsync(uri);
     }
   };
 
   return (
     <>
       {/* Hidden ViewShot for native capture */}
-      {Platform.OS !== "web" && (
+      {sizing.isMobile && (
         <ViewShot
           ref={viewShotRef}
           options={{ format: "png", quality: 1 }}
