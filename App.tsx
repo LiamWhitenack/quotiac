@@ -101,17 +101,6 @@ const CodiacApp = () => {
             >
               <View style={{ position: "relative", width: 32, height: 32 }}>
                 <Ionicons
-                  name="bulb"
-                  size={32}
-                  color={theme.lightBulbFill}
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    opacity: 1.0,
-                  }}
-                />
-                <Ionicons
                   name="bulb-outline"
                   size={32}
                   color={theme.lightBulbBorder}

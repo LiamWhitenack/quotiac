@@ -50,22 +50,10 @@ function getIcons(state: GameState, theme: Partial<Theme> = {}) {
         width: miniIconSize,
       }}
     >
-      {/* <Ionicons
+      <Ionicons
         name={iconName as any}
         size={miniIconSize * 0.8}
         color="green"
-        style={{ position: "absolute", top: 0, left: 0 }}
-      /> */}
-      <Ionicons
-        name="bulb"
-        size={miniIconSize * 0.8}
-        color={resolvedTheme.lightBulbFill}
-        style={{ position: "absolute", top: 0, left: 0 }}
-      />
-      <Ionicons
-        name="bulb-outline"
-        size={miniIconSize * 0.8}
-        color={resolvedTheme.lightBulbBorder}
         style={{ position: "absolute", top: 0, left: 0 }}
       />
     </View>

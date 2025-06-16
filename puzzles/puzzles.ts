@@ -120,6 +120,12 @@ const PUZZLES: CryptographBase[] = [
     "Toy Story",
     1995,
   ),
+  new SongLyrics(
+    "Never gonna give you up, never gonna let you down",
+    "Rick Astley",
+    "Never Gonna Give You Up",
+    1987,
+  ),
   new GeneralPhrase(
     "A dyslexic man walks into a bra",
   ),
@@ -178,12 +184,6 @@ const PUZZLES: CryptographBase[] = [
   ),
   new GeneralPhrase(
     "The quick brown fox jumps over the lazy brown dog",
-  ),
-  new SongLyrics(
-    "Never gonna give you up, never gonna let you down",
-    "Rick Astley",
-    "Never Gonna Give You Up",
-    1987,
   ),
   new CharacterQuote(
     "Not all those who wander are lost, Bilbo Baggins.",
