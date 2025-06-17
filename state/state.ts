@@ -208,20 +208,25 @@ class GameState {
         return this.givenHintLetters.includes(element) || this.givenHintLetters.includes(this.solution.get(element)!)
     }
 
+    letterIsAssociatedWithIcon(letter: string) {
+        return this.inverseDecodingMap.get(letter) !== undefined
+    }
+
 
     reactToKeyboardPress(element: string) {
-        if (this.solved || this.elementIsPartOfHint(element) || (this.activeIcon === "" && this.inverseDecodingMap.get(element) === undefined)) {
+        if (this.solved || this.elementIsPartOfHint(element) || (this.activeIcon === "" && !this.letterIsAssociatedWithIcon(element))) {
             return;
         }
 
         if (isACapitalLetter(element)) {
-            if (this.inverseDecodingMap.get(element) === undefined) {
+            // the letter is associated with an icon iff the user is using a keyboard
+            if (this.letterIsAssociatedWithIcon(element)) {
+                this.removeLetterMapping({ letter: element })
+            } else {
                 this.addLetterMapping({ letter: element })
                 this.checkSolved();
             }
-            else {
-                this.removeLetterMapping({ letter: element })
-            }
+
         } else {
             this.removeIconMapping({ icon: element })
         }
