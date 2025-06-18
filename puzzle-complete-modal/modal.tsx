@@ -72,62 +72,68 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
   );
 
   const handleShare = async () => {
-    if (sizing.isMobile) {
-      // Native platforms: use react-native-view-shot
-      // @ts-ignore
-      const uri = await viewShotRef.current!.capture!({
-        format: "png",
-        quality: 1,
-        result: "base64",
-      });
-      await Sharing.shareAsync(uri);
-    } else {
-      if (!webRef.current) {
-        alert("Could not find element to capture.");
-        return;
-      }
+    try {
+      if (sizing.isMobile) {
+        // Native platforms: use react-native-view-shot
+        // @ts-ignore
+        const uri = await viewShotRef.current!.capture!({
+          format: "png",
+          quality: 1,
+          result: "base64",
+        });
+        await Sharing.shareAsync(uri);
+      } else {
+        if (!webRef.current) {
+          alert("Could not find element to capture.");
+          return;
+        }
 
-      const html2canvas = (await import("html2canvas")).default;
-      await new Promise((resolve) => setTimeout(resolve, 100));
-      const canvas = await html2canvas(webRef.current, {
-        backgroundColor: null,
-        scale: window.devicePixelRatio,
-      });
+        const html2canvas = (await import("html2canvas")).default;
+        await new Promise((resolve) => setTimeout(resolve, 10));
+        const canvas = await html2canvas(webRef.current, {
+          backgroundColor: null,
+          scale: window.devicePixelRatio,
+        });
 
-      const blob = await new Promise<Blob | null>((resolve) =>
-        canvas.toBlob(resolve, "image/png", 1)
-      );
+        const blob = await new Promise<Blob | null>((resolve) =>
+          canvas.toBlob(resolve, "image/png", 1)
+        );
 
-      if (!blob) {
-        alert("Failed to generate image.");
-        return;
-      }
+        if (!blob) {
+          alert("Failed to generate image.");
+          return;
+        }
 
-      if (sizing.isMobileWeb(navigator)) {
-        const file = new File([blob], "image.png", { type: "image/png" });
+        if (sizing.isMobileWeb(navigator)) {
+          const file = new File([blob], "image.png", { type: "image/png" });
 
-        if (navigator.canShare && navigator.canShare({ files: [file] })) {
-          try {
-            await navigator.share({
-              files: [file],
-              title: "Puzzle Image",
-              text: "https://codiac.expo.app",
-            });
-          } catch (err) {
-            alert("Sharing failed: " + err);
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            try {
+              await navigator.share({
+                files: [file],
+                title: "Puzzle Image",
+                text: "https://codiac.expo.app",
+              });
+            } catch (err) {
+              alert("Sharing failed: " + err);
+            }
+          } else {
+            alert("Sharing not supported on this device or browser.");
           }
         } else {
-          alert("Sharing not supported on this device or browser.");
+          // Use the native Clipboard API on web
+          await navigator.clipboard.write([
+            new ClipboardItem({
+              "image/png": blob,
+            }),
+          ]);
+          alert("Image copied to clipboard!");
         }
-      } else {
-        // Use the native Clipboard API on web
-        await navigator.clipboard.write([
-          new ClipboardItem({
-            "image/png": blob,
-          }),
-        ]);
-        alert("Image copied to clipboard!");
       }
+    } catch {
+      alert(
+        "Sharing is not supported on this browser. Please use your device's native browser"
+      );
     }
   };
 
