@@ -1,5 +1,5 @@
 import React from "react";
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { createStyles } from "./styles";
 // import sizing from "../sizing/sizing";
 import getIcons from "./get-icons";
@@ -17,11 +17,13 @@ const QuoteDisplay: React.FC<QuoteDisplayProps> = ({ state, updateState }) => {
   const { theme } = useTheme();
   const styles = createStyles(theme);
   return (
-    <View style={styles.verticalContainer}>
-      <View style={styles.horizontalContainer}>
-        {getIcons(state, updateState, theme)}
+    <ScrollView>
+      <View style={styles.verticalContainer}>
+        <View style={styles.horizontalContainer}>
+          {getIcons(state, updateState, theme)}
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

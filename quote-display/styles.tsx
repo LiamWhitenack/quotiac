@@ -17,6 +17,9 @@ export const createStyles = (theme: Theme) =>
       alignContent: "center",
       flexWrap: "wrap",
       justifyContent: "center",
+      paddingTop: 10,
+      paddingBottom: 10,
+      flexShrink: 1,
     },
     horizontalContainer: {
       maxWidth: sizing.maxWidth - 20,
@@ -24,6 +27,7 @@ export const createStyles = (theme: Theme) =>
       flexWrap: "wrap",
       justifyContent: "center",
       marginBottom: 30,
+      flexShrink: 1,
     },
     quote: {
       fontSize: 24,

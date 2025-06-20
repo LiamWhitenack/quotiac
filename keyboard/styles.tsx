@@ -8,8 +8,11 @@ export const createStyles = (theme: Theme) =>
     flex: 1, // Ensure the main container takes the full height
     justifyContent: "flex-end",
     // alignItems: "flex-end",
-    paddingTop: 50,
-    maxWidth: sizing.maxWidth,
+    paddingTop: 10,
+    width: sizing.maxWidth,
+    minHeight: sizing.keyboardHeight,
+    borderTopWidth: 1,
+    borderTopColor: theme.border,
   },
   row: {
     flexDirection: "row",
