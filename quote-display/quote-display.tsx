@@ -17,7 +17,7 @@ const QuoteDisplay: React.FC<QuoteDisplayProps> = ({ state, updateState }) => {
   const { theme } = useTheme();
   const styles = createStyles(theme);
   return (
-    <ScrollView>
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.verticalContainer}>
         <View style={styles.horizontalContainer}>
           {getIcons(state, updateState, theme)}

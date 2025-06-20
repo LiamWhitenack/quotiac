@@ -28,7 +28,7 @@ class Sizing {
         this.keyboardKeyWidth = Math.floor(
             (this.maxWidth - this.keyboardMargin * 2 - this.keyboardKeyGap * 18) / 10
         );
-        this.keyboardHeight = (63 * 3) + 10;
+        this.keyboardHeight = (66.75 * 3) + 10;
 
         this.topBarHeight = 50;
         this.quoteHeight = this.keyboardHeight - this.topBarHeight;

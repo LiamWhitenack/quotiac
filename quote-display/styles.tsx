@@ -20,6 +20,7 @@ export const createStyles = (theme: Theme) =>
       paddingTop: 10,
       paddingBottom: 10,
       flexShrink: 1,
+      alignItems: "center",
     },
     horizontalContainer: {
       maxWidth: sizing.maxWidth - 20,
@@ -28,6 +29,10 @@ export const createStyles = (theme: Theme) =>
       justifyContent: "center",
       marginBottom: 30,
       flexShrink: 1,
+    },
+    scrollContainer: {
+      flexGrow: 1,
+      justifyContent: "center",
     },
     quote: {
       fontSize: 24,

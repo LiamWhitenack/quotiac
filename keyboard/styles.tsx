@@ -5,12 +5,12 @@ import type { Theme } from "@/theme/themes";
 export const createStyles = (theme: Theme) =>
   StyleSheet.create({
   container: {
-    flex: 1, // Ensure the main container takes the full height
-    justifyContent: "flex-end",
+    // flex: 1, // Ensure the main container takes the full height
+    // justifyContent: "flex-end",
     // alignItems: "flex-end",
     paddingTop: 10,
     width: sizing.maxWidth,
-    minHeight: sizing.keyboardHeight,
+    height: sizing.keyboardHeight,
     borderTopWidth: 1,
     borderTopColor: theme.border,
   },
