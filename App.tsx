@@ -73,6 +73,8 @@ const CodiacApp = () => {
   // Create styles using theme
   const mainWindowStyles = createMainWindowStyles(theme);
 
+  const [quoteIsOverflowing, setQuoteIsOverflowing] = useState(false);
+
   return (
     <>
       <StatusBar
@@ -128,7 +130,7 @@ const CodiacApp = () => {
         {state.fireConfetti && (
           <ConfettiCannon count={100} origin={{ x: 200, y: 0 }} fadeOut />
         )}
-        <QuoteDisplay state={state} updateState={updateState} />
+        <QuoteDisplay state={state} updateState={updateState} onOverflowChange={setQuoteIsOverflowing}/>
         <LetterKeyboardDisplay state={state} updateState={updateState} />
         {
           <PuzzleCompleteModal
