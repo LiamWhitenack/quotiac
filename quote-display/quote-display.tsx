@@ -5,6 +5,7 @@ import { createStyles } from "./styles";
 import getIcons from "./get-icons";
 import GameState from "@/state/state";
 import { useTheme } from "@/theme/ThemeContext";
+import sizing from "@/sizing/sizing";
 
 interface QuoteDisplayProps {
   state: GameState;
@@ -42,9 +43,10 @@ const QuoteDisplay: React.FC<QuoteDisplayProps> = ({ state, updateState, onOverf
   return (
     <ScrollView 
       scrollEnabled={contentHeight > containerHeight}
-      contentContainerStyle={styles.scrollContainer}
+      contentContainerStyle={[styles.scrollContainer, { paddingBottom: sizing.keyboardHeight }]}
       onLayout={handleLayout}
       onContentSizeChange={handleContentSizeChange}
+      scrollIndicatorInsets={{ bottom: sizing.keyboardHeight }}
     >
       <View style={styles.verticalContainer}>
         <View style={styles.horizontalContainer}>

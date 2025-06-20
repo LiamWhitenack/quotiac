@@ -17,14 +17,16 @@ const LetterKeyboardDisplay: React.FC<LetterKeyboardDisplayProps> = ({
   const { theme } = useTheme();
   const styles = createStyles(theme);
   return (
-    <View style={styles.container}>
-      {state.keyboardValues.map((row, rowIndex) => (
-        <View key={rowIndex} style={styles.row}>
-          {row.map((element, index) =>
-            keyboardKey(state, updateState, rowIndex, index, element)
-          )}
-        </View>
-      ))}
+    <View style={styles.outerKeyboardContainer}>
+      <View style={styles.container}>
+        {state.keyboardValues.map((row, rowIndex) => (
+          <View key={rowIndex} style={styles.row}>
+            {row.map((element, index) =>
+              keyboardKey(state, updateState, rowIndex, index, element)
+            )}
+          </View>
+        ))}
+      </View>
     </View>
   );
 };

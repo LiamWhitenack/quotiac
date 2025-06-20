@@ -4,6 +4,14 @@ import type { Theme } from "@/theme/themes";
 
 export const createStyles = (theme: Theme) =>
   StyleSheet.create({
+  outerKeyboardContainer: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    zIndex: 10,
+    alignItems: "center",
+  },
   container: {
     // flex: 1, // Ensure the main container takes the full height
     // justifyContent: "flex-end",
@@ -11,14 +19,16 @@ export const createStyles = (theme: Theme) =>
     paddingTop: 10,
     width: sizing.maxWidth,
     height: sizing.keyboardHeight,
-    borderTopWidth: 1,
-    borderTopColor: theme.border,
+    // borderTopWidth: 1,
+    // borderTopColor: theme.border,
+    backgroundColor: "transparent",
   },
   row: {
     flexDirection: "row",
     justifyContent: "center",
     marginBottom: sizing.keyboardMargin / 8,
     marginHorizontal: sizing.keyboardMargin / 8,
+    backgroundColor: "transparent",
   },
   key: {
     width: sizing.keyboardKeyWidth, // Each key takes equal space in the row
