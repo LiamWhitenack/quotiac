@@ -18,11 +18,11 @@ const QuoteDisplay: React.FC<QuoteDisplayProps> = ({
   updateState,
   onOverflowChange,
 }) => {
-  // ((sizing.quoteHeight * sizing.screenWidth) / quote.length) ** 0.5;
-  // const numberOfIconsInColumn = sizing.quoteHeight / sizing.iconSize;
   const { theme } = useTheme();
   const styles = createStyles(theme);
-  const [containerHeight, setContainerHeight] = useState(0);
+  const [containerHeight, setContainerHeight] = useState(
+    sizing.screenHeight - sizing.topBarHeight - sizing.keyboardHeight
+  );
   const [contentHeight, setContentHeight] = useState(0);
 
   // Used to track the height of the container when initially rendered
@@ -70,12 +70,10 @@ const QuoteDisplay: React.FC<QuoteDisplayProps> = ({
     <ConditionalScrollView>
       <View style={styles.horizontalContainer}>
         <IconsWithHeight
+          containerHeight={containerHeight}
           state={state}
           updateState={updateState}
           theme={theme}
-          onHeightMeasured={(height) => {
-            setContentHeight(height);
-          }}
         />
       </View>
     </ConditionalScrollView>

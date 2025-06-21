@@ -33,7 +33,7 @@ class Sizing {
         this.topBarHeight = 50;
         this.quoteHeight = this.keyboardHeight - this.topBarHeight;
 
-        this.iconSize = 32;
+        this.iconSize = 36;
     }
 
     isMobileWeb(navigator: Navigator) {

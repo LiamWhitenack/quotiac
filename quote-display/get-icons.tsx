@@ -13,16 +13,21 @@ interface IconsWithHeightProps {
   state: GameState;
   updateState: () => void;
   theme: Theme;
-  onHeightMeasured?: (height: number) => void;
+  containerHeight: number;
 }
 
 export function IconsWithHeight({
   state,
   updateState,
   theme,
-  onHeightMeasured,
+  containerHeight,
 }: IconsWithHeightProps) {
-  const [height, setHeight] = useState<number | null>(null);
+  for (let size = sizing.iconSize; size >= 28; size -= 2) {
+    if (containerHeight < state.quoteHeight) {
+      console.log(containerHeight, state.quoteHeight);
+      state.decreaseQuoteIconSize();
+    }
+  }
 
   const decodeQuote = (quote: string[]): string[] => {
     return quote.map((char) => state.decodingMap.get(char) ?? char);
@@ -104,18 +109,8 @@ export function IconsWithHeight({
   const decodedQuote = decodeQuote(state.encodedQuote);
   let quoteIndex = -2;
 
-  const handleLayout = (event: LayoutChangeEvent) => {
-    const h = event.nativeEvent.layout.height;
-    if (height !== h) {
-      setHeight(h);
-      if (onHeightMeasured) {
-        onHeightMeasured(h);
-      }
-    }
-  };
-
   return (
-    <View onLayout={handleLayout}>
+    <View>
       {splitOnPercent(decodedQuote).map((line, lineIndex) => {
         quoteIndex++;
         return (
