@@ -18,6 +18,7 @@ export const createStyles = (theme: Theme) =>
       // flexWrap: "wrap",
       justifyContent: "center",
       alignItems: "center",
+      paddingBottom: sizing.keyboardHeight,
     },
     horizontalContainer: {
       maxWidth: sizing.maxWidth - 20,
