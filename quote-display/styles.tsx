@@ -15,11 +15,8 @@ export const createStyles = (theme: Theme) =>
       flex: 5,
       flexDirection: "column",
       alignContent: "center",
-      flexWrap: "wrap",
+      // flexWrap: "wrap",
       justifyContent: "center",
-      paddingTop: 10,
-      paddingBottom: 10,
-      flexShrink: 1,
       alignItems: "center",
     },
     horizontalContainer: {
@@ -28,11 +25,11 @@ export const createStyles = (theme: Theme) =>
       flexWrap: "wrap",
       justifyContent: "center",
       marginBottom: 30,
-      flexShrink: 1,
     },
     scrollContainer: {
       flexGrow: 1,
       justifyContent: "center",
+      paddingStart: 0,
     },
     quote: {
       fontSize: 24,

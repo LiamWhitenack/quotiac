@@ -1,11 +1,29 @@
-import { Ionicons } from "@expo/vector-icons";
-import { View, Text, TouchableOpacity } from "react-native";
 import sizing from "../sizing/sizing";
 import GameState from "@/state/state";
 import { splitOnPercent } from "@/sizing/wrap-words";
 import type { Theme } from "@/theme/themes";
+import React, { useState } from "react";
+import { View, Text, LayoutChangeEvent } from "react-native";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
-function getIcons(state: GameState, updateState: () => void, theme: Theme) {
+// Assume sizing is imported or defined elsewhere in your file
+// import sizing from './sizing';
+
+interface IconsWithHeightProps {
+  state: GameState;
+  updateState: () => void;
+  theme: Theme;
+  onHeightMeasured?: (height: number) => void;
+}
+
+export function IconsWithHeight({
+  state,
+  updateState,
+  theme,
+  onHeightMeasured,
+}: IconsWithHeightProps) {
+  const [height, setHeight] = useState<number | null>(null);
+
   const decodeQuote = (quote: string[]): string[] => {
     return quote.map((char) => state.decodingMap.get(char) ?? char);
   };
@@ -42,6 +60,7 @@ function getIcons(state: GameState, updateState: () => void, theme: Theme) {
       </Text>
     </View>
   );
+
   const renderNonLetterCharacter = (char: string, key: string) => (
     <View
       key={key}
@@ -84,8 +103,19 @@ function getIcons(state: GameState, updateState: () => void, theme: Theme) {
 
   const decodedQuote = decodeQuote(state.encodedQuote);
   let quoteIndex = -2;
+
+  const handleLayout = (event: LayoutChangeEvent) => {
+    const h = event.nativeEvent.layout.height;
+    if (height !== h) {
+      setHeight(h);
+      if (onHeightMeasured) {
+        onHeightMeasured(h);
+      }
+    }
+  };
+
   return (
-    <View>
+    <View onLayout={handleLayout}>
       {splitOnPercent(decodedQuote).map((line, lineIndex) => {
         quoteIndex++;
         return (
@@ -115,5 +145,3 @@ function getIcons(state: GameState, updateState: () => void, theme: Theme) {
     </View>
   );
 }
-
-export default getIcons;

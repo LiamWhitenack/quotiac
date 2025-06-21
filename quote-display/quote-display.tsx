@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import { ScrollView, View, LayoutChangeEvent } from "react-native";
 import { createStyles } from "./styles";
 // import sizing from "../sizing/sizing";
-import getIcons from "./get-icons";
 import GameState from "@/state/state";
 import { useTheme } from "@/theme/ThemeContext";
 import sizing from "@/sizing/sizing";
+import { IconsWithHeight } from "./get-icons";
 
 interface QuoteDisplayProps {
   state: GameState;
@@ -13,7 +13,11 @@ interface QuoteDisplayProps {
   onOverflowChange?: (isOverflowing: boolean) => void;
 }
 
-const QuoteDisplay: React.FC<QuoteDisplayProps> = ({ state, updateState, onOverflowChange }) => {
+const QuoteDisplay: React.FC<QuoteDisplayProps> = ({
+  state,
+  updateState,
+  onOverflowChange,
+}) => {
   // ((sizing.quoteHeight * sizing.screenWidth) / quote.length) ** 0.5;
   // const numberOfIconsInColumn = sizing.quoteHeight / sizing.iconSize;
   const { theme } = useTheme();
@@ -40,20 +44,41 @@ const QuoteDisplay: React.FC<QuoteDisplayProps> = ({ state, updateState, onOverf
       onOverflowChange(content > container);
     }
   };
+
+  const ConditionalScrollView = ({ children }: { children: ReactNode }) => {
+    if (contentHeight > containerHeight) {
+      return (
+        <ScrollView
+          contentContainerStyle={[
+            styles.scrollContainer,
+            { paddingBottom: sizing.keyboardHeight + 10 },
+          ]}
+          showsVerticalScrollIndicator={false}
+          onLayout={handleLayout}
+          onContentSizeChange={handleContentSizeChange}
+          scrollIndicatorInsets={{ bottom: sizing.keyboardHeight }}
+        >
+          {children}
+        </ScrollView>
+      );
+    } else {
+      return <View style={styles.verticalContainer}>{children}</View>;
+    }
+  };
+
   return (
-    <ScrollView 
-      scrollEnabled={contentHeight > containerHeight}
-      contentContainerStyle={[styles.scrollContainer, { paddingBottom: sizing.keyboardHeight }]}
-      onLayout={handleLayout}
-      onContentSizeChange={handleContentSizeChange}
-      scrollIndicatorInsets={{ bottom: sizing.keyboardHeight }}
-    >
-      <View style={styles.verticalContainer}>
-        <View style={styles.horizontalContainer}>
-          {getIcons(state, updateState, theme)}
-        </View>
+    <ConditionalScrollView>
+      <View style={styles.horizontalContainer}>
+        <IconsWithHeight
+          state={state}
+          updateState={updateState}
+          theme={theme}
+          onHeightMeasured={(height) => {
+            setContentHeight(height);
+          }}
+        />
       </View>
-    </ScrollView>
+    </ConditionalScrollView>
   );
 };
 
