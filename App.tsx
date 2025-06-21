@@ -131,14 +131,16 @@ const CodiacApp = () => {
         {state.fireConfetti && (
           <ConfettiCannon count={100} origin={{ x: 200, y: 0 }} fadeOut />
         )}
-        <QuoteDisplay state={state} updateState={updateState} onOverflowChange={setQuoteIsOverflowing}/>
-        <BlurView
-          tint="dark"
-          intensity={80}
-          style={mainWindowStyles.keyboardBlurOverlay}
-          pointerEvents="none"
+        <QuoteDisplay
+          state={state}
+          updateState={updateState}
+          onOverflowChange={setQuoteIsOverflowing}
         />
-        <LetterKeyboardDisplay state={state} updateState={updateState} />
+        <LetterKeyboardDisplay
+          state={state}
+          updateState={updateState}
+          mode={mode}
+        />
         {
           <PuzzleCompleteModal
             state={state}
