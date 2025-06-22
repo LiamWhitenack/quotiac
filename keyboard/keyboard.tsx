@@ -26,7 +26,7 @@ const LetterKeyboardDisplay: React.FC<LetterKeyboardDisplayProps> = ({
       tint={mode === "dark" ? "dark" : "light"}
       intensity={60}
       style={mainWindowStyles.keyboardBlurOverlay}
-      pointerEvents="none"
+      // pointerEvents="none"
     >
       <View style={styles.outerKeyboardContainer}>
         <View style={styles.container}>
