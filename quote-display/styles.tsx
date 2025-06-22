@@ -20,17 +20,9 @@ export const createStyles = (theme: Theme) =>
       alignItems: "center",
       paddingBottom: sizing.keyboardHeight,
     },
-    horizontalContainer: {
-      maxWidth: sizing.maxWidth - 20,
-      flexDirection: "row",
-      flexWrap: "wrap",
-      justifyContent: "center",
-      marginBottom: 30,
-    },
     scrollContainer: {
       flexGrow: 1,
       justifyContent: "center",
-      paddingStart: 0,
     },
     quote: {
       fontSize: 24,

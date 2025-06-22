@@ -46,12 +46,15 @@ const QuoteDisplay: React.FC<QuoteDisplayProps> = ({
   };
 
   const ConditionalScrollView = ({ children }: { children: ReactNode }) => {
-    if (contentHeight > containerHeight) {
+    if (state.quoteHeight > containerHeight) {
       return (
         <ScrollView
           contentContainerStyle={[
             styles.scrollContainer,
-            { paddingBottom: sizing.keyboardHeight + 10 },
+            {
+              paddingBottom: sizing.keyboardHeight + 10,
+              paddingTop: sizing.iconSize,
+            },
           ]}
           showsVerticalScrollIndicator={false}
           onLayout={handleLayout}
@@ -68,14 +71,12 @@ const QuoteDisplay: React.FC<QuoteDisplayProps> = ({
 
   return (
     <ConditionalScrollView>
-      <View style={styles.horizontalContainer}>
-        <IconsWithHeight
-          containerHeight={containerHeight}
-          state={state}
-          updateState={updateState}
-          theme={theme}
-        />
-      </View>
+      <IconsWithHeight
+        containerHeight={containerHeight}
+        state={state}
+        updateState={updateState}
+        theme={theme}
+      />
     </ConditionalScrollView>
   );
 };

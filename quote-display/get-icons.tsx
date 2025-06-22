@@ -9,6 +9,11 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 // Assume sizing is imported or defined elsewhere in your file
 // import sizing from './sizing';
 
+function longestWordLength(str: string) {
+  return (
+    Math.max(...str.split(" ").map((word) => word.length)) * sizing.iconSize
+  );
+}
 interface IconsWithHeightProps {
   state: GameState;
   updateState: () => void;
@@ -25,12 +30,9 @@ export function IconsWithHeight({
   for (let size = sizing.iconSize; size >= 28; size -= 2) {
     if (
       containerHeight < state.quoteHeight ||
-      Math.max(
-        ...state.puzzle.stringToEncrypt.split(" ").map((word) => word.length)
-      ) *
-        sizing.iconSize >
-        sizing.maxWidth
+      longestWordLength(state.puzzle.stringToEncrypt) > sizing.maxWidth
     ) {
+      console.log(sizing.iconSize);
       console.log(containerHeight, state.quoteHeight);
       state.decreaseQuoteIconSize();
     }
@@ -88,7 +90,6 @@ export function IconsWithHeight({
       </Text>
     </View>
   );
-
   const renderIcon = (iconName: string, key: string, index: number) => (
     <View
       key={key}
@@ -115,35 +116,31 @@ export function IconsWithHeight({
 
   const decodedQuote = decodeQuote(state.encodedQuote);
   let quoteIndex = -2;
+  return splitOnPercent(decodedQuote).map((line, lineIndex) => {
+    quoteIndex++;
+    console.log(line);
+    return (
+      <View
+        key={`line-${lineIndex}`}
+        style={{ flexDirection: "row", justifyContent: "center" }}
+      >
+        {line.map((element, charIndex) => {
+          quoteIndex++;
+          const key = `line-${lineIndex}-char-${charIndex}`;
 
-  return (
-    <View>
-      {splitOnPercent(decodedQuote).map((line, lineIndex) => {
-        quoteIndex++;
-        return (
-          <View
-            key={`line-${lineIndex}`}
-            style={{ flexDirection: "row", justifyContent: "center" }}
-          >
-            {line.map((element, charIndex) => {
-              quoteIndex++;
-              const key = `line-${lineIndex}-char-${charIndex}`;
-
-              if (element === " ") {
-                return renderSpace(key);
-              } else if (element.length === 1) {
-                if (element >= "A" && element <= "Z") {
-                  return renderLetter(element, key);
-                } else {
-                  return renderNonLetterCharacter(element, key);
-                }
-              } else {
-                return renderIcon(element, key, quoteIndex);
-              }
-            })}
-          </View>
-        );
-      })}
-    </View>
-  );
+          if (element === " ") {
+            return renderSpace(key);
+          } else if (element.length === 1) {
+            if (element >= "A" && element <= "Z") {
+              return renderLetter(element, key);
+            } else {
+              return renderNonLetterCharacter(element, key);
+            }
+          } else {
+            return renderIcon(element, key, quoteIndex);
+          }
+        })}
+      </View>
+    );
+  });
 }

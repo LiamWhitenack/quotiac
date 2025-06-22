@@ -58,7 +58,7 @@ class GameState {
     constructor(puzzle: PuzzleOfTheDay) {
         this.puzzle = puzzle
         this.quote = wrapWords(puzzle.stringToEncrypt.split(" "), sizing.maxWidth / sizing.iconSize);
-        this.quoteHeight = this.quote.split("@").length * sizing.iconSize;
+        this.quoteHeight = this.quote.split("@").length * sizing.iconSize - sizing.iconSize;
         this.encodingMap = mapUniqueLettersToNumbers(puzzle.stringToEncrypt);
         this.solution = capitalizeValues(inverseMap(this.encodingMap));
         this.fireConfetti = false;
