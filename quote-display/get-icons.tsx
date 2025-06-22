@@ -23,7 +23,14 @@ export function IconsWithHeight({
   containerHeight,
 }: IconsWithHeightProps) {
   for (let size = sizing.iconSize; size >= 28; size -= 2) {
-    if (containerHeight < state.quoteHeight) {
+    if (
+      containerHeight < state.quoteHeight ||
+      Math.max(
+        ...state.puzzle.stringToEncrypt.split(" ").map((word) => word.length)
+      ) *
+        sizing.iconSize >
+        sizing.maxWidth
+    ) {
       console.log(containerHeight, state.quoteHeight);
       state.decreaseQuoteIconSize();
     }
