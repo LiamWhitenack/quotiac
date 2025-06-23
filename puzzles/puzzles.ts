@@ -37,13 +37,6 @@ const PUZZLES: CryptographBase[] = [
     1986,
   ),
   new CharacterQuote(
-    "They may take our lives, but they'll never take our freedom!",
-    "Film",
-    "William Wilberforce",
-    "Braveheart",
-    1995
-  ),
-  new CharacterQuote(
     "Why don't you make like a tree and get outta here",
     "Film",
     "Biff Tannen",
@@ -147,6 +140,21 @@ const PUZZLES: CryptographBase[] = [
     1939,
   ),
   new CharacterQuote(
+    "They may take our lives, but they'll never take our freedom!",
+    "Film",
+    "William Wilberforce",
+    "Braveheart",
+    1995
+  ),
+  new DirectQuote(
+    "You miss 100% of the shots you don't take",
+    "Wayne Gretzky",
+    1990,
+  ),
+  new GeneralPhrase(
+    "The quick brown fox jumps over the lazy brown dog",
+  ),
+  new CharacterQuote(
     "You want forgiveness? Get religion.",
     "Film",
     "Eddie Brock",
@@ -176,14 +184,6 @@ const PUZZLES: CryptographBase[] = [
     "Michael Scott",
     "The Office",
     2005,
-  ),
-  new DirectQuote(
-    "You miss 100% of the shots you don't take",
-    "Wayne Gretzky",
-    1990,
-  ),
-  new GeneralPhrase(
-    "The quick brown fox jumps over the lazy brown dog",
   ),
   new CharacterQuote(
     "Not all those who wander are lost, Bilbo Baggins.",
@@ -247,6 +247,12 @@ const PUZZLES: CryptographBase[] = [
   new DirectQuote("A god from the machine", "Menander"),
   new DirectQuote("All the world's a stage, And all the men and women merely players. They have their exits and their entrances; And one man in his time plays many parts. ", "William Shakespeare"),
   new DirectQuote("A designer knows he has achieved perfection not when there is nothing left to add, but when there is nothing left to take away.", "Antoine de Sain,Exupery"),
+  new SongLyrics(
+    "Hello from the other side I must've called a thousand times To tell you I'm sorry for everything that I've done But when I call, you never seem to be home",
+    "Adele",
+    "Hello",
+    2015
+  ),
   new DirectQuote("To bring about the rule of righteousness in the land, so that the strong should not harm the weak.", "Hammurabi's Code; Prologue"),
   new DirectQuote("I will to my lord be true and faithful, and love all which he loves and shun all which he shuns.", "Anglo Saxon Oath of Fealty"),
   new DirectQuote("One doesn't discover new lands without losing sight of the shore.", "Andre Gide"),

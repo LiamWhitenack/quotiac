@@ -16,7 +16,7 @@ import ConfettiCannon from "react-native-confetti-cannon";
 import GameState from "./state/state";
 import { todayQuote } from "./puzzles/get-puzzle";
 import PuzzleCompleteModal from "./puzzle-complete-modal/modal";
-import useTitleFade from "./app-effects/title-fade";
+import { useTitleFade, useAnimatedValue } from "./app-effects/title-fade";
 import useOnCompleteModal from "./app-effects/show-modal";
 import { StatusBar } from "react-native";
 import { useTheme } from "./theme/ThemeContext";
@@ -25,6 +25,8 @@ import { BlurView } from "expo-blur";
 const CodiacApp = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const fadeTitleAnimation = useRef(new Animated.Value(1)).current;
+  const [showAppTitle, setShowAppTitle] = useState(true);
+  const fadeValue = useAnimatedValue(fadeTitleAnimation);
 
   // Get current theme from provider
   const { theme, mode } = useTheme();
@@ -65,7 +67,7 @@ const CodiacApp = () => {
   });
   //, [activeIcon, decodingMap, quoteIndex, reactToKeyPress]);
 
-  useTitleFade(fadeTitleAnimation, state, setGameState);
+  useTitleFade(fadeTitleAnimation, showAppTitle, setShowAppTitle);
   useOnCompleteModal(state, setModalVisible);
 
   // Conditional render with view or safe area view based on platform
@@ -90,9 +92,9 @@ const CodiacApp = () => {
       >
         <View style={mainWindowStyles.topBarContainer}>
           <Animated.Text
-            style={[mainWindowStyles.title, { opacity: fadeTitleAnimation }]}
+            style={[mainWindowStyles.title, { opacity: Math.abs(fadeValue) }]}
           >
-            {state.showAppTitle ? "Codiac" : state.puzzle.puzzleType}
+            {fadeValue > 0 ? "Codiac" : state.puzzle.puzzleType}
           </Animated.Text>
           <View style={mainWindowStyles.topBarIconContainer}>
             <TouchableOpacity

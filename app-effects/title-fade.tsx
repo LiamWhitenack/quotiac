@@ -1,29 +1,30 @@
-import GameState from "@/state/state";
-import { useEffect } from "react";
+// app-effects/title-fade.ts
+import { useEffect, useState } from "react";
 import { Animated, Easing } from "react-native";
 
-function useTitleFade(
+export function useTitleFade(
   fadeAnim: Animated.Value,
-  state: GameState,
-  setGameState: React.Dispatch<React.SetStateAction<GameState>>
+  showAppTitle: boolean,
+  setShowAppTitle: React.Dispatch<React.SetStateAction<boolean>>
 ) {
   useEffect(() => {
-    if (state.showAppTitle) {
+    if (showAppTitle) {
       const timeout = setTimeout(() => {
-        Animated.timing(fadeAnim, {
-          toValue: 0,
-          duration: 500,
-          useNativeDriver: true,
-          easing: Easing.out(Easing.ease),
-        }).start(() => {
-          state.showAppTitle = false;
+        Animated.sequence([
           Animated.timing(fadeAnim, {
-            toValue: 1,
-            duration: 500,
+            toValue: 0,
+            duration: 400,
             useNativeDriver: true,
             easing: Easing.out(Easing.ease),
-          }).start();
-          setGameState(state.clone());
+          }),
+          Animated.timing(fadeAnim, {
+            toValue: -1,
+            duration: 400,
+            useNativeDriver: true,
+            easing: Easing.out(Easing.ease),
+          }),
+        ]).start(() => {
+          setShowAppTitle(false);
         });
       }, 3000);
 
@@ -32,4 +33,14 @@ function useTitleFade(
   });
 }
 
-export default useTitleFade;
+export function useAnimatedValue(animatedValue: Animated.Value): number {
+  // @ts-ignore
+  const [value, setValue] = useState(animatedValue.__getValue?.() ?? 0);
+
+  useEffect(() => {
+    const id = animatedValue.addListener(({ value }) => setValue(value));
+    return () => animatedValue.removeListener(id);
+  }, [animatedValue]);
+
+  return value;
+}
