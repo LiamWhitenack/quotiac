@@ -27,7 +27,7 @@ export function IconsWithHeight({
   theme,
   containerHeight,
 }: IconsWithHeightProps) {
-  for (let size = sizing.iconSize; size >= 28; size -= 2) {
+  for (let size = sizing.iconSize; size >= sizing.minIconSize; size -= 1) {
     if (
       containerHeight < state.quoteHeight ||
       longestWordLength(state.puzzle.stringToEncrypt) > sizing.maxWidth
