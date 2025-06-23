@@ -12,13 +12,8 @@ export const createStyles = (theme: Theme) =>
     },
     // TODO: Add a container to make the icon spaces larger
     verticalContainer: {
-      flex: 5,
       flexDirection: "column",
-      alignContent: "center",
-      // flexWrap: "wrap",
       justifyContent: "center",
-      alignItems: "center",
-      paddingBottom: sizing.keyboardHeight,
     },
     scrollContainer: {
       flexGrow: 1,

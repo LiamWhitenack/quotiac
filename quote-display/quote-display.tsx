@@ -20,30 +20,8 @@ const QuoteDisplay: React.FC<QuoteDisplayProps> = ({
 }) => {
   const { theme } = useTheme();
   const styles = createStyles(theme);
-  const [containerHeight, setContainerHeight] = useState(
-    sizing.screenHeight - sizing.topBarHeight - sizing.keyboardHeight
-  );
-  const [contentHeight, setContentHeight] = useState(0);
-
-  // Used to track the height of the container when initially rendered
-  const handleLayout = (e: LayoutChangeEvent) => {
-    const newHeight = e.nativeEvent.layout.height;
-    setContainerHeight(newHeight);
-    maybeNotifyOverflow(newHeight, contentHeight);
-  };
-
-  // Used to track the height of the content when it changes
-  const handleContentSizeChange = (w: number, h: number) => {
-    setContentHeight(h);
-    maybeNotifyOverflow(containerHeight, h);
-  };
-
-  // Notify the parent component if the content overflows the container
-  const maybeNotifyOverflow = (container: number, content: number) => {
-    if (onOverflowChange) {
-      onOverflowChange(content > container);
-    }
-  };
+  const containerHeight =
+    sizing.screenHeight - sizing.topBarHeight - sizing.keyboardHeight;
 
   const ConditionalScrollView = ({ children }: { children: ReactNode }) => {
     if (state.quoteHeight > containerHeight) {
@@ -57,15 +35,26 @@ const QuoteDisplay: React.FC<QuoteDisplayProps> = ({
             },
           ]}
           showsVerticalScrollIndicator={false}
-          onLayout={handleLayout}
-          onContentSizeChange={handleContentSizeChange}
           scrollIndicatorInsets={{ bottom: sizing.keyboardHeight }}
         >
           {children}
         </ScrollView>
       );
     } else {
-      return <View style={styles.verticalContainer}>{children}</View>;
+      return (
+        <View style={{ alignContent: "flex-start", flexDirection: "column" }}>
+          <View
+            style={[
+              styles.verticalContainer,
+              {
+                height: containerHeight,
+              },
+            ]}
+          >
+            {children}
+          </View>
+        </View>
+      );
     }
   };
 

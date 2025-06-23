@@ -32,8 +32,6 @@ export function IconsWithHeight({
       containerHeight < state.quoteHeight ||
       longestWordLength(state.puzzle.stringToEncrypt) > sizing.maxWidth
     ) {
-      console.log(sizing.iconSize);
-      console.log(containerHeight, state.quoteHeight);
       state.decreaseQuoteIconSize();
     }
   }
@@ -118,7 +116,6 @@ export function IconsWithHeight({
   let quoteIndex = -2;
   return splitOnPercent(decodedQuote).map((line, lineIndex) => {
     quoteIndex++;
-    console.log(line);
     return (
       <View
         key={`line-${lineIndex}`}
