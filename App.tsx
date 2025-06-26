@@ -20,6 +20,7 @@ import { useTitleFade, useAnimatedValue } from "./app-effects/title-fade";
 import useOnCompleteModal from "./app-effects/show-modal";
 import { StatusBar } from "react-native";
 import { useTheme } from "./theme/ThemeContext";
+import { BlurView } from "expo-blur";
 
 const CodiacApp = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -74,6 +75,8 @@ const CodiacApp = () => {
 
   // Create styles using theme
   const mainWindowStyles = createMainWindowStyles(theme);
+
+  const [quoteIsOverflowing, setQuoteIsOverflowing] = useState(false);
 
   return (
     <>
@@ -130,8 +133,16 @@ const CodiacApp = () => {
         {state.fireConfetti && (
           <ConfettiCannon count={100} origin={{ x: 200, y: 0 }} fadeOut />
         )}
-        <QuoteDisplay state={state} updateState={updateState} />
-        <LetterKeyboardDisplay state={state} updateState={updateState} />
+        <QuoteDisplay
+          state={state}
+          updateState={updateState}
+          onOverflowChange={setQuoteIsOverflowing}
+        />
+        <LetterKeyboardDisplay
+          state={state}
+          updateState={updateState}
+          mode={mode}
+        />
         {
           <PuzzleCompleteModal
             state={state}

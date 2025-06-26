@@ -75,4 +75,12 @@ export const createMainWindowStyles = (theme: Theme) =>
       margin: 10,
       alignItems: "center",
     },
+    keyboardBlurOverlay: {
+      position: "absolute",
+      bottom: 0,
+      left: 0,
+      right: 0,
+      height: sizing.keyboardHeight, // match your GameKeyboard height
+      zIndex: 5,
+    },
   });
