@@ -167,7 +167,13 @@ const PUZZLES: CryptographBase[] = [
     "Film",
     "Truman Burbank",
     "The Truman Show",
-    1198,
+    1998,
+  ),
+  new SongLyrics(
+    "Hello from the other side I must've called a thousand times To tell you I'm sorry for everything that I've done But when I call, you never seem to be home",
+    "Adele",
+    "Hello",
+    2015
   ),
   new GeneralPhrase(
     "The toothbrush was invented in West Virginia. Otherwise it would have been called the teethbrush.",

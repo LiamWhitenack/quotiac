@@ -14,6 +14,7 @@ class Sizing {
     topBarHeight: number;
     quoteHeight: number;
     iconSize: number;
+    minIconSize: number;
 
     constructor() {
         this.screenHeight = screenHeight;
@@ -33,7 +34,8 @@ class Sizing {
         this.topBarHeight = 50;
         this.quoteHeight = this.keyboardHeight - this.topBarHeight;
 
-        this.iconSize = 32;
+        this.iconSize = 36;
+        this.minIconSize = 28;
     }
 
     isMobileWeb(navigator: Navigator) {

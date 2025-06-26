@@ -21,13 +21,15 @@ const LetterKeyboardDisplay: React.FC<LetterKeyboardDisplayProps> = ({
   const { theme } = useTheme();
   const styles = createStyles(theme);
   const mainWindowStyles = createMainWindowStyles(theme);
+
   return (
-    <BlurView
-      tint={mode === "dark" ? "dark" : "light"}
-      intensity={60}
-      style={mainWindowStyles.keyboardBlurOverlay}
-      pointerEvents="none"
-    >
+    <>
+      <BlurView
+        tint={mode === "dark" ? "dark" : "light"}
+        intensity={60}
+        style={mainWindowStyles.keyboardBlurOverlay}
+        pointerEvents="none"
+      />
       <View style={styles.outerKeyboardContainer}>
         <View style={styles.container}>
           {state.keyboardValues.map((row, rowIndex) => (
@@ -39,7 +41,7 @@ const LetterKeyboardDisplay: React.FC<LetterKeyboardDisplayProps> = ({
           ))}
         </View>
       </View>
-    </BlurView>
+    </>
   );
 };
 

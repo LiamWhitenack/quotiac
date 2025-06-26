@@ -41,6 +41,7 @@ function findCharacterBackward(
 class GameState {
     puzzle: PuzzleOfTheDay;
     quote: string;
+    quoteHeight: number;
     encodingMap: Map<string, string>;
     fireConfetti: boolean;
     solution: Map<string, string>;
@@ -56,7 +57,8 @@ class GameState {
 
     constructor(puzzle: PuzzleOfTheDay) {
         this.puzzle = puzzle
-        this.quote = wrapWords(puzzle.stringToEncrypt.split(" "), sizing.maxWidth / sizing.iconSize);
+        this.quote = wrapWords(puzzle.stringToEncrypt.split(" "), (sizing.maxWidth * 0.9) / sizing.iconSize);
+        this.quoteHeight = this.quote.split("@").length * sizing.iconSize - sizing.iconSize;
         this.encodingMap = mapUniqueLettersToNumbers(puzzle.stringToEncrypt);
         this.solution = capitalizeValues(inverseMap(this.encodingMap));
         this.fireConfetti = false;
@@ -69,6 +71,13 @@ class GameState {
         this.activeIcon = this.encodedQuote[0];
         this.quoteIndex = 0;
         this.showAppTitle = true;
+    }
+
+    decreaseQuoteIconSize() {
+        sizing.iconSize -= 2;
+        this.quote = wrapWords(this.puzzle.stringToEncrypt.split(" "), (sizing.maxWidth * 0.9) / sizing.iconSize);
+        this.setQuoteHeight(sizing.iconSize)
+        this.encodedQuote = this.encodeQuote(this.quote.toLowerCase());
     }
 
     userHasDiscoveredLetter(hint: GiveALetterHint) {
@@ -115,6 +124,10 @@ class GameState {
         if (this.solved) {
             this.fireConfetti = true;
         }
+    }
+
+    setQuoteHeight(iconSize: number) {
+        this.quoteHeight = this.quote.split("@").length * iconSize;
     }
 
     setDecodingMap(map: Map<string, string>) {

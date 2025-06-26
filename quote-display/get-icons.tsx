@@ -9,20 +9,32 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 // Assume sizing is imported or defined elsewhere in your file
 // import sizing from './sizing';
 
+function longestWordLength(str: string) {
+  return (
+    Math.max(...str.split(" ").map((word) => word.length)) * sizing.iconSize
+  );
+}
 interface IconsWithHeightProps {
   state: GameState;
   updateState: () => void;
   theme: Theme;
-  onHeightMeasured?: (height: number) => void;
+  containerHeight: number;
 }
 
 export function IconsWithHeight({
   state,
   updateState,
   theme,
-  onHeightMeasured,
+  containerHeight,
 }: IconsWithHeightProps) {
-  const [height, setHeight] = useState<number | null>(null);
+  while (sizing.iconSize >= sizing.minIconSize+2) {
+    if (
+      containerHeight < state.quoteHeight ||
+      longestWordLength(state.puzzle.stringToEncrypt) > sizing.maxWidth
+    ) {
+      state.decreaseQuoteIconSize();
+    }
+  }
 
   const decodeQuote = (quote: string[]): string[] => {
     return quote.map((char) => state.decodingMap.get(char) ?? char);
@@ -76,7 +88,6 @@ export function IconsWithHeight({
       </Text>
     </View>
   );
-
   const renderIcon = (iconName: string, key: string, index: number) => (
     <View
       key={key}
@@ -103,45 +114,30 @@ export function IconsWithHeight({
 
   const decodedQuote = decodeQuote(state.encodedQuote);
   let quoteIndex = -2;
+  return splitOnPercent(decodedQuote).map((line, lineIndex) => {
+    quoteIndex++;
+    return (
+      <View
+        key={`line-${lineIndex}`}
+        style={{ flexDirection: "row", justifyContent: "center" }}
+      >
+        {line.map((element, charIndex) => {
+          quoteIndex++;
+          const key = `line-${lineIndex}-char-${charIndex}`;
 
-  const handleLayout = (event: LayoutChangeEvent) => {
-    const h = event.nativeEvent.layout.height;
-    if (height !== h) {
-      setHeight(h);
-      if (onHeightMeasured) {
-        onHeightMeasured(h);
-      }
-    }
-  };
-
-  return (
-    <View onLayout={handleLayout}>
-      {splitOnPercent(decodedQuote).map((line, lineIndex) => {
-        quoteIndex++;
-        return (
-          <View
-            key={`line-${lineIndex}`}
-            style={{ flexDirection: "row", justifyContent: "center" }}
-          >
-            {line.map((element, charIndex) => {
-              quoteIndex++;
-              const key = `line-${lineIndex}-char-${charIndex}`;
-
-              if (element === " ") {
-                return renderSpace(key);
-              } else if (element.length === 1) {
-                if (element >= "A" && element <= "Z") {
-                  return renderLetter(element, key);
-                } else {
-                  return renderNonLetterCharacter(element, key);
-                }
-              } else {
-                return renderIcon(element, key, quoteIndex);
-              }
-            })}
-          </View>
-        );
-      })}
-    </View>
-  );
+          if (element === " ") {
+            return renderSpace(key);
+          } else if (element.length === 1) {
+            if (element >= "A" && element <= "Z") {
+              return renderLetter(element, key);
+            } else {
+              return renderNonLetterCharacter(element, key);
+            }
+          } else {
+            return renderIcon(element, key, quoteIndex);
+          }
+        })}
+      </View>
+    );
+  });
 }
