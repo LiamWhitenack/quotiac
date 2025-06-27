@@ -31,7 +31,7 @@ class Sizing {
         );
         this.keyboardHeight = (66.75 * 3) + 10;
 
-        this.topBarHeight = 50;
+        this.topBarHeight = 60;
         this.quoteHeight = this.keyboardHeight - this.topBarHeight;
 
         this.iconSize = 36;

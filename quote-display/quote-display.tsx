@@ -10,14 +10,9 @@ import { IconsWithHeight } from "./get-icons";
 interface QuoteDisplayProps {
   state: GameState;
   updateState: () => void;
-  onOverflowChange?: (isOverflowing: boolean) => void;
 }
 
-const QuoteDisplay: React.FC<QuoteDisplayProps> = ({
-  state,
-  updateState,
-  onOverflowChange,
-}) => {
+const QuoteDisplay: React.FC<QuoteDisplayProps> = ({ state, updateState }) => {
   const { theme } = useTheme();
   const styles = createStyles(theme);
   const containerHeight =

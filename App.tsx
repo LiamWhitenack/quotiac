@@ -21,6 +21,7 @@ import useOnCompleteModal from "./app-effects/show-modal";
 import { StatusBar } from "react-native";
 import { useTheme } from "./theme/ThemeContext";
 import { BlurView } from "expo-blur";
+import ShowPuzzleInfoButton from "./puzzle-info-modal/button";
 
 const CodiacApp = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -76,8 +77,6 @@ const CodiacApp = () => {
   // Create styles using theme
   const mainWindowStyles = createMainWindowStyles(theme);
 
-  const [quoteIsOverflowing, setQuoteIsOverflowing] = useState(false);
-
   return (
     <>
       <StatusBar
@@ -91,11 +90,16 @@ const CodiacApp = () => {
         ]}
       >
         <View style={mainWindowStyles.topBarContainer}>
-          <Animated.Text
+          <Animated.View
             style={[mainWindowStyles.title, { opacity: Math.abs(fadeValue) }]}
           >
-            {fadeValue > 0 ? "Codiac" : state.puzzle.puzzleType}
-          </Animated.Text>
+            {fadeValue > 0 ? (
+              <Text style={mainWindowStyles.title}>Codiac</Text>
+            ) : (
+              <ShowPuzzleInfoButton state={state} />
+            )}
+          </Animated.View>
+
           <View style={mainWindowStyles.topBarIconContainer}>
             <TouchableOpacity
               style={mainWindowStyles.iconContainer}
@@ -133,11 +137,7 @@ const CodiacApp = () => {
         {state.fireConfetti && (
           <ConfettiCannon count={100} origin={{ x: 200, y: 0 }} fadeOut />
         )}
-        <QuoteDisplay
-          state={state}
-          updateState={updateState}
-          onOverflowChange={setQuoteIsOverflowing}
-        />
+        <QuoteDisplay state={state} updateState={updateState} />
         <LetterKeyboardDisplay
           state={state}
           updateState={updateState}
