@@ -63,6 +63,17 @@ export const createStyles = (theme: Theme) =>
       fontWeight: "bold",
       color: theme.text,
     },
+    modalTitlePlusContainer: {
+      flexDirection: "column",
+      alignItems: "flex-start",
+      justifyContent: "flex-start",
+      width: "100%",
+    },
+    modalTitlePlus: {
+      fontSize: 14,
+      fontWeight: "bold",
+      color: theme.text,
+    },
 
     resultsText: {
       fontSize: 24, // bigger for clearer emoji
@@ -80,18 +91,19 @@ export const createStyles = (theme: Theme) =>
       justifyContent: "space-between",
       width: "100%",
     },
+
     modalButton: {
       flex: 1,
       marginHorizontal: 8,
       backgroundColor: theme.elevatedButton,
       paddingVertical: 12,
-      borderRadius: 8,
+      borderRadius: 30,
       alignItems: "center",
     },
     modalButtonText: {
       color: "white",
       fontWeight: "600",
-      fontSize: 16,
+      fontSize: 18,
     },
     closeButton: {
       marginTop: 20,

@@ -166,7 +166,12 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Puzzle Solved!</Text>
+              {/* <View style={styles.modalTitlePlusContainer}> */}
+              <Text style={styles.modalTitle}>Congratulations!</Text>
+              {/* <Text style={styles.modalTitlePlus}>
+                  You solved today&#39;s Codiac
+                </Text> */}
+              {/* </View> */}
               <TouchableOpacity onPress={onClose}>
                 <Ionicons name="close" size={24} color="gray" />
               </TouchableOpacity>
@@ -180,7 +185,7 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
                 style={styles.modalButton}
                 onPress={handleShare}
               >
-                <Text style={styles.modalButtonText}>Share</Text>
+                <Text style={styles.modalButtonText}>Share your results</Text>
               </TouchableOpacity>
             </View>
           </View>
