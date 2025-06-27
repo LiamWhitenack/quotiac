@@ -74,7 +74,7 @@ class GameState {
     }
 
     decreaseQuoteIconSize() {
-        sizing.iconSize -= 2;
+        sizing.iconSize -= 1;
         this.quote = wrapWords(this.puzzle.stringToEncrypt.split(" "), (sizing.maxWidth * 0.9) / sizing.iconSize);
         this.setQuoteHeight(sizing.iconSize)
         this.encodedQuote = this.encodeQuote(this.quote.toLowerCase());
