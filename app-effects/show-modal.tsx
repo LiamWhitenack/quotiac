@@ -18,4 +18,11 @@ function useOnCompleteModal(
   }, [setModalVisible, state.solved]);
 }
 
-export default useOnCompleteModal;
+function usePuzzleDetailsModal(
+  state: GameState,
+  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>
+) {
+  useEffect(() => {});
+}
+
+export { useOnCompleteModal, usePuzzleDetailsModal };

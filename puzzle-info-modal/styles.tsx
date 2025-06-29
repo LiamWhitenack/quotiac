@@ -18,8 +18,7 @@ export const createStyles = (theme: Theme) =>
     },
     modalHeader: {
       flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
+      justifyContent: "flex-end",
       width: "100%",
       paddingHorizontal: 0, // or adjust to match your container padding
       paddingBottom: 25,
@@ -117,5 +116,19 @@ export const createStyles = (theme: Theme) =>
       backgroundColor: "rgba(0, 0, 0, 0)", // 👈 this is what darkens the background
       justifyContent: "center",
       alignItems: "center",
+    },
+    modalQuote: {
+      fontSize: 18,
+      fontStyle: "italic",
+      color: theme.text,
+      textAlign: "center",
+      marginBottom: 12,
+    },
+
+    modalSubType: {
+      fontSize: 14,
+      fontWeight: "500",
+      color: theme.subtext,
+      marginBottom: 16,
     },
   });

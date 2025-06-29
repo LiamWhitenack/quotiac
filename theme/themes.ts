@@ -8,7 +8,9 @@ export const lightTheme = {
   border: "#CCC",
   lightBulbBorder: "#000000",
   lightBulbFill: "#FFD700",
-  elevatedButton: "black"
+  elevatedButton: "black",
+  subtext: "#666666",
+
 };
 
 export const darkTheme = {
@@ -21,7 +23,8 @@ export const darkTheme = {
   border: "#313131",
   lightBulbBorder: "#F8F8F8",
   lightBulbFill: "#FFFF00DD",
-  elevatedButton: "#818384"
+  elevatedButton: "#818384",
+  subtext: "#AAAAAA",
 };
 
 export type Theme = typeof lightTheme;

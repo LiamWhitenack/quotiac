@@ -5,13 +5,15 @@ import { createStyles } from "./styles";
 import GameState from "@/state/state";
 import { useTheme } from "@/theme/ThemeContext";
 
-type PuzzleCompleteModalProps = {
+import QuoteDetails from "./render-quote";
+
+type PuzzleDetailsModalProps = {
   state: GameState;
   visible: boolean;
   onClose: () => void;
 };
 
-const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
+const PuzzleDetailsModal: React.FC<PuzzleDetailsModalProps> = ({
   state,
   visible,
   onClose,
@@ -24,17 +26,16 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
       <View style={styles.modalOverlay}>
         <View style={styles.modalContent}>
           <View style={styles.modalHeader}>
-            <Text style={styles.modalTitle}>Congratulations!</Text>
             <TouchableOpacity onPress={onClose}>
               <Ionicons name="close" size={24} color="gray" />
             </TouchableOpacity>
           </View>
 
-          <View style={{ height: 20 }} />
+          <QuoteDetails puzzle={state.puzzle} />
         </View>
       </View>
     </Modal>
   );
 };
 
-export default PuzzleCompleteModal;
+export default PuzzleDetailsModal;

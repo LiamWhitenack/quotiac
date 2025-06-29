@@ -5,7 +5,7 @@ import {
   Text,
   TouchableOpacity,
   Animated,
-  Easing,
+  StatusBar,
 } from "react-native";
 import { createMainWindowStyles } from "./styles";
 import QuoteDisplay from "./quote-display/quote-display";
@@ -17,14 +17,18 @@ import GameState from "./state/state";
 import { todayQuote } from "./puzzles/get-puzzle";
 import PuzzleCompleteModal from "./puzzle-complete-modal/modal";
 import { useTitleFade, useAnimatedValue } from "./app-effects/title-fade";
-import useOnCompleteModal from "./app-effects/show-modal";
-import { StatusBar } from "react-native";
+import {
+  useOnCompleteModal,
+  usePuzzleDetailsModal,
+} from "./app-effects/show-modal";
 import { useTheme } from "./theme/ThemeContext";
-import { BlurView } from "expo-blur";
 import ShowPuzzleInfoButton from "./puzzle-info-modal/button";
+import PuzzleDetailsModal from "./puzzle-info-modal/skeleton";
 
 const CodiacApp = () => {
-  const [modalVisible, setModalVisible] = useState(false);
+  const [completionModalVisible, setCompletionModalVisible] = useState(false);
+  const [puzzleDetailsModalVisible, setPuzzleDetailsModalVisible] =
+    useState(false);
   const fadeTitleAnimation = useRef(new Animated.Value(1)).current;
   const [showAppTitle, setShowAppTitle] = useState(true);
   const fadeValue = useAnimatedValue(fadeTitleAnimation);
@@ -69,7 +73,7 @@ const CodiacApp = () => {
   //, [activeIcon, decodingMap, quoteIndex, reactToKeyPress]);
 
   useTitleFade(fadeTitleAnimation, showAppTitle, setShowAppTitle);
-  useOnCompleteModal(state, setModalVisible);
+  useOnCompleteModal(state, setCompletionModalVisible);
 
   // Conditional render with view or safe area view based on platform
   const Wrapper = sizing.isMobile ? SafeAreaView : View;
@@ -96,7 +100,10 @@ const CodiacApp = () => {
             {fadeValue > 0 ? (
               <Text style={mainWindowStyles.title}>Codiac</Text>
             ) : (
-              <ShowPuzzleInfoButton state={state} />
+              <ShowPuzzleInfoButton
+                state={state}
+                onPressed={setPuzzleDetailsModalVisible}
+              />
             )}
           </Animated.View>
 
@@ -143,15 +150,21 @@ const CodiacApp = () => {
           updateState={updateState}
           mode={mode}
         />
-        {
-          <PuzzleCompleteModal
-            state={state}
-            visible={modalVisible}
-            onClose={() => {
-              setModalVisible(false);
-            }}
-          />
-        }
+
+        <PuzzleCompleteModal
+          state={state}
+          visible={completionModalVisible}
+          onClose={() => {
+            setCompletionModalVisible(false);
+          }}
+        />
+        <PuzzleDetailsModal
+          state={state}
+          visible={puzzleDetailsModalVisible}
+          onClose={() => {
+            setPuzzleDetailsModalVisible(false);
+          }}
+        />
       </Wrapper>
     </>
   );
