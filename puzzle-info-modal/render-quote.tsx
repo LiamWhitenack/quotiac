@@ -24,14 +24,15 @@ const DetailsView: React.FC<DetailsViewProps> = ({ details }) => {
       {Object.entries(details).map(([key, value], index) => {
         if (value === undefined) return null;
         return (
-          <View key={index} style={{ marginBottom: 4 }}>
-            <View
-              style={{
-                flexDirection: "row",
-                alignContent: "flex-start",
-                justifyContent: "flex-start",
-              }}
-            >
+          <View
+            key={index}
+            style={{
+              flexDirection: "row",
+              alignContent: "flex-start",
+              justifyContent: "flex-start",
+            }}
+          >
+            <View style={{ marginBottom: 8 }}>
               <Text style={styles.puzzleInfoHeader}>{key}: </Text>
               <Text style={styles.puzzleInfoText}>{value}</Text>
             </View>

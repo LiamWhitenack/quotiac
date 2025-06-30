@@ -12,7 +12,6 @@ export const lightTheme = {
   lightBulbFill: "#FFD700",
   elevatedButton: "black",
   subtext: "#666666",
-
 };
 
 export const darkTheme = {

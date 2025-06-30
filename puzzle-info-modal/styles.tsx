@@ -9,7 +9,7 @@ export const createStyles = (theme: Theme) =>
       borderRadius: 16,
       padding: 24,
       width: sizing.maxWidth * 0.8,
-      alignItems: "center",
+      alignItems: "flex-start",
       shadowColor: "#000",
       shadowOffset: { width: 0, height: 4 },
       shadowOpacity: 0.3,
