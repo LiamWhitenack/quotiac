@@ -96,9 +96,24 @@ export const createStyles = (theme: Theme) =>
       borderRadius: 30,
       alignItems: "center",
     },
+    disabledModalButton: {
+      height: sizing.topBarHeight * 0.7,
+      marginHorizontal: 8,
+      borderColor: theme.elevatedButton, // set border color
+      borderWidth: 2, // set border width
+      justifyContent: "center",
+      borderRadius: 30,
+      alignItems: "center",
+    },
     modalButtonText: {
-      color: "white",
-      fontWeight: "600",
+      color: theme.textInverse,
+      fontWeight: "bold",
+      fontSize: 14,
+      paddingHorizontal: 16,
+    },
+    modalButtonDisabledText: {
+      color: theme.text,
+      fontWeight: "bold",
       fontSize: 14,
       paddingHorizontal: 16,
     },

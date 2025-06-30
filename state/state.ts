@@ -202,9 +202,9 @@ class GameState {
 
     elementColor(element: string, theme: Theme): string {
         if (this.elementIsPartOfHint(element)) {
-            return theme.secondary
+            return theme.hint
         } else if (element === this.activeIcon) {
-            return theme.primary
+            return theme.selectedLetter
         } else {
             return theme.text
         }

@@ -19,12 +19,19 @@ const ShowPuzzleInfoButton: React.FC<ShowPuzzleInfoButtonProps> = ({
 
   return (
     <TouchableOpacity
-      style={styles.modalButton}
+      style={state.solved ? styles.modalButton : styles.disabledModalButton}
+      disabled={!state.solved}
       onPress={() => {
         showPuzzleDetailsModal(true);
       }}
     >
-      <Text style={styles.modalButtonText}>{state.puzzle.puzzleType}</Text>
+      <Text
+        style={
+          state.solved ? styles.modalButtonText : styles.modalButtonDisabledText
+        }
+      >
+        {state.puzzle.puzzleType}
+      </Text>
     </TouchableOpacity>
   );
 };

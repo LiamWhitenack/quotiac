@@ -1,8 +1,9 @@
 export const lightTheme = {
-  primary: "blue",
-  secondary: "green",
+  selectedLetter: "blue",
+  hint: "green",
   background: "#F3F4F6",
   text: "#000000",
+  textInverse: "#F8F8F8",
   surface: "#D3D6DA",
   elevatedSurface: "#F3F4F6",
   border: "#CCC",
@@ -14,10 +15,11 @@ export const lightTheme = {
 };
 
 export const darkTheme = {
-  primary: "#448AFF",
-  secondary: "#8BC34A",
+  selectedLetter: "#448AFF",
+  hint: "#8BC34A",
   background: "#121212",
   text: "#F8F8F8",
+  textInverse: "#000000",
   surface: "#818384",
   elevatedSurface: "#2C2C2C",
   border: "#313131",
