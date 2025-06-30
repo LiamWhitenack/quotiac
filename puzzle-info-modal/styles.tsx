@@ -5,7 +5,7 @@ import type { Theme } from "@/theme/themes";
 export const createStyles = (theme: Theme) =>
   StyleSheet.create({
     modalContent: {
-      backgroundColor: theme.elevatedSurface,
+      backgroundColor: theme.keyboardSurface,
       borderRadius: 16,
       padding: 24,
       width: sizing.maxWidth * 0.8,

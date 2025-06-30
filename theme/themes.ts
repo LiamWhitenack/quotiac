@@ -5,6 +5,7 @@ export const lightTheme = {
   text: "#000000",
   textInverse: "#F8F8F8",
   surface: "#D3D6DA",
+  keyboardSurface: "#F3F4F6",
   elevatedSurface: "#F3F4F6",
   border: "#CCC",
   lightBulbBorder: "#000000",
@@ -21,11 +22,12 @@ export const darkTheme = {
   text: "#F8F8F8",
   textInverse: "#000000",
   surface: "#818384",
-  elevatedSurface: "#2C2C2C",
+  keyboardSurface: "#2C2C2C",
+  elevatedSurface: "#F8F8F8",
   border: "#313131",
   lightBulbBorder: "#F8F8F8",
   lightBulbFill: "#FFFF00DD",
-  elevatedButton: "#818384",
+  elevatedButton: "#F8F8F8",
   subtext: "#AAAAAA",
 };
 
