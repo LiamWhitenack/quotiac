@@ -9,7 +9,7 @@ class CharacterQuote extends CryptographBase {
     characterName: string
     releaseDate: number
 
-    constructor(quote: string, sourceType: string, sourceTitle: string, characterName: string, releaseDate: number) {
+    constructor(quote: string, sourceType: string, characterName: string, sourceTitle: string, releaseDate: number) {
         super(quote, sourceType + " Quote")
         this.sourceTitle = sourceTitle
         this.characterName = characterName
