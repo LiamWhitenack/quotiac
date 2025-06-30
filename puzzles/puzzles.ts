@@ -4,9 +4,9 @@ import { CharacterQuote, DirectQuote, FamousDocumentQuote, GeneralPhrase, SongLy
 
 const PUZZLES: CryptographBase[] = [
 
-  new GeneralPhrase(
-    "What do boobs and model trains have in common? They're meant for kids but are primarily played with by grown men.",
-  ),
+  // new GeneralPhrase(
+  //   "What do boobs and model trains have in common? They're meant for kids but are primarily played with by grown men.",
+  // ),
   new CharacterQuote(
     "One does not simply walk into Mordor",
     "Film",
