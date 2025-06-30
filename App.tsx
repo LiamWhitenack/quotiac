@@ -5,7 +5,7 @@ import {
   Text,
   TouchableOpacity,
   Animated,
-  Easing,
+  StatusBar,
 } from "react-native";
 import { createMainWindowStyles } from "./styles";
 import QuoteDisplay from "./quote-display/quote-display";
@@ -17,13 +17,17 @@ import GameState from "./state/state";
 import { todayQuote } from "./puzzles/get-puzzle";
 import PuzzleCompleteModal from "./puzzle-complete-modal/modal";
 import { useTitleFade, useAnimatedValue } from "./app-effects/title-fade";
-import useOnCompleteModal from "./app-effects/show-modal";
-import { StatusBar } from "react-native";
+import { useOnCompleteModal } from "./app-effects/show-modal";
 import { useTheme } from "./theme/ThemeContext";
-import { BlurView } from "expo-blur";
+import ShowPuzzleInfoButton from "./puzzle-info-modal/button";
+import PuzzleDetailsModal from "./puzzle-info-modal/skeleton";
 
 const CodiacApp = () => {
-  const [modalVisible, setModalVisible] = useState(false);
+  const [completionModalVisible, setCompletionModalVisible] = useState(false);
+  const [puzzleDetailsModalDisabled, setPuzzleDetailsModalDisabled] =
+    useState(true);
+  const [puzzleDetailsModalVisible, setPuzzleDetailsModalVisible] =
+    useState(false);
   const fadeTitleAnimation = useRef(new Animated.Value(1)).current;
   const [showAppTitle, setShowAppTitle] = useState(true);
   const fadeValue = useAnimatedValue(fadeTitleAnimation);
@@ -68,15 +72,17 @@ const CodiacApp = () => {
   //, [activeIcon, decodingMap, quoteIndex, reactToKeyPress]);
 
   useTitleFade(fadeTitleAnimation, showAppTitle, setShowAppTitle);
-  useOnCompleteModal(state, setModalVisible);
+  useOnCompleteModal(
+    state,
+    setCompletionModalVisible,
+    setPuzzleDetailsModalDisabled
+  );
 
   // Conditional render with view or safe area view based on platform
   const Wrapper = sizing.isMobile ? SafeAreaView : View;
 
   // Create styles using theme
   const mainWindowStyles = createMainWindowStyles(theme);
-
-  const [quoteIsOverflowing, setQuoteIsOverflowing] = useState(false);
 
   return (
     <>
@@ -91,11 +97,20 @@ const CodiacApp = () => {
         ]}
       >
         <View style={mainWindowStyles.topBarContainer}>
-          <Animated.Text
+          <Animated.View
             style={[mainWindowStyles.title, { opacity: Math.abs(fadeValue) }]}
           >
-            {fadeValue > 0 ? "Codiac" : state.puzzle.puzzleType}
-          </Animated.Text>
+            {fadeValue > 0 ? (
+              <Text style={mainWindowStyles.title}>Codiac</Text>
+            ) : (
+              <ShowPuzzleInfoButton
+                state={state}
+                puzzleDetailsModalDisabled={puzzleDetailsModalDisabled}
+                onPressed={setPuzzleDetailsModalVisible}
+              />
+            )}
+          </Animated.View>
+
           <View style={mainWindowStyles.topBarIconContainer}>
             <TouchableOpacity
               style={mainWindowStyles.iconContainer}
@@ -133,25 +148,27 @@ const CodiacApp = () => {
         {state.fireConfetti && (
           <ConfettiCannon count={100} origin={{ x: 200, y: 0 }} fadeOut />
         )}
-        <QuoteDisplay
-          state={state}
-          updateState={updateState}
-          onOverflowChange={setQuoteIsOverflowing}
-        />
+        <QuoteDisplay state={state} updateState={updateState} />
         <LetterKeyboardDisplay
           state={state}
           updateState={updateState}
           mode={mode}
         />
-        {
-          <PuzzleCompleteModal
-            state={state}
-            visible={modalVisible}
-            onClose={() => {
-              setModalVisible(false);
-            }}
-          />
-        }
+
+        <PuzzleCompleteModal
+          state={state}
+          visible={completionModalVisible}
+          onClose={() => {
+            setCompletionModalVisible(false);
+          }}
+        />
+        <PuzzleDetailsModal
+          state={state}
+          visible={puzzleDetailsModalVisible}
+          onClose={() => {
+            setPuzzleDetailsModalVisible(false);
+          }}
+        />
       </Wrapper>
     </>
   );

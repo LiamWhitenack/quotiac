@@ -178,6 +178,7 @@ const PUZZLES: CryptographBase[] = [
   new GeneralPhrase(
     "The toothbrush was invented in West Virginia. Otherwise it would have been called the teethbrush.",
   ),
+  new DirectQuote("I am the state.", "Louiz XIV"),
   new CharacterQuote(
     "Toby is in HR, which technically means he works for corporate, so he's really not a part of our family. Also, he's divorced, so he's really not a part of his family either.",
     "Sitcom",

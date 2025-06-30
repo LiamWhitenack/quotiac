@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import * as Clipboard from "expo-clipboard";
-import { createStyles } from "./styles";
+import { createStyles } from "../puzzle-info-modal/styles";
 import GameState from "@/state/state";
 import getIcons from "./get-icons";
 import { useTheme } from "@/theme/ThemeContext";
@@ -180,14 +180,9 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
             <YourVisibleComponent />
             <View style={{ height: 20 }} />
 
-            <View style={styles.modalButtonContainer}>
-              <TouchableOpacity
-                style={styles.modalButton}
-                onPress={handleShare}
-              >
-                <Text style={styles.modalButtonText}>Share your results</Text>
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity style={styles.modalButton} onPress={handleShare}>
+              <Text style={styles.modalButtonText}>Share your results</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>

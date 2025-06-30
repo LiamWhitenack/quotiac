@@ -1,21 +1,35 @@
 import GameState from "@/state/state";
-import { useEffect } from "react";
 import { Animated } from "react-native";
+import { useEffect, useRef } from "react";
 
 function useOnCompleteModal(
   state: GameState,
-  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>
+  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>,
+  setPuzzleDetailsModalDisabled: React.Dispatch<React.SetStateAction<boolean>>
 ) {
+  const hasShownModal = useRef(false);
+
   useEffect(() => {
-    if (state.solved) {
+    if (state.solved && !hasShownModal.current) {
+      hasShownModal.current = true;
       const timeout = setTimeout(() => {
         setModalVisible(true);
+        setPuzzleDetailsModalDisabled(false);
       }, 2000);
       return () => clearTimeout(timeout);
-    } else {
+    } else if (!state.solved) {
+      // reset the flag when puzzle is unsolved again (optional, depending on your app logic)
+      hasShownModal.current = false;
       setModalVisible(false);
     }
-  }, [setModalVisible, state.solved]);
+  }); // Only re-run when solved status changes
 }
 
-export default useOnCompleteModal;
+function usePuzzleDetailsModal(
+  state: GameState,
+  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>
+) {
+  useEffect(() => {});
+}
+
+export { useOnCompleteModal, usePuzzleDetailsModal };
