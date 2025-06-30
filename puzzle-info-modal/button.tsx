@@ -4,6 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { createStyles } from "./styles";
 import GameState from "@/state/state";
 import { useTheme } from "@/theme/ThemeContext";
+import { GeneralPhrase } from "@/puzzles/puzzle-types/quote";
 
 type ShowPuzzleInfoButtonProps = {
   state: GameState;
@@ -19,7 +20,9 @@ const ShowPuzzleInfoButton: React.FC<ShowPuzzleInfoButtonProps> = ({
   const { theme } = useTheme();
   const styles = createStyles(theme);
 
-  return (
+  return state.puzzle instanceof GeneralPhrase ? (
+    <Text style={styles.modalTitle}>this.state.puzzle.</Text>
+  ) : (
     <TouchableOpacity
       style={
         puzzleDetailsModalDisabled

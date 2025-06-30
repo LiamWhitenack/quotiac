@@ -104,6 +104,15 @@ export const createStyles = (theme: Theme) =>
       borderRadius: 30,
       alignItems: "center",
     },
+    puzzleInfoHeader: {
+      color: theme.text,
+      fontWeight: "bold",
+      fontSize: 16,
+    },
+    puzzleInfoText: {
+      color: theme.text,
+      fontSize: 16,
+    },
     modalButtonText: {
       color: theme.textInverse,
       fontWeight: "bold",
