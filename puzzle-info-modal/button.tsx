@@ -7,11 +7,13 @@ import { useTheme } from "@/theme/ThemeContext";
 
 type ShowPuzzleInfoButtonProps = {
   state: GameState;
+  puzzleDetailsModalDisabled: boolean;
   onPressed: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const ShowPuzzleInfoButton: React.FC<ShowPuzzleInfoButtonProps> = ({
   state,
+  puzzleDetailsModalDisabled,
   onPressed: showPuzzleDetailsModal,
 }) => {
   const { theme } = useTheme();
@@ -19,15 +21,21 @@ const ShowPuzzleInfoButton: React.FC<ShowPuzzleInfoButtonProps> = ({
 
   return (
     <TouchableOpacity
-      style={state.solved ? styles.modalButton : styles.disabledModalButton}
-      disabled={!state.solved}
+      style={
+        puzzleDetailsModalDisabled
+          ? styles.disabledModalButton
+          : styles.modalButton
+      }
+      disabled={puzzleDetailsModalDisabled}
       onPress={() => {
         showPuzzleDetailsModal(true);
       }}
     >
       <Text
         style={
-          state.solved ? styles.modalButtonText : styles.modalButtonDisabledText
+          puzzleDetailsModalDisabled
+            ? styles.modalButtonDisabledText
+            : styles.modalButtonText
         }
       >
         {state.puzzle.puzzleType}

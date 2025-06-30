@@ -85,7 +85,6 @@ export const createStyles = (theme: Theme) =>
         default: "Segoe UI Emoji",
       }),
     },
-
     modalButton: {
       // flex: 1,
       height: sizing.topBarHeight * 0.7,

@@ -17,16 +17,15 @@ import GameState from "./state/state";
 import { todayQuote } from "./puzzles/get-puzzle";
 import PuzzleCompleteModal from "./puzzle-complete-modal/modal";
 import { useTitleFade, useAnimatedValue } from "./app-effects/title-fade";
-import {
-  useOnCompleteModal,
-  usePuzzleDetailsModal,
-} from "./app-effects/show-modal";
+import { useOnCompleteModal } from "./app-effects/show-modal";
 import { useTheme } from "./theme/ThemeContext";
 import ShowPuzzleInfoButton from "./puzzle-info-modal/button";
 import PuzzleDetailsModal from "./puzzle-info-modal/skeleton";
 
 const CodiacApp = () => {
   const [completionModalVisible, setCompletionModalVisible] = useState(false);
+  const [puzzleDetailsModalDisabled, setPuzzleDetailsModalDisabled] =
+    useState(true);
   const [puzzleDetailsModalVisible, setPuzzleDetailsModalVisible] =
     useState(false);
   const fadeTitleAnimation = useRef(new Animated.Value(1)).current;
@@ -73,7 +72,11 @@ const CodiacApp = () => {
   //, [activeIcon, decodingMap, quoteIndex, reactToKeyPress]);
 
   useTitleFade(fadeTitleAnimation, showAppTitle, setShowAppTitle);
-  useOnCompleteModal(state, setCompletionModalVisible);
+  useOnCompleteModal(
+    state,
+    setCompletionModalVisible,
+    setPuzzleDetailsModalDisabled
+  );
 
   // Conditional render with view or safe area view based on platform
   const Wrapper = sizing.isMobile ? SafeAreaView : View;
@@ -102,6 +105,7 @@ const CodiacApp = () => {
             ) : (
               <ShowPuzzleInfoButton
                 state={state}
+                puzzleDetailsModalDisabled={puzzleDetailsModalDisabled}
                 onPressed={setPuzzleDetailsModalVisible}
               />
             )}
