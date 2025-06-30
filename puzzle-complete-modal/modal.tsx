@@ -180,14 +180,9 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
             <YourVisibleComponent />
             <View style={{ height: 20 }} />
 
-            <View style={styles.modalButtonContainer}>
-              <TouchableOpacity
-                style={styles.modalButton}
-                onPress={handleShare}
-              >
-                <Text style={styles.modalButtonText}>Share your results</Text>
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity style={styles.modalButton} onPress={handleShare}>
+              <Text style={styles.modalButtonText}>Share your results</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>

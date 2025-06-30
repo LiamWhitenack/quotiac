@@ -18,7 +18,7 @@ export const createStyles = (theme: Theme) =>
     },
     modalHeader: {
       flexDirection: "row",
-      justifyContent: "flex-end",
+      justifyContent: "space-between",
       width: "100%",
       paddingHorizontal: 0, // or adjust to match your container padding
       paddingBottom: 25,
@@ -113,9 +113,15 @@ export const createStyles = (theme: Theme) =>
     },
     modalOverlay: {
       flex: 1,
-      backgroundColor: "rgba(0, 0, 0, 0)", // 👈 this is what darkens the background
+      backgroundColor: "rgba(0, 0, 0, 0)",
       justifyContent: "center",
       alignItems: "center",
+    },
+    closeButtonContainer: {
+      position: "absolute",
+      top: 16,
+      right: 16,
+      zIndex: 10, // ensures it overlays other elements
     },
     modalQuote: {
       fontSize: 18,

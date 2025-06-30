@@ -25,12 +25,11 @@ const PuzzleDetailsModal: React.FC<PuzzleDetailsModalProps> = ({
     <Modal animationType="slide" transparent={true} visible={visible}>
       <View style={styles.modalOverlay}>
         <View style={styles.modalContent}>
-          <View style={styles.modalHeader}>
+          <View style={styles.closeButtonContainer}>
             <TouchableOpacity onPress={onClose}>
               <Ionicons name="close" size={24} color="gray" />
             </TouchableOpacity>
           </View>
-
           <QuoteDetails puzzle={state.puzzle} />
         </View>
       </View>
