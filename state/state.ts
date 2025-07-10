@@ -1,11 +1,11 @@
 import { mapUniqueLettersToNumbers } from "@/src/encoded-quotes";
 import KEYBOARD_LETTERS from "@/src/keyboard-letters";
 import { mapsAreEqual } from "@/src/utils";
-import { PuzzleOfTheDay } from "@/puzzles/puzzles"
 import { wrapWords } from "@/sizing/wrap-words";
 import sizing from "@/sizing/sizing";
 import GiveALetterHint from "@/puzzles/hints/letter";
 import type { Theme } from "@/theme/themes";
+import CryptographBase from "@/puzzles/puzzle-types/base";
 
 function inverseMap(map: Map<string, string>): Map<string, string> {
     const inverseDecodingMap = new Map<string, string>();
@@ -39,7 +39,7 @@ function findCharacterBackward(
 
 
 class GameState {
-    puzzle: PuzzleOfTheDay;
+    puzzle: CryptographBase;
     quote: string;
     quoteHeight: number;
     encodingMap: Map<string, string>;
@@ -55,11 +55,11 @@ class GameState {
     encodedQuote: string[];
     showAppTitle: boolean;
 
-    constructor(puzzle: PuzzleOfTheDay) {
+    constructor(puzzle: CryptographBase) {
         this.puzzle = puzzle
         this.quote = wrapWords(puzzle.stringToEncrypt.split(" "), (sizing.maxWidth * 0.9) / sizing.iconSize);
         this.quoteHeight = this.quote.split("@").length * sizing.iconSize - sizing.iconSize;
-        this.encodingMap = mapUniqueLettersToNumbers(puzzle.stringToEncrypt);
+        this.encodingMap = puzzle.encodingMap
         this.solution = capitalizeValues(inverseMap(this.encodingMap));
         this.fireConfetti = false;
         this.solved = false;

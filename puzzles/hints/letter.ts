@@ -8,6 +8,10 @@ class GiveALetterHint extends HintBase {
         this.readable = "Free Letter"
         this.letter = letter;
     }
+
+    static fromJSON(data: any): GiveALetterHint {
+        return new GiveALetterHint(data.letter);
+    }
 }
 
 export default GiveALetterHint;
