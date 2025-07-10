@@ -14,7 +14,7 @@ import { Ionicons } from "@expo/vector-icons";
 import sizing from "./sizing/sizing";
 import ConfettiCannon from "react-native-confetti-cannon";
 import GameState from "./state/state";
-import { todayQuote } from "./puzzles/get-puzzle";
+import { fetchTodayQuote } from "./puzzles/get-puzzle";
 import PuzzleCompleteModal from "./puzzle-complete-modal/modal";
 import { useTitleFade, useAnimatedValue } from "./app-effects/title-fade";
 import { useOnCompleteModal } from "./app-effects/show-modal";
@@ -23,6 +23,33 @@ import ShowPuzzleInfoButton from "./puzzle-info-modal/button";
 import PuzzleDetailsModal from "./puzzle-info-modal/skeleton";
 
 const CodiacApp = () => {
+  const [gameState, setGameState] = useState<GameState | null>(null);
+
+  useEffect(() => {
+    fetchTodayQuote().then((puzzle) => {
+      setGameState(new GameState(puzzle));
+    });
+  }, []);
+
+  if (!gameState) {
+    // Show loading screen or nothing while fetching puzzle
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>Loading puzzle...</Text>
+      </View>
+    );
+  }
+  // @ts-ignore
+  return <CodiacGame state={gameState} setGameState={setGameState} />;
+};
+
+const CodiacGame = ({
+  state,
+  setGameState,
+}: {
+  state: GameState;
+  setGameState: React.Dispatch<React.SetStateAction<GameState>>;
+}) => {
   const [completionModalVisible, setCompletionModalVisible] = useState(false);
   const [puzzleDetailsModalDisabled, setPuzzleDetailsModalDisabled] =
     useState(true);
@@ -32,18 +59,13 @@ const CodiacApp = () => {
   const [showAppTitle, setShowAppTitle] = useState(true);
   const fadeValue = useAnimatedValue(fadeTitleAnimation);
 
-  // Get current theme from provider
   const { theme, mode } = useTheme();
 
-  // Initialize game state
-  const [state, setGameState] = useState(new GameState(todayQuote()));
-
   function updateState() {
-    let clone = state.clone();
+    const clone = state.clone();
     setGameState(clone);
   }
 
-  // Use effect to listen to key presses
   useEffect(() => {
     if (!sizing.isMobile) {
       const handleKeyPress = (event: KeyboardEvent) => {
@@ -69,7 +91,6 @@ const CodiacApp = () => {
       };
     }
   });
-  //, [activeIcon, decodingMap, quoteIndex, reactToKeyPress]);
 
   useTitleFade(fadeTitleAnimation, showAppTitle, setShowAppTitle);
   useOnCompleteModal(
@@ -78,10 +99,7 @@ const CodiacApp = () => {
     setPuzzleDetailsModalDisabled
   );
 
-  // Conditional render with view or safe area view based on platform
   const Wrapper = sizing.isMobile ? SafeAreaView : View;
-
-  // Create styles using theme
   const mainWindowStyles = createMainWindowStyles(theme);
 
   return (
