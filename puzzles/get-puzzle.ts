@@ -43,13 +43,11 @@ const parseHints = (rawHints: string): HintBase[] => {
 
 const parseEncryptionMap = (mapString: string): EncryptionMap => {
     const jsonString = mapString.replace(/'/g, '"');
-    console.log(jsonString)
     const obj = JSON.parse(jsonString);
-    console.log(new Map<string, string>(Object.entries(obj)));
     return new Map<string, string>(Object.entries(obj));
 };
 
-const fetchTodayQuote = async (): Promise<CryptographBase> => {
+const fetchTodayQuote = async (dateString: string): Promise<CryptographBase> => {
 
     const response = await fetch("https://raw.githubusercontent.com/LiamWhitenack/codiac-puzzles/refs/heads/dev/resources/test.json");
     const puzzleData = await response.json();

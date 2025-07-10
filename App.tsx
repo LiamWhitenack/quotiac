@@ -21,15 +21,40 @@ import { useOnCompleteModal } from "./app-effects/show-modal";
 import { useTheme } from "./theme/ThemeContext";
 import ShowPuzzleInfoButton from "./puzzle-info-modal/button";
 import PuzzleDetailsModal from "./puzzle-info-modal/skeleton";
+import { useRoute, RouteProp, useNavigation } from "@react-navigation/native";
+import { RootStackParamList } from "./AppNavigator"; // adjust path as needed
 
 const CodiacApp = () => {
   const [gameState, setGameState] = useState<GameState | null>(null);
+  const route = useRoute<RouteProp<RootStackParamList, "Puzzle">>();
+  const navigation = useNavigation();
+  const routeDate = route.params?.date;
 
   useEffect(() => {
-    fetchTodayQuote().then((puzzle) => {
+    if (!sizing.isMobile && !routeDate) {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const day = String(now.getDate()).padStart(2, "0");
+      const dateString = `${year}${month}${day}`;
+
+      // @ts-ignore
+      navigation.setParams({ date: dateString });
+    }
+  }, [navigation, routeDate]);
+
+  useEffect(() => {
+    const now = new Date();
+
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    const dateString = `${year}${month}${day}`;
+
+    fetchTodayQuote(dateString).then((puzzle) => {
       setGameState(new GameState(puzzle));
     });
-  }, []);
+  }, [routeDate]);
 
   if (!gameState) {
     // Show loading screen or nothing while fetching puzzle
