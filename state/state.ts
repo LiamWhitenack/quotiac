@@ -13,9 +13,6 @@ function inverseMap(map: Map<string, string>): Map<string, string> {
     });
     return inverseDecodingMap;
 }
-function isALowerCaseLetter(x: string) {
-    return (x.length === 1 && x >= "A" && x <= "Z")
-}
 function isACapitalLetter(x: string) {
     return (x.length === 1 && x >= "A" && x <= "Z")
 }
@@ -80,7 +77,7 @@ class GameState {
     }
 
     giveAHint() {
-        for (const [i, hint] of this.puzzle.hints.entries()) {
+        for (const [, hint] of this.puzzle.hints.entries()) {
             if (hint instanceof GiveALetterHint && !this.userHasDiscoveredLetter(hint)) {
                 this.givenHintLetters.push(hint.letter)
                 let updatedDecodingMap = new Map(this.decodingMap)
@@ -261,7 +258,7 @@ class GameState {
 
     private removeLetterMapping({ letter }: { letter: string }) {
         const icon = [...this.decodingMap].find(
-            ([k, v]) => v === letter
+            ([, v]) => v === letter
         )?.[0];
         if (icon === undefined) {
             throw Error;
@@ -295,7 +292,7 @@ class GameState {
             }
         }
         this.setDecodingMap(new Map(this.decodingMap))
-
+        this.fireConfetti = false;
         this.updateKeyboardValues();
         this.setQuoteIndex(0);
         this.setActiveIcon(this.encodedQuote[0]);
