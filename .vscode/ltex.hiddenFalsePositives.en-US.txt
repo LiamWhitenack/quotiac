@@ -1,0 +1,1 @@
+{"rule":"COLLECTIVE_NOUN_VERB_AGREEMENT_VBP","sentence":"^\\QGet 1 Month of Quotes Ready Starting With The Deployment Date\\E$"}
