@@ -11,7 +11,16 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const AppNavigator = () => {
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      linking={{
+        prefixes: ["http://localhost:8081", "https://codiac.expo.app"],
+        config: {
+          screens: {
+            Puzzle: ":date",
+          },
+        },
+      }}
+    >
       <Stack.Navigator
         initialRouteName="Puzzle"
         screenOptions={{ headerShown: false }}

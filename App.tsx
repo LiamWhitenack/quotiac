@@ -26,34 +26,64 @@ import { RootStackParamList } from "./AppNavigator"; // adjust path as needed
 
 const CodiacApp = () => {
   const [gameState, setGameState] = useState<GameState | null>(null);
-  const route = useRoute<RouteProp<RootStackParamList, "Puzzle">>();
-  const navigation = useNavigation();
-  const routeDate = route.params?.date;
+  const [routeDate, setRouteDate] = useState<string | undefined>(undefined);
+  const [hasCheckedURL, setHasCheckedURL] = useState(false);
 
+  const route = useRoute(); // still useful for initial render
+  const navigation = useNavigation();
+
+  // Extract date from the path (e.g., /20250710)
+  const extractDateFromPath = () => {
+    const params = new URLSearchParams(window.location.search);
+    const maybeDate = params.get("date");
+    return maybeDate && /^\d{8}$/.test(maybeDate) ? maybeDate : undefined;
+  };
+
+  // On first load or popstate, update the date from the URL
   useEffect(() => {
-    if (!sizing.isMobile && !routeDate) {
+    const updateDateFromURL = () => {
+      const urlDate = extractDateFromPath();
+      setHasCheckedURL(true);
+
+      if (urlDate && urlDate !== routeDate) {
+        setRouteDate(urlDate);
+        // @ts-ignore
+        navigation.setParams({ date: urlDate });
+      }
+    };
+
+    updateDateFromURL();
+    if (!sizing.isMobile) {
+      window.addEventListener("popstate", updateDateFromURL);
+      return () => window.removeEventListener("popstate", updateDateFromURL);
+    }
+  }, [routeDate]);
+
+  // Fallback to today's date only after checking the URL
+  useEffect(() => {
+    if (!sizing.isMobile && !routeDate && hasCheckedURL) {
       const now = new Date();
       const year = now.getFullYear();
       const month = String(now.getMonth() + 1).padStart(2, "0");
       const day = String(now.getDate()).padStart(2, "0");
       const dateString = `${year}${month}${day}`;
-
+      setRouteDate(dateString);
       // @ts-ignore
       navigation.setParams({ date: dateString });
     }
-  }, [navigation, routeDate]);
+  }, [routeDate, hasCheckedURL]);
 
+  // Fetch the puzzle when routeDate is set
   useEffect(() => {
     const now = new Date();
-
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, "0");
     const day = String(now.getDate()).padStart(2, "0");
-    const dateString = `${year}${month}${day}`;
-
-    fetchTodayQuote(dateString).then((puzzle) => {
-      setGameState(new GameState(puzzle));
-    });
+    fetchTodayQuote(routeDate ? routeDate : `${year}${month}${day}`).then(
+      (puzzle) => {
+        setGameState(new GameState(puzzle));
+      }
+    );
   }, [routeDate]);
 
   if (!gameState) {
