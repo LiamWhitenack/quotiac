@@ -65,7 +65,7 @@ export function IconsWithHeight({
           color: state.elementColor(letter, theme),
         }}
       >
-        {letter}
+        {letter.toUpperCase()}
       </Text>
     </View>
   );
@@ -125,7 +125,7 @@ export function IconsWithHeight({
           if (element === " ") {
             return renderSpace(key);
           } else if (element.length === 1) {
-            if (element >= "A" && element <= "Z") {
+            if (element >= "a" && element <= "z") {
               return renderLetter(element, key);
             } else {
               return renderNonLetterCharacter(element, key);

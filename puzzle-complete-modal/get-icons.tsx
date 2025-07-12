@@ -65,7 +65,7 @@ function getIcons(state: GameState, theme: Partial<Theme> = {}) {
 
   const quote = wrapWords(words, maxLength, true)
     .split("")
-    .map((char) => state.encodingMap.get(char.toLowerCase()) ?? char);
+    .map((char) => state.encodingMap.get(char) ?? char);
 
   return (
     <View>

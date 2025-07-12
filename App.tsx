@@ -129,7 +129,7 @@ const CodiacGame = ({
         } else if (key === "ArrowRight") {
           state.setActiveIcon(state.getNextIconName());
         } else if (/^[a-z]$/i.test(key)) {
-          state.reactToKeyboardPress(key.toUpperCase());
+          state.reactToKeyboardPress(key);
         } else {
           return; // ignore unrecognized keys
         }

@@ -13,12 +13,8 @@ function inverseMap(map: Map<string, string>): Map<string, string> {
     });
     return inverseDecodingMap;
 }
-function capitalizeValues(map: Map<string, string>): Map<string, string> {
-    const res = new Map<string, string>();
-    map.forEach((value, key) => {
-        res.set(key, value.toUpperCase());
-    });
-    return res;
+function isALowerCaseLetter(x: string) {
+    return (x.length === 1 && x >= "A" && x <= "Z")
 }
 function isACapitalLetter(x: string) {
     return (x.length === 1 && x >= "A" && x <= "Z")
@@ -59,7 +55,7 @@ class GameState {
         this.quote = wrapWords(puzzle.stringToEncrypt.split(" "), (sizing.maxWidth * 0.9) / sizing.iconSize);
         this.quoteHeight = this.quote.split("@").length * sizing.iconSize - sizing.iconSize;
         this.encodingMap = puzzle.encodingMap
-        this.solution = capitalizeValues(inverseMap(this.encodingMap));
+        this.solution = inverseMap(this.encodingMap);
         this.fireConfetti = false;
         this.solved = false;
         this.decodingMap = new Map();
@@ -76,11 +72,11 @@ class GameState {
         sizing.iconSize -= 1;
         this.quote = wrapWords(this.puzzle.stringToEncrypt.split(" "), (sizing.maxWidth * 0.9) / sizing.iconSize);
         this.setQuoteHeight(sizing.iconSize)
-        this.encodedQuote = this.encodeQuote(this.quote.toLowerCase());
+        this.encodedQuote = this.encodeQuote(this.quote);
     }
 
     userHasDiscoveredLetter(hint: GiveALetterHint) {
-        return this.inverseDecodingMap.get(hint.letter) === this.encodingMap.get(hint.letter.toLowerCase());
+        return this.inverseDecodingMap.get(hint.letter) === this.encodingMap.get(hint.letter);
     }
 
     giveAHint() {
@@ -89,10 +85,9 @@ class GameState {
                 this.givenHintLetters.push(hint.letter)
                 let updatedDecodingMap = new Map(this.decodingMap)
                 updatedDecodingMap.delete(this.inverseDecodingMap.get(hint.letter)!)
-                updatedDecodingMap.set(this.encodingMap.get(hint.letter.toLowerCase())!, hint.letter)
+                updatedDecodingMap.set(this.encodingMap.get(hint.letter)!, hint.letter)
                 this.setDecodingMap(updatedDecodingMap)
                 this.updateKeyboardValues()
-                this.puzzle.hints.splice(i, 1)
                 this.checkSolved()
                 break
             }
@@ -160,7 +155,7 @@ class GameState {
             if (index === 0) {
                 return;
             }
-            char = char.toLowerCase()
+            char = char
             if (char >= "a" && char <= "z") {
                 return this.encodingMap.get(char)!;
             }
@@ -174,7 +169,7 @@ class GameState {
         this.setKeyboardValues(
             KEYBOARD_LETTERS.map((row) =>
                 row.map((char) => {
-                    const associatedIconName = this.inverseDecodingMap.get(char);
+                    const associatedIconName = this.inverseDecodingMap.get(char.toLowerCase());
                     return associatedIconName === undefined ? char : associatedIconName;
                 })
             )
@@ -230,12 +225,13 @@ class GameState {
             return;
         }
 
-        if (isACapitalLetter(element)) {
+        if (isACapitalLetter(element.toUpperCase())) {
+            const letter = element.toLowerCase()
             // the letter is associated with an icon iff the user is using a keyboard
-            if (this.letterIsAssociatedWithIcon(element)) {
-                this.removeLetterMapping({ letter: element })
+            if (this.letterIsAssociatedWithIcon(letter)) {
+                this.removeLetterMapping({ letter: letter })
             } else {
-                this.addLetterMapping({ letter: element })
+                this.addLetterMapping({ letter: letter })
                 this.checkSolved();
             }
 
@@ -247,7 +243,7 @@ class GameState {
 
     getShareWorthyString() {
         let res = ""
-        for (const character of this.quote.toUpperCase().split("")) {
+        for (const character of this.quote.split("")) {
             if (character >= "A" && character <= "Z") {
                 if (this.elementIsPartOfHint(character)) {
                     res += "\u{1F4A1}";
