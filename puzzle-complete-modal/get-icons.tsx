@@ -3,7 +3,6 @@ import { View } from "react-native";
 import sizing from "../sizing/sizing";
 import GameState from "@/state/state";
 import { splitOnPercent, wrapWords } from "@/sizing/wrap-words";
-import { createStyles } from "../puzzle-info-modal/styles";
 import type { Theme } from "@/theme/themes";
 
 // Define fallback/default colors here

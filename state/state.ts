@@ -1,4 +1,3 @@
-import { mapUniqueLettersToNumbers } from "@/src/encoded-quotes";
 import KEYBOARD_LETTERS from "@/src/keyboard-letters";
 import { mapsAreEqual } from "@/src/utils";
 import { wrapWords } from "@/sizing/wrap-words";

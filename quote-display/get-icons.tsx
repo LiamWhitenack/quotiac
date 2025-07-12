@@ -2,12 +2,9 @@ import sizing from "../sizing/sizing";
 import GameState from "@/state/state";
 import { splitOnPercent } from "@/sizing/wrap-words";
 import type { Theme } from "@/theme/themes";
-import React, { useState } from "react";
-import { View, Text, LayoutChangeEvent } from "react-native";
+import React from "react";
+import { View, Text } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-
-// Assume sizing is imported or defined elsewhere in your file
-// import sizing from './sizing';
 
 function longestWordLength(str: string) {
   return (

@@ -10,7 +10,6 @@ import {
   Platform,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import * as Clipboard from "expo-clipboard";
 import { createStyles } from "../puzzle-info-modal/styles";
 import GameState from "@/state/state";
 import getIcons from "./get-icons";

@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, View, Text, TouchableOpacity } from "react-native";
+import { Modal, View, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { createStyles } from "./styles";
 import GameState from "@/state/state";

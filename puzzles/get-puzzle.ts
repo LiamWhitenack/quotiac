@@ -12,7 +12,6 @@ type SupportedPuzzleTypeName =
     | "GeneralPhrase"
     | "SongLyrics";
 
-// You can extend this map as you add more puzzle types
 const PUZZLE_TYPE_MAP = new Map<SupportedPuzzleTypeName, new (...args: any[]) => CryptographBase>([
     ["CharacterQuote", CharacterQuote],
     ["DirectQuote", DirectQuote],
@@ -48,14 +47,15 @@ const parseEncryptionMap = (mapString: string): EncryptionMap => {
 };
 
 const fetchTodayQuote = async (dateString: string): Promise<CryptographBase> => {
-    // TODO update this to use main when ready to use routing
     let puzzleData;
 
+    // TODO update this to use main when ready to use routing
     const response = await fetch(`https://raw.githubusercontent.com/LiamWhitenack/codiac-puzzles/refs/heads/dev/resources/by-date/${dateString}.json`);
 
     if (response.ok) {
         puzzleData = await response.json();
     } else {
+        // TODO update this to use main when ready to use routing
         const fallbackResponse = await fetch(`https://raw.githubusercontent.com/LiamWhitenack/codiac-puzzles/refs/heads/dev/resources/auto-generated/${dateString}.json`);
         puzzleData = await fallbackResponse.json();
     }

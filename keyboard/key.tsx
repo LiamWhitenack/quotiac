@@ -16,6 +16,7 @@ function keyboardKey(
 ) {
   const letter = KEYBOARD_LETTERS[rowIndex][index];
   const isLetter = element === letter;
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const { theme } = useTheme();
   const styles = createStyles(theme);
   return (

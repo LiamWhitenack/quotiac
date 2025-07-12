@@ -1,5 +1,5 @@
 import sizing from "@/sizing/sizing";
-import { Modal, Platform, StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import type { Theme } from "@/theme/themes";
 
 export const createStyles = (theme: Theme) =>

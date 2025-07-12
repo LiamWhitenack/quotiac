@@ -21,15 +21,13 @@ import { useOnCompleteModal } from "./app-effects/show-modal";
 import { useTheme } from "./theme/ThemeContext";
 import ShowPuzzleInfoButton from "./puzzle-info-modal/button";
 import PuzzleDetailsModal from "./puzzle-info-modal/skeleton";
-import { useRoute, RouteProp, useNavigation } from "@react-navigation/native";
-import { RootStackParamList } from "./AppNavigator"; // adjust path as needed
+import { useNavigation } from "@react-navigation/native";
 
 const CodiacApp = () => {
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [routeDate, setRouteDate] = useState<string | undefined>(undefined);
   const [hasCheckedURL, setHasCheckedURL] = useState(false);
 
-  const route = useRoute(); // still useful for initial render
   const navigation = useNavigation();
 
   // Extract date from the path (e.g., /20250710)
@@ -57,7 +55,7 @@ const CodiacApp = () => {
       window.addEventListener("popstate", updateDateFromURL);
       return () => window.removeEventListener("popstate", updateDateFromURL);
     }
-  }, [routeDate]);
+  }, [navigation, routeDate]);
 
   // Fallback to today's date only after checking the URL
   useEffect(() => {
@@ -71,7 +69,7 @@ const CodiacApp = () => {
       // @ts-ignore
       navigation.setParams({ date: dateString });
     }
-  }, [routeDate, hasCheckedURL]);
+  }, [routeDate, hasCheckedURL, navigation]);
 
   // Fetch the puzzle when routeDate is set
   useEffect(() => {

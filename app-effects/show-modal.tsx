@@ -1,5 +1,4 @@
 import GameState from "@/state/state";
-import { Animated } from "react-native";
 import { useEffect, useRef } from "react";
 
 function useOnCompleteModal(

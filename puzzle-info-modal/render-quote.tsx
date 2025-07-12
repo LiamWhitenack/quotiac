@@ -5,7 +5,6 @@ import {
   CharacterQuote,
   DirectQuote,
   FamousDocumentQuote,
-  GeneralPhrase,
   SongLyrics,
 } from "@/puzzles/puzzle-types/quote";
 import { createStyles } from "./styles";
@@ -63,7 +62,7 @@ const QuoteDetails: React.FC<QuoteDetailsProps> = ({ puzzle }) => {
     return (
       <DetailsView
         details={{
-          Author: puzzle.AuthorName,
+          Author: puzzle.authorName,
           Title: puzzle.sourceTitle,
           Release: puzzle.releaseDate,
         }}

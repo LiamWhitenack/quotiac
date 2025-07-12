@@ -1,5 +1,4 @@
 import { StyleSheet } from "react-native";
-import sizing from "@/sizing/sizing";
 import type { Theme } from "@/theme/themes";
 
 export const createStyles = (theme: Theme) =>

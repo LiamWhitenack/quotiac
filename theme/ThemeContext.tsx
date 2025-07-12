@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { Appearance, ColorSchemeName } from "react-native";
+import { Appearance } from "react-native";
 import { lightTheme, darkTheme, Theme } from "./themes";
 
 interface ThemeContextType {
@@ -16,7 +16,9 @@ const ThemeContext = createContext<ThemeContextType>({
 
 export const useTheme = () => useContext(ThemeContext);
 
-export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const colorScheme = Appearance.getColorScheme(); // Detect system default
   const [mode, setMode] = useState<"light" | "dark">(colorScheme ?? "light");
 
