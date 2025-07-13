@@ -6,6 +6,10 @@
 
 ### Make a new (temporary) icon to use on the loading page and the browser and app icon
 
+### Finishing the puzzle should let you see the details of the puzzle in the finished modal
+
+Not just by pressing the button in the top left
+
 ### Add Room for More Puzzle Info
 
 Like a hint. For instance, a hint for a Finding Nemo quote could be "Name's Bruce :D"
@@ -13,10 +17,6 @@ Like a hint. For instance, a hint for a Finding Nemo quote could be "Name's Bruc
 ### Get 1 Month of Quotes Ready Starting With The Deployment Date
 
 We can use random quotes or reuse quotes until then
-
-### Finishing the puzzle should let you see the details of the puzzle in the finished modal
-
-Not just by pressing the button in the top left
 
 ## Wants
 

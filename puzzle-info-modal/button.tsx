@@ -3,7 +3,6 @@ import { Text, TouchableOpacity } from "react-native";
 import { createStyles } from "./styles";
 import GameState from "@/state/state";
 import { useTheme } from "@/theme/ThemeContext";
-import { GeneralPhrase } from "@/puzzles/puzzle-types/quote";
 
 type ShowPuzzleInfoButtonProps = {
   state: GameState;
@@ -19,7 +18,7 @@ const ShowPuzzleInfoButton: React.FC<ShowPuzzleInfoButtonProps> = ({
   const { theme } = useTheme();
   const styles = createStyles(theme);
 
-  return state.puzzle instanceof GeneralPhrase ? (
+  return false ? (
     <Text style={styles.modalTitle}>this.state.puzzle.</Text>
   ) : (
     <TouchableOpacity

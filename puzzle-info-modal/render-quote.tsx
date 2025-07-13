@@ -1,98 +1,27 @@
 import React from "react";
 import { Text, View } from "react-native";
-import CryptographBase from "@/puzzles/puzzle-types/base";
-import {
-  CharacterQuote,
-  DirectQuote,
-  FamousDocumentQuote,
-  SongLyrics,
-} from "@/puzzles/puzzle-types/quote";
+import CryptographBase from "@/puzzles/base";
 import { createStyles } from "./styles";
 import { useTheme } from "@/theme/ThemeContext";
 
 type DetailsViewProps = {
-  details: Record<string, string | number | undefined>;
+  puzzle: CryptographBase;
 };
 
-const DetailsView: React.FC<DetailsViewProps> = ({ details }) => {
+const QuoteDetails: React.FC<DetailsViewProps> = ({ puzzle }) => {
   const { theme } = useTheme();
   const styles = createStyles(theme);
 
   return (
     <View>
-      {Object.entries(details).map(([key, value], index) => {
-        if (value === undefined) return null;
-        return (
-          <View
-            key={index}
-            style={{
-              flexDirection: "row",
-              alignContent: "flex-start",
-              justifyContent: "flex-start",
-            }}
-          >
-            <View style={{ marginBottom: 8 }}>
-              <Text style={styles.puzzleInfoHeader}>{key}: </Text>
-              <Text style={styles.puzzleInfoText}>{value}</Text>
-            </View>
-          </View>
-        );
-      })}
+      {puzzle.otherInfo.entries().map(([key, value]) => (
+        <View key={key} style={{ marginVertical: 4 }}>
+          <Text style={{ fontWeight: "bold" }}>{key}</Text>
+          <Text>{value?.toString()}</Text>
+        </View>
+      ))}
     </View>
   );
 };
 
-type QuoteDetailsProps = {
-  puzzle: CryptographBase;
-};
-const QuoteDetails: React.FC<QuoteDetailsProps> = ({ puzzle }) => {
-  if (puzzle instanceof CharacterQuote) {
-    return (
-      <DetailsView
-        details={{
-          Character: puzzle.characterName,
-          Title: puzzle.sourceTitle,
-          Release: puzzle.releaseDate,
-        }}
-      />
-    );
-  }
-
-  if (puzzle instanceof FamousDocumentQuote) {
-    return (
-      <DetailsView
-        details={{
-          Author: puzzle.authorName,
-          Title: puzzle.sourceTitle,
-          Release: puzzle.releaseDate,
-        }}
-      />
-    );
-  }
-
-  if (puzzle instanceof DirectQuote) {
-    return (
-      <DetailsView
-        details={{
-          Author: puzzle.author,
-          Date: puzzle.date,
-        }}
-      />
-    );
-  }
-
-  if (puzzle instanceof SongLyrics) {
-    return (
-      <DetailsView
-        details={{
-          Artist: puzzle.artist,
-          Song: puzzle.songName,
-          Release: puzzle.date,
-        }}
-      />
-    );
-  }
-
-  return null;
-};
 export default QuoteDetails;

@@ -4,7 +4,7 @@ import { wrapWords } from "@/sizing/wrap-words";
 import sizing from "@/sizing/sizing";
 import GiveALetterHint from "@/puzzles/hints/letter";
 import type { Theme } from "@/theme/themes";
-import CryptographBase from "@/puzzles/puzzle-types/base";
+import CryptographBase from "@/puzzles/base";
 
 function inverseMap(map: Map<string, string>): Map<string, string> {
     const inverseDecodingMap = new Map<string, string>();

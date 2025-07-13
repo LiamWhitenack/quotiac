@@ -1,24 +1,6 @@
-import { CharacterQuote, DirectQuote, FamousDocumentQuote, GeneralPhrase, SongLyrics } from "./puzzle-types/quote";
-import CryptographBase, { EncryptionMap } from "./puzzle-types/base";
+import CryptographBase, { EncryptionMap } from "./base";
 import HintBase from "./hints/base";
 import GiveALetterHint from "./hints/letter";
-
-
-
-type SupportedPuzzleTypeName =
-    | "CharacterQuote"
-    | "DirectQuote"
-    | "FamousDocumentQuote"
-    | "GeneralPhrase"
-    | "SongLyrics";
-
-const PUZZLE_TYPE_MAP = new Map<SupportedPuzzleTypeName, new (...args: any[]) => CryptographBase>([
-    ["CharacterQuote", CharacterQuote],
-    ["DirectQuote", DirectQuote],
-    ["FamousDocumentQuote", FamousDocumentQuote],
-    ["GeneralPhrase", GeneralPhrase],
-    ["SongLyrics", SongLyrics],
-]);
 
 type SupportedHintTypeName = "GiveALetterHint";
 
@@ -38,6 +20,12 @@ const parseHints = (rawHints: string): HintBase[] => {
         if (!HintClass) throw new Error(`Unsupported hint type: ${hintData.type}`);
         return new HintClass(hintData.letter);
     });
+};
+
+const parseOtherInfo = (mapString: string): Map<string, string> => {
+    const jsonString = mapString.replace(/'/g, '"');
+    const obj = JSON.parse(jsonString);
+    return new Map<string, string>(Object.entries(obj));
 };
 
 const parseEncryptionMap = (mapString: string): EncryptionMap => {
@@ -61,15 +49,9 @@ const fetchTodayQuote = async (dateString: string): Promise<CryptographBase> => 
     }
 
 
-    const hints = parseHints(puzzleData.hints);
-    const encryptionMap = parseEncryptionMap(puzzleData.encryption_map);
 
-    const PuzzleClass = PUZZLE_TYPE_MAP.get(puzzleData.type as SupportedPuzzleTypeName);
-    if (!PuzzleClass) {
-        throw new Error(`Unsupported or unimplemented puzzle type: ${puzzleData.type}`);
-    }
     // @ts-ignore
-    return PuzzleClass.fromJSON(puzzleData, hints, encryptionMap);
+    return new CryptographBase(puzzleData.stringToEncrypt, puzzleData.puzzleType, parseHints(puzzleData.hints), parseEncryptionMap(puzzleData.encryption_map), parseOtherInfo(puzzleData.other_info));
 };
 
 export { fetchTodayQuote };
