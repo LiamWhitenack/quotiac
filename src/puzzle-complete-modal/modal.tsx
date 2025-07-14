@@ -10,7 +10,7 @@ import {
   Platform,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { createStyles } from "../src/puzzle-info-modal/styles";
+import { createStyles } from "@/src/puzzle-info-modal/styles";
 import GameState from "@/src/state/state";
 import getIcons from "./get-icons";
 import { useTheme } from "@/src/theme/ThemeContext";

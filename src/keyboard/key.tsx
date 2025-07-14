@@ -1,8 +1,8 @@
 import React from "react";
 import { Text, TouchableOpacity } from "react-native";
-import sizing from "../src/sizing/sizing";
+import sizing from "@/src/sizing/sizing";
 import { Ionicons } from "@expo/vector-icons";
-import KEYBOARD_LETTERS from "../src/keyboard-letters";
+import KEYBOARD_LETTERS from "@/src/keyboard-letters";
 import { createStyles } from "./styles";
 import GameState from "@/src/state/state";
 import { useTheme } from "@/src/theme/ThemeContext";

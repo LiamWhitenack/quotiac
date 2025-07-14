@@ -8,19 +8,19 @@ import {
   StatusBar,
 } from "react-native";
 import { createMainWindowStyles } from "./styles";
-import QuoteDisplay from "./src/quote-display/quote-display";
-import LetterKeyboardDisplay from "./keyboard/keyboard";
+import QuoteDisplay from "@/src/quote-display/quote-display";
+import LetterKeyboardDisplay from "@/src/keyboard/keyboard";
 import { Ionicons } from "@expo/vector-icons";
-import sizing from "./src/sizing/sizing";
+import sizing from "@/src/sizing/sizing";
 import ConfettiCannon from "react-native-confetti-cannon";
-import GameState from "./src/state/state";
-import { fetchTodayQuote } from "./src/puzzles/get-puzzle";
-import PuzzleCompleteModal from "./puzzle-complete-modal/modal";
+import GameState from "@/src/state/state";
+import { fetchTodayQuote } from "@/src/puzzles/get-puzzle";
+import PuzzleCompleteModal from "@/src/puzzle-complete-modal/modal";
 import { useTitleFade, useAnimatedValue } from "./app-effects/title-fade";
 import { useOnCompleteModal } from "./app-effects/show-modal";
-import { useTheme } from "./src/theme/ThemeContext";
-import ShowPuzzleInfoButton from "./src/puzzle-info-modal/button";
-import PuzzleDetailsModal from "./src/puzzle-info-modal/skeleton";
+import { useTheme } from "@/src/theme/ThemeContext";
+import ShowPuzzleInfoButton from "@/src/puzzle-info-modal/button";
+import PuzzleDetailsModal from "@/src/puzzle-info-modal/skeleton";
 import { useNavigation } from "@react-navigation/native";
 
 const CodiacApp = () => {
