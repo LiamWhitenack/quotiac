@@ -105,7 +105,7 @@ const CodiacGame = ({
 }) => {
   const [completionModalVisible, setCompletionModalVisible] = useState(false);
   const [puzzleDetailsModalDisabled, setPuzzleDetailsModalDisabled] =
-    useState(true);
+    useState(false);
   const [puzzleDetailsModalVisible, setPuzzleDetailsModalVisible] =
     useState(false);
   const fadeTitleAnimation = useRef(new Animated.Value(1)).current;
