@@ -47,11 +47,9 @@ const fetchTodayQuote = async (dateString: string): Promise<CryptographBase> => 
         const fallbackResponse = await fetch(`https://raw.githubusercontent.com/LiamWhitenack/codiac-puzzles/refs/heads/dev/resources/auto-generated/${dateString}.json`);
         puzzleData = await fallbackResponse.json();
     }
+    console.log(parseOtherInfo(puzzleData.other_info))
 
-
-
-    // @ts-ignore
-    return new CryptographBase(puzzleData.stringToEncrypt, puzzleData.puzzleType, parseHints(puzzleData.hints), parseEncryptionMap(puzzleData.encryption_map), parseOtherInfo(puzzleData.other_info));
+    return new CryptographBase(puzzleData.string_to_encrypt, puzzleData.puzzle_type, parseHints(puzzleData.hints), parseEncryptionMap(puzzleData.encryption_map), parseOtherInfo(puzzleData.other_info));
 };
 
 export { fetchTodayQuote };

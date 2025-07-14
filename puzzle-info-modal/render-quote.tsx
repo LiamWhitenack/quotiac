@@ -11,13 +11,17 @@ type DetailsViewProps = {
 const QuoteDetails: React.FC<DetailsViewProps> = ({ puzzle }) => {
   const { theme } = useTheme();
   const styles = createStyles(theme);
+  console.log(puzzle.otherInfo);
+
+  // Convert entries to an array before rendering
+  const entries = Array.from(puzzle.otherInfo.entries());
 
   return (
     <View>
-      {puzzle.otherInfo.entries().map(([key, value]) => (
+      {entries.map(([key, value]) => (
         <View key={key} style={{ marginVertical: 4 }}>
-          <Text style={{ fontWeight: "bold" }}>{key}</Text>
-          <Text>{value?.toString()}</Text>
+          <Text style={styles.puzzleInfoHeader}>{key}</Text>
+          <Text style={styles.puzzleInfoText}>{value}</Text>
         </View>
       ))}
     </View>
