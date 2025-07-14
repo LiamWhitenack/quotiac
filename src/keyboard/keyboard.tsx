@@ -2,8 +2,8 @@ import React from "react";
 import { View } from "react-native";
 import { createStyles } from "./styles";
 import keyboardKey from "./key";
-import GameState from "@/state/state";
-import { useTheme } from "@/theme/ThemeContext";
+import GameState from "@/src/state/state";
+import { useTheme } from "@/src/theme/ThemeContext";
 import { BlurView } from "expo-blur";
 import { createMainWindowStyles } from "@/styles";
 

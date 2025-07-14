@@ -10,11 +10,11 @@ import {
   Platform,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { createStyles } from "../puzzle-info-modal/styles";
-import GameState from "@/state/state";
+import { createStyles } from "../src/puzzle-info-modal/styles";
+import GameState from "@/src/state/state";
 import getIcons from "./get-icons";
-import { useTheme } from "@/theme/ThemeContext";
-import sizing from "@/sizing/sizing";
+import { useTheme } from "@/src/theme/ThemeContext";
+import sizing from "@/src/sizing/sizing";
 
 type PuzzleCompleteModalProps = {
   state: GameState;

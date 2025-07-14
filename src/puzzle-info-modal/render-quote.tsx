@@ -1,8 +1,8 @@
 import React from "react";
 import { Text, View } from "react-native";
-import CryptographBase from "@/puzzles/base";
+import CryptographBase from "@/src/puzzles/base";
 import { createStyles } from "./styles";
-import { useTheme } from "@/theme/ThemeContext";
+import { useTheme } from "@/src/theme/ThemeContext";
 
 type DetailsViewProps = {
   puzzle: CryptographBase;

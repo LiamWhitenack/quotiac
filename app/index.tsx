@@ -1,5 +1,5 @@
 import CodiacApp from "@/App";
-import { ThemeProvider } from "../theme/ThemeContext";
+import { ThemeProvider } from "../src/theme/ThemeContext";
 
 export default function Index() {
   return (
