@@ -11,7 +11,6 @@ type DetailsViewProps = {
 const QuoteDetails: React.FC<DetailsViewProps> = ({ puzzle }) => {
   const { theme } = useTheme();
   const styles = createStyles(theme);
-  console.log(puzzle.otherInfo);
 
   // Convert entries to an array before rendering
   const entries = Array.from(puzzle.otherInfo.entries());
