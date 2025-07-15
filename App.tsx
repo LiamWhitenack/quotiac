@@ -24,7 +24,7 @@ import { useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
 import CustomIonicons from "./src/custom-icons";
 
-const CodiacApp = () => {
+const QuotiacApp = () => {
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [routeDate, setRouteDate] = useState<string | undefined>(undefined);
   const [hasCheckedURL, setHasCheckedURL] = useState(false);
@@ -99,10 +99,10 @@ const CodiacApp = () => {
     );
   }
   // @ts-ignore
-  return <CodiacGame state={gameState} setGameState={setGameState} />;
+  return <QuotiacGame state={gameState} setGameState={setGameState} />;
 };
 
-const CodiacGame = ({
+const QuotiacGame = ({
   state,
   setGameState,
 }: {
@@ -178,7 +178,7 @@ const CodiacGame = ({
             style={[mainWindowStyles.title, { opacity: Math.abs(fadeValue) }]}
           >
             {fadeValue > 0 ? (
-              <Text style={mainWindowStyles.title}>Codiac</Text>
+              <Text style={mainWindowStyles.title}>Quotiac (Beta)</Text>
             ) : (
               <ShowPuzzleInfoButton
                 state={state}
@@ -251,4 +251,4 @@ const CodiacGame = ({
   );
 };
 
-export default CodiacApp;
+export default QuotiacApp;

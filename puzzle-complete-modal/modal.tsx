@@ -63,7 +63,7 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
         {getIcons(state)}
         {sizing.isMobile || !sizing.isMobileWeb(navigator) ? (
           <Text style={styles.shareMessage}>
-            Go to https://codiac.expo.app to play!
+            Go to https://quotiac.expo.app to play!
           </Text>
         ) : undefined}
       </View>
@@ -111,7 +111,7 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
               await navigator.share({
                 files: [file],
                 title: "Puzzle Image",
-                text: "https://codiac.expo.app",
+                text: "https://quotiac.expo.app",
               });
             } catch (err) {
               alert("Sharing failed: " + err);
@@ -168,7 +168,7 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
               {/* <View style={styles.modalTitlePlusContainer}> */}
               <Text style={styles.modalTitle}>Congratulations!</Text>
               {/* <Text style={styles.modalTitlePlus}>
-                  You solved today&#39;s Codiac
+                  You solved today&#39;s Quotiac
                 </Text> */}
               {/* </View> */}
               <TouchableOpacity onPress={onClose}>

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "codiac",
-    "slug": "codiac",
+    "name": "quotiac",
+    "slug": "quotiac",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -17,7 +17,7 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.liamwhitenack.codiac"
+      "package": "com.liamwhitenack.quotiac"
     },
     "web": {
       "bundler": "metro",
@@ -48,5 +48,5 @@
       }
     }
   },
-  "name": "codiac"
+  "name": "quotiac"
 }

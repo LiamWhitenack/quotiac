@@ -1,8 +1,8 @@
 {
-  "name": "codiac",
+  "name": "quotiac",
   "main": "expo-router/entry",
   "version": "1.0.0",
-  "homepage": "https://LiamWhitenack.github.io/codiac",
+  "homepage": "https://LiamWhitenack.github.io/quotiac",
   "scripts": {
     "deploy": "gh-pages --nojekyll -d dist",
     "predeploy": "expo export -p web && echo 'quotiac.com' > dist/CNAME",

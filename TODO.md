@@ -1,24 +1,20 @@
-# Deployment Version 1 Date: August 1st
+# Deployment Version 1.0.0 Target Date: August 1st
 
 ## Needs
 
-### Add a Tutorial
+### 1. Add a Tutorial
 
-### Make a new (temporary) icon to use on the loading page and the browser and app icon
+### 2. Make a new icon to use on the loading page and the browser and app icon
 
-### Finishing the puzzle should let you see the details of the puzzle in the finished modal
+Use the native RN icons so that we can easily make animations and integrate the icon within the app.
 
-Not just by pressing the button in the top left
-
-### Add Room for More Puzzle Info
-
-Like a hint. For instance, a hint for a Finding Nemo quote could be "Name's Bruce :D"
-
-### Get 1 Month of Quotes Ready Starting With The Deployment Date
+### 3. Get 1 Month of Quotes Ready Starting With The Deployment Date
 
 We can use random quotes or reuse quotes until then
 
 ## Wants
+
+### Fix iOS content restrictions
 
 ### Add New Hint Types
 

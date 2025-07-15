@@ -1,10 +1,10 @@
-import CodiacApp from "@/App";
+import QuotiacApp from "@/App";
 import { ThemeProvider } from "../theme/ThemeContext";
 
 export default function Index() {
   return (
     <ThemeProvider>
-      <CodiacApp />
+      <QuotiacApp />
     </ThemeProvider>
   );
 }

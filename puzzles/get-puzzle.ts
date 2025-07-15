@@ -38,13 +38,13 @@ const fetchTodayQuote = async (dateString: string): Promise<CryptographBase> => 
     let puzzleData;
 
     // TODO update this to use main when ready to use routing
-    const response = await fetch(`https://raw.githubusercontent.com/LiamWhitenack/codiac-puzzles/refs/heads/dev/resources/by-date/${dateString}.json`);
+    const response = await fetch(`https://raw.githubusercontent.com/LiamWhitenack/quotiac-puzzles/refs/heads/dev/resources/by-date/${dateString}.json`);
 
     if (response.ok) {
         puzzleData = await response.json();
     } else {
         // TODO update this to use main when ready to use routing
-        const fallbackResponse = await fetch(`https://raw.githubusercontent.com/LiamWhitenack/codiac-puzzles/refs/heads/dev/resources/auto-generated/${dateString}.json`);
+        const fallbackResponse = await fetch(`https://raw.githubusercontent.com/LiamWhitenack/quotiac-puzzles/refs/heads/dev/resources/auto-generated/${dateString}.json`);
         puzzleData = await fallbackResponse.json();
     }
 
