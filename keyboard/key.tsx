@@ -1,11 +1,11 @@
 import React from "react";
 import { Text, TouchableOpacity } from "react-native";
 import sizing from "../sizing/sizing";
-import { Ionicons } from "@expo/vector-icons";
 import KEYBOARD_LETTERS from "../src/keyboard-letters";
 import { createStyles } from "./styles";
 import GameState from "@/state/state";
 import { useTheme } from "@/theme/ThemeContext";
+import CustomIonicons from "@/src/custom-icons";
 
 function keyboardKey(
   state: GameState,
@@ -32,7 +32,7 @@ function keyboardKey(
       {isLetter ? (
         <Text style={styles.keyText}>{element}</Text>
       ) : (
-        <Ionicons
+        <CustomIonicons
           // @ts-ignore
           name={element}
           color={state.elementColor(element, theme)}

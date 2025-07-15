@@ -10,7 +10,6 @@ import {
 import { createMainWindowStyles } from "./styles";
 import QuoteDisplay from "./quote-display/quote-display";
 import LetterKeyboardDisplay from "./keyboard/keyboard";
-import { Ionicons } from "@expo/vector-icons";
 import sizing from "./sizing/sizing";
 import ConfettiCannon from "react-native-confetti-cannon";
 import GameState from "./state/state";
@@ -22,20 +21,27 @@ import { useTheme } from "./theme/ThemeContext";
 import ShowPuzzleInfoButton from "./puzzle-info-modal/button";
 import PuzzleDetailsModal from "./puzzle-info-modal/skeleton";
 import { useNavigation } from "@react-navigation/native";
+import * as Font from "expo-font";
+import CustomIonicons from "./src/custom-icons";
 
 const CodiacApp = () => {
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [routeDate, setRouteDate] = useState<string | undefined>(undefined);
   const [hasCheckedURL, setHasCheckedURL] = useState(false);
-
+  const [fontsLoaded, setFontsLoaded] = useState(false);
   const navigation = useNavigation();
-
   // Extract date from the path (e.g., /20250710)
   const extractDateFromPath = () => {
     const params = new URLSearchParams(window.location.search);
     const maybeDate = params.get("date");
     return maybeDate && /^\d{8}$/.test(maybeDate) ? maybeDate : undefined;
   };
+
+  useEffect(() => {
+    Font.loadAsync({
+      Ionicons: require("./assets/fonts/Ionicons.ttf"),
+    }).then(() => setFontsLoaded(true));
+  }, []);
 
   // On first load or popstate, update the date from the URL
   useEffect(() => {
@@ -84,7 +90,7 @@ const CodiacApp = () => {
     );
   }, [routeDate]);
 
-  if (!gameState) {
+  if (!gameState || !fontsLoaded) {
     // Show loading screen or nothing while fetching puzzle
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -191,7 +197,7 @@ const CodiacGame = ({
               }}
             >
               <View style={{ position: "relative", width: 32, height: 32 }}>
-                <Ionicons
+                <CustomIonicons
                   name="bulb-outline"
                   size={32}
                   color={theme.lightBulbBorder}
@@ -201,7 +207,7 @@ const CodiacGame = ({
             </TouchableOpacity>
 
             <TouchableOpacity style={mainWindowStyles.iconContainer}>
-              <Ionicons
+              <CustomIonicons
                 name={"refresh-outline"}
                 size={32}
                 color={theme.text}

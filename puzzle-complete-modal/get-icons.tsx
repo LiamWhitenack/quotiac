@@ -1,9 +1,9 @@
-import { Ionicons } from "@expo/vector-icons";
 import { View } from "react-native";
 import sizing from "../sizing/sizing";
 import GameState from "@/state/state";
 import { splitOnPercent, wrapWords } from "@/sizing/wrap-words";
 import type { Theme } from "@/theme/themes";
+import CustomIonicons from "@/src/custom-icons";
 
 // Define fallback/default colors here
 const defaultTheme = {
@@ -31,7 +31,7 @@ function getIcons(state: GameState, theme: Partial<Theme> = {}) {
         width: miniIconSize,
       }}
     >
-      <Ionicons
+      <CustomIonicons
         name={iconName as any}
         size={miniIconSize * 0.8}
         color={resolvedTheme.text}
@@ -49,7 +49,7 @@ function getIcons(state: GameState, theme: Partial<Theme> = {}) {
         width: miniIconSize,
       }}
     >
-      <Ionicons
+      <CustomIonicons
         name={iconName as any}
         size={miniIconSize * 0.8}
         color="green"

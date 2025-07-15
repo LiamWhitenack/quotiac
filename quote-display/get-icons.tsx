@@ -4,7 +4,7 @@ import { splitOnPercent } from "@/sizing/wrap-words";
 import type { Theme } from "@/theme/themes";
 import React from "react";
 import { View, Text } from "react-native";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import CustomIonicons from "@/src/custom-icons";
 
 function longestWordLength(str: string) {
   return (
@@ -95,7 +95,7 @@ export function IconsWithHeight({
         width: sizing.iconSize,
       }}
     >
-      <Ionicons
+      <CustomIonicons
         // @ts-ignore
         name={iconName}
         size={sizing.iconSize * 0.8}

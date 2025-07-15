@@ -9,12 +9,12 @@ import {
   ViewProps,
   Platform,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import { createStyles } from "../puzzle-info-modal/styles";
 import GameState from "@/state/state";
 import getIcons from "./get-icons";
 import { useTheme } from "@/theme/ThemeContext";
 import sizing from "@/sizing/sizing";
+import CustomIonicons from "@/src/custom-icons";
 
 type PuzzleCompleteModalProps = {
   state: GameState;
@@ -172,7 +172,7 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
                 </Text> */}
               {/* </View> */}
               <TouchableOpacity onPress={onClose}>
-                <Ionicons name="close" size={24} color="gray" />
+                <CustomIonicons name="close" size={24} color="gray" />
               </TouchableOpacity>
             </View>
 
