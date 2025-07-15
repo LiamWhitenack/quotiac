@@ -7,11 +7,18 @@ else
   echo "Folder '$FOLDER' does not exist."
 fi
 
-npx expo export -p web
-eas deploy
+SRC="dist/_expo/static/js/web/entry-c754fd0927001efb977965b60b8e0347.js"
+DEST="assets/entry-7c74954d9ef904953c5ef027aeddc0ce.js"
 
-read -p "Update prod? [y/N] " CONFIRM
-
-if [[ "$CONFIRM" =~ ^[Yy]$ ]]; then
-    eas deploy --prod
+if [ ! -f "$DEST" ]; then
+  mv "$SRC" "$DEST"
+  echo "Moved $SRC to $DEST"
+else
+  echo "Destination file already exists: $DEST"
 fi
+
+npx expo export -p web
+npm install --save-dev gh-pages
+npm run deploy
+
+echo "Change the custom domain name to quotiac.com to finish deployment!"

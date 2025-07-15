@@ -4,9 +4,9 @@
   "version": "1.0.0",
   "homepage": "https://LiamWhitenack.github.io/codiac",
   "scripts": {
+    "deploy": "gh-pages --nojekyll -d dist",
+    "predeploy": "expo export -p web",
     "web-build": "expo export:web",
-    "predeploy": "npm run web-build",
-    "deploy": "eas deploy",
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo start --android",
