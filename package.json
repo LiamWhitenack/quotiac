@@ -5,7 +5,7 @@
   "homepage": "https://LiamWhitenack.github.io/codiac",
   "scripts": {
     "deploy": "gh-pages --nojekyll -d dist",
-    "predeploy": "expo export -p web",
+    "predeploy": "expo export -p web && echo 'quotiac.com' > dist/CNAME",
     "web-build": "expo export:web",
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",

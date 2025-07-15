@@ -20,5 +20,3 @@ fi
 npx expo export -p web
 npm install --save-dev gh-pages
 npm run deploy
-
-echo "Change the custom domain name to quotiac.com to finish deployment!"
