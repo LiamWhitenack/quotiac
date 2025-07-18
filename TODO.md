@@ -1,4 +1,4 @@
-# Deployment Version 1.0.0 Target Date: August 1st
+# Deployment Version 1.0 Target Date: August 1st
 
 ## Needs
 
@@ -14,7 +14,13 @@ We can use random quotes or reuse quotes until then
 
 ## Wants
 
-### Fix iOS content restrictions
+### Fix: fetching quote route twice
+
+Pls Josh if you're ever coming back this is the one for you
+
+### Fix: iOS content restrictions
+
+The only thing that could be causing the issue is 1. hosting the site with GH pages or 2. the url itself not looking as safe as something that ends with .app
 
 ### Add New Hint Types
 
