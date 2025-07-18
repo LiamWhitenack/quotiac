@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Animated,
   StatusBar,
+  Button,
 } from "react-native";
 import { createMainWindowStyles } from "./styles";
 import QuoteDisplay from "./quote-display/quote-display";
@@ -23,14 +24,16 @@ import PuzzleDetailsModal from "./puzzle-info-modal/skeleton";
 import { useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
 import CustomIonicons from "./src/custom-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const QuotiacApp = () => {
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [routeDate, setRouteDate] = useState<string | undefined>(undefined);
   const [hasCheckedURL, setHasCheckedURL] = useState(false);
   const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [hasSeenTutorial, setHasSeenTutorial] = useState<boolean | null>(null);
   const navigation = useNavigation();
-  // Extract date from the path (e.g., /20250710)
+
   const extractDateFromPath = () => {
     const params = new URLSearchParams(window.location.search);
     const maybeDate = params.get("date");
@@ -43,7 +46,14 @@ const QuotiacApp = () => {
     }).then(() => setFontsLoaded(true));
   }, []);
 
-  // On first load or popstate, update the date from the URL
+  // Load tutorial state
+  useEffect(() => {
+    AsyncStorage.getItem("hasSeenTutorial").then((val) => {
+      setHasSeenTutorial(val === "true");
+    });
+  }, []);
+
+  // Handle date from URL
   useEffect(() => {
     const updateDateFromURL = () => {
       const urlDate = extractDateFromPath();
@@ -63,7 +73,7 @@ const QuotiacApp = () => {
     }
   }, [navigation, routeDate]);
 
-  // Fallback to today's date only after checking the URL
+  // Fallback to today's date
   useEffect(() => {
     if (!sizing.isMobile && !routeDate && hasCheckedURL) {
       const now = new Date();
@@ -77,12 +87,15 @@ const QuotiacApp = () => {
     }
   }, [routeDate, hasCheckedURL, navigation]);
 
-  // Fetch the puzzle when routeDate is set
+  // Load puzzle
   useEffect(() => {
+    if (!routeDate) return;
+
     const now = new Date();
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, "0");
     const day = String(now.getDate()).padStart(2, "0");
+
     fetchTodayQuote(routeDate ? routeDate : `${year}${month}${day}`).then(
       (puzzle) => {
         setGameState(new GameState(puzzle));
@@ -90,17 +103,51 @@ const QuotiacApp = () => {
     );
   }, [routeDate]);
 
-  if (!gameState || !fontsLoaded) {
-    // Show loading screen or nothing while fetching puzzle
+  // Tutorial done callback
+  const handleTutorialComplete = async () => {
+    await AsyncStorage.setItem("hasSeenTutorial", "true");
+    setHasSeenTutorial(true);
+  };
+
+  if (!fontsLoaded || hasSeenTutorial === null) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+
+  if (!hasSeenTutorial) {
+    return <TutorialScreen onComplete={handleTutorialComplete} />;
+  }
+
+  if (!gameState) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Text>Loading puzzle...</Text>
       </View>
     );
   }
+
   // @ts-ignore
   return <QuotiacGame state={gameState} setGameState={setGameState} />;
 };
+
+function TutorialScreen({ onComplete }: { onComplete: () => void }) {
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Text style={{ fontSize: 20, marginBottom: 20 }}>
+        👋 Welcome to Quotiac!
+      </Text>
+      <Text
+        style={{ textAlign: "center", paddingHorizontal: 40, marginBottom: 30 }}
+      >
+        This quick tutorial will walk you through how to play. (Placeholder)
+      </Text>
+      <Button title="Get Started" onPress={onComplete} />
+    </View>
+  );
+}
 
 const QuotiacGame = ({
   state,
