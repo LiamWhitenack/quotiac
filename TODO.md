@@ -14,9 +14,7 @@ We can use random quotes or reuse quotes until then
 
 ## Wants
 
-### Fix: fetching quote route twice
-
-Pls Josh if you're ever coming back this is the one for you
+### Fix: keyboard arrows not working anymore
 
 ### Fix: iOS content restrictions
 
