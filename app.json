@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "quotiac",
-    "slug": "quotiac",
+    "slug": "codiac",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -46,7 +46,8 @@
       "eas": {
         "projectId": "b86a2520-1d06-4d69-a711-dc68ae6929a8"
       }
-    }
+    },
+    "owner": "liamwhitenack"
   },
   "name": "quotiac"
 }
