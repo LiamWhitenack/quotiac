@@ -1,6 +1,6 @@
-import sizing from "@/sizing/sizing";
+import sizing from "@/src/sizing/sizing";
 import { Platform, StyleSheet } from "react-native";
-import type { Theme } from "@/theme/themes";
+import type { Theme } from "@/src/theme/themes";
 
 export const createStyles = (theme: Theme) =>
   StyleSheet.create({
@@ -9,7 +9,7 @@ export const createStyles = (theme: Theme) =>
       borderRadius: 16,
       padding: 24,
       width: sizing.maxWidth * 0.8,
-      alignItems: "flex-start",
+      alignItems: "center",
       shadowColor: "#000",
       shadowOffset: { width: 0, height: 4 },
       shadowOpacity: 0.3,
@@ -19,6 +19,7 @@ export const createStyles = (theme: Theme) =>
     modalHeader: {
       flexDirection: "row",
       justifyContent: "space-between",
+      alignItems: "center",
       width: "100%",
       paddingHorizontal: 0, // or adjust to match your container padding
       paddingBottom: 25,
@@ -85,45 +86,24 @@ export const createStyles = (theme: Theme) =>
         default: "Segoe UI Emoji",
       }),
     },
+    modalButtonContainer: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      width: "100%",
+    },
+
     modalButton: {
-      // flex: 1,
-      height: sizing.topBarHeight * 0.7,
-      // transform: [{ scale: 1.5 }],
+      flex: 1,
       marginHorizontal: 8,
       backgroundColor: theme.elevatedButton,
-      justifyContent: "center",
+      paddingVertical: 12,
       borderRadius: 30,
       alignItems: "center",
-    },
-    disabledModalButton: {
-      height: sizing.topBarHeight * 0.7,
-      marginHorizontal: 8,
-      borderColor: theme.elevatedButton, // set border color
-      borderWidth: 2, // set border width
-      justifyContent: "center",
-      borderRadius: 30,
-      alignItems: "center",
-    },
-    puzzleInfoHeader: {
-      color: theme.text,
-      fontWeight: "bold",
-      fontSize: 16,
-    },
-    puzzleInfoText: {
-      color: theme.text,
-      fontSize: 16,
     },
     modalButtonText: {
-      color: theme.textInverse,
-      fontWeight: "bold",
-      fontSize: 14,
-      paddingHorizontal: 16,
-    },
-    modalButtonDisabledText: {
-      color: theme.text,
-      fontWeight: "bold",
-      fontSize: 14,
-      paddingHorizontal: 16,
+      color: "white",
+      fontWeight: "600",
+      fontSize: 18,
     },
     closeButton: {
       marginTop: 20,
@@ -136,28 +116,8 @@ export const createStyles = (theme: Theme) =>
     },
     modalOverlay: {
       flex: 1,
-      backgroundColor: "rgba(0, 0, 0, 0)",
+      backgroundColor: "rgba(0, 0, 0, 0)", // 👈 this is what darkens the background
       justifyContent: "center",
       alignItems: "center",
-    },
-    closeButtonContainer: {
-      position: "absolute",
-      top: 16,
-      right: 16,
-      zIndex: 10, // ensures it overlays other elements
-    },
-    modalQuote: {
-      fontSize: 18,
-      fontStyle: "italic",
-      color: theme.text,
-      textAlign: "center",
-      marginBottom: 12,
-    },
-
-    modalSubType: {
-      fontSize: 14,
-      fontWeight: "500",
-      color: theme.subtext,
-      marginBottom: 16,
     },
   });

@@ -2,9 +2,9 @@ import React, { ReactNode } from "react";
 import { ScrollView, View } from "react-native";
 import { createStyles } from "./styles";
 // import sizing from "../sizing/sizing";
-import GameState from "@/state/state";
-import { useTheme } from "@/theme/ThemeContext";
-import sizing from "@/sizing/sizing";
+import GameState from "@/src/state/state";
+import { useTheme } from "@/src/theme/ThemeContext";
+import sizing from "@/src/sizing/sizing";
 import { IconsWithHeight } from "./get-icons";
 
 interface QuoteDisplayProps {

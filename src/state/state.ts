@@ -1,10 +1,10 @@
-import KEYBOARD_LETTERS from "@/src/keyboard-letters";
+import KEYBOARD_LETTERS from "@/src/keyboard/keyboard-letters";
 import { mapsAreEqual } from "@/src/utils";
-import { wrapWords } from "@/sizing/wrap-words";
-import sizing from "@/sizing/sizing";
-import GiveALetterHint from "@/puzzles/hints/letter";
-import type { Theme } from "@/theme/themes";
-import CryptographBase from "@/puzzles/base";
+import { wrapWords } from "@/src/sizing/wrap-words";
+import sizing from "@/src/sizing/sizing";
+import GiveALetterHint from "@/src/puzzles/hints/letter";
+import type { Theme } from "@/src/theme/themes";
+import CryptographBase from "@/src/puzzles/base";
 
 function inverseMap(map: Map<string, string>): Map<string, string> {
     const inverseDecodingMap = new Map<string, string>();

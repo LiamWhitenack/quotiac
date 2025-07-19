@@ -1,8 +1,8 @@
 import React from "react";
 import { Modal, View, TouchableOpacity } from "react-native";
 import { createStyles } from "./styles";
-import GameState from "@/state/state";
-import { useTheme } from "@/theme/ThemeContext";
+import GameState from "@/src/state/state";
+import { useTheme } from "@/src/theme/ThemeContext";
 
 import QuoteDetails from "./render-quote";
 import CustomIonicons from "@/src/custom-icons";

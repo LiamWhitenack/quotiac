@@ -1,4 +1,4 @@
-import GameState from "@/state/state";
+import GameState from "@/src/state/state";
 import { useEffect, useRef } from "react";
 
 function useOnCompleteModal(

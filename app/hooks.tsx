@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
-import sizing from "@/sizing/sizing";
-import GameState from "@/state/state";
-import { fetchTodayQuote } from "@/puzzles/get-puzzle";
+import sizing from "@/src/sizing/sizing";
+import GameState from "@/src/state/state";
+import { fetchTodayQuote } from "@/src/puzzles/get-puzzle";
 import * as Font from "expo-font";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 

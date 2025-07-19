@@ -1,11 +1,11 @@
 import React from "react";
 import { Text, TouchableOpacity } from "react-native";
 import sizing from "../sizing/sizing";
-import KEYBOARD_LETTERS from "../src/keyboard-letters";
 import { createStyles } from "./styles";
-import GameState from "@/state/state";
-import { useTheme } from "@/theme/ThemeContext";
+import GameState from "@/src/state/state";
+import { useTheme } from "@/src/theme/ThemeContext";
 import CustomIonicons from "@/src/custom-icons";
+import KEYBOARD_LETTERS from "./keyboard-letters";
 
 function keyboardKey(
   state: GameState,

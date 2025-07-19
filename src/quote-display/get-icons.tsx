@@ -1,7 +1,7 @@
 import sizing from "../sizing/sizing";
-import GameState from "@/state/state";
-import { splitOnPercent } from "@/sizing/wrap-words";
-import type { Theme } from "@/theme/themes";
+import GameState from "@/src/state/state";
+import { splitOnPercent } from "@/src/sizing/wrap-words";
+import type { Theme } from "@/src/theme/themes";
 import React from "react";
 import { View, Text } from "react-native";
 import CustomIonicons from "@/src/custom-icons";

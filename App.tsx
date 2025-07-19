@@ -9,21 +9,21 @@ import {
   Button,
 } from "react-native";
 import { createMainWindowStyles } from "./styles";
-import QuoteDisplay from "./quote-display/quote-display";
-import LetterKeyboardDisplay from "./keyboard/keyboard";
-import sizing from "./sizing/sizing";
+import QuoteDisplay from "@/src/quote-display/quote-display";
+import LetterKeyboardDisplay from "@/src/keyboard/keyboard";
+import sizing from "@/src/sizing/sizing";
 import ConfettiCannon from "react-native-confetti-cannon";
-import GameState from "./state/state";
-import { fetchTodayQuote } from "./puzzles/get-puzzle";
-import PuzzleCompleteModal from "./puzzle-complete-modal/modal";
-import { useTitleFade, useAnimatedValue } from "./app-effects/title-fade";
-import { useOnCompleteModal } from "./app-effects/show-modal";
-import { useTheme } from "./theme/ThemeContext";
-import ShowPuzzleInfoButton from "./puzzle-info-modal/button";
-import PuzzleDetailsModal from "./puzzle-info-modal/skeleton";
+import GameState from "@/src/state/state";
+import { fetchTodayQuote } from "@/src/puzzles/get-puzzle";
+import PuzzleCompleteModal from "@/src/puzzle-complete-modal/modal";
+import { useTitleFade, useAnimatedValue } from "@/src/app-effects/title-fade";
+import { useOnCompleteModal } from "@/src/app-effects/show-modal";
+import { useTheme } from "@/src/theme/ThemeContext";
+import ShowPuzzleInfoButton from "@/src/puzzle-info-modal/button";
+import PuzzleDetailsModal from "@/src/puzzle-info-modal/skeleton";
 import { useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
-import CustomIonicons from "./src/custom-icons";
+import CustomIonicons from "@/src/custom-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const QuotiacGame = ({
