@@ -3,6 +3,7 @@ import { Text, TouchableOpacity } from "react-native";
 import { createStyles } from "./styles";
 import GameState from "@/src/state/state";
 import { useTheme } from "@/src/theme/ThemeContext";
+import { createAppStyles } from "../theme/styles";
 
 type ShowPuzzleInfoButtonProps = {
   state: GameState;
@@ -17,28 +18,19 @@ const ShowPuzzleInfoButton: React.FC<ShowPuzzleInfoButtonProps> = ({
 }) => {
   const { theme } = useTheme();
   const styles = createStyles(theme);
+  const appStyles = createAppStyles(theme);
 
   return false ? (
     <Text style={styles.modalTitle}>this.state.puzzle.</Text>
   ) : (
     <TouchableOpacity
-      style={
-        puzzleDetailsModalDisabled
-          ? styles.disabledModalButton
-          : styles.modalButton
-      }
+      style={[{ flex: 1 }, appStyles.elevatedButton]}
       disabled={puzzleDetailsModalDisabled}
       onPress={() => {
         showPuzzleDetailsModal(true);
       }}
     >
-      <Text
-        style={
-          puzzleDetailsModalDisabled
-            ? styles.modalButtonDisabledText
-            : styles.modalButtonText
-        }
-      >
+      <Text style={appStyles.elevatedButtonText}>
         {state.puzzle.puzzleType}
       </Text>
     </TouchableOpacity>
