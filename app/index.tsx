@@ -6,23 +6,7 @@ import GameState from "@/src/state/state";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAppBootstrap, useFetchPuzzle, useRouteDateSync } from "./hooks";
-
-function TutorialScreen({ onComplete }: { onComplete: () => void }) {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text style={{ fontSize: 20, marginBottom: 20 }}>
-        Welcome to Quotiac!
-      </Text>
-      <Text
-        style={{ textAlign: "center", paddingHorizontal: 40, marginBottom: 30 }}
-      >
-        This quick tutorial will walk you through how to play. Press the button
-        to get started!
-      </Text>
-      <Button title="Get Started" onPress={onComplete} />
-    </View>
-  );
-}
+import { TutorialScreen } from "@/src/tutorial/welcome";
 
 export default function Index() {
   const [gameState, setGameState] = useState<GameState | null>(null);
