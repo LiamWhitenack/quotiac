@@ -51,4 +51,14 @@ const fetchTodayQuote = async (dateString: string): Promise<CryptographBase> => 
     return new CryptographBase(puzzleData.string_to_encrypt, puzzleData.puzzle_type, parseHints(puzzleData.hints), parseEncryptionMap(puzzleData.encryption_map), parseOtherInfo(puzzleData.other_info));
 };
 
-export { fetchTodayQuote };
+const fetchTutorialQuote = async (): Promise<CryptographBase> => {
+    let puzzleData;
+
+    // TODO update this to use main when ready to use routing
+    const response = await fetch(`https://raw.githubusercontent.com/LiamWhitenack/codiac-puzzles/refs/heads/dev/resources/tutorial.json`);
+    puzzleData = await response.json();
+    console.log(puzzleData);
+    return new CryptographBase(puzzleData.string_to_encrypt, puzzleData.puzzle_type, parseHints(puzzleData.hints), parseEncryptionMap(puzzleData.encryption_map), parseOtherInfo(puzzleData.other_info));
+};
+
+export { fetchTodayQuote, fetchTutorialQuote };
