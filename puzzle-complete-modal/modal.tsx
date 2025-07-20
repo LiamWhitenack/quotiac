@@ -182,6 +182,7 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
             <TouchableOpacity style={styles.modalButton} onPress={handleShare}>
               <Text style={styles.modalButtonText}>Share your results</Text>
             </TouchableOpacity>
+            
           </View>
         </View>
       </Modal>
