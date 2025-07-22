@@ -15,7 +15,7 @@ export const lightTheme = {
 };
 
 export const darkTheme = {
-  selectedLetter: "#448AFF",
+  selected: "#448AFF",
   hint: "#8BC34A",
   background: "#121212",
   text: "#F8F8F8",
