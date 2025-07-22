@@ -195,7 +195,7 @@ class GameState {
         if (this.elementIsPartOfHint(element)) {
             return theme.hint
         } else if (element === this.activeIcon) {
-            return theme.selectedLetter
+            return theme.selected
         } else {
             return theme.text
         }

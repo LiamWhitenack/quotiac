@@ -1,5 +1,5 @@
 export const lightTheme = {
-  selectedLetter: "blue",
+  selected: "blue",
   hint: "green",
   background: "#F3F4F6",
   text: "#000000",
