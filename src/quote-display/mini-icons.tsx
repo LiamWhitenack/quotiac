@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { View, Text } from "react-native";
 import sizing from "../sizing/sizing";
 import { splitOnPercent } from "@/src/sizing/wrap-words";
@@ -9,19 +9,23 @@ export function TutorialIcons() {
   const { theme } = useTheme();
   const quote = "I think,@therefore@I am.";
 
-  const encodingEntries: [string, string][] = [
-    ["t", "tv"],
-    ["i", "eye"],
-    ["h", "hammer"],
-    ["n", "nuclear"],
-    ["k", "key"],
-    ["e", "egg"],
-    ["r", "radio"],
-    ["f", "fish"],
-    ["o", "open"],
-    ["a", "airplane"],
-    ["m", "map"],
-  ];
+  const encodingEntries = useMemo(
+    () =>
+      [
+        ["t", "tv"],
+        ["i", "eye"],
+        ["h", "hammer"],
+        ["n", "nuclear"],
+        ["k", "key"],
+        ["e", "egg"],
+        ["r", "radio"],
+        ["f", "fish"],
+        ["o", "open"],
+        ["a", "airplane"],
+        ["m", "map"],
+      ] as [string, string][],
+    []
+  );
 
   const [decodingMap, setEncodingMap] = useState<Map<string, string>>(
     () => new Map(encodingEntries)
@@ -37,7 +41,7 @@ export function TutorialIcons() {
     if (stepIndex < encodingEntries.length) {
       const [letterToDecode] = encodingEntries[stepIndex];
       setSelectedLetter(letterToDecode); // highlight current
-
+      // @ts-ignore
       timeout = setTimeout(() => {
         setEncodingMap((prev) => {
           const newMap = new Map(prev);
@@ -47,6 +51,7 @@ export function TutorialIcons() {
         setStepIndex(stepIndex + 1);
       }, 500);
     } else {
+      // @ts-ignore
       timeout = setTimeout(() => {
         setEncodingMap(new Map(encodingEntries)); // reset
         setStepIndex(0);
@@ -55,7 +60,7 @@ export function TutorialIcons() {
     }
 
     return () => clearTimeout(timeout);
-  }, [stepIndex]);
+  }, [stepIndex, encodingEntries]);
 
   const decodeQuote = (quote: string): string[] => {
     return quote

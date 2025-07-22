@@ -1,7 +1,7 @@
 import QuotiacGame from "@/App";
 import { ThemeProvider } from "@/src/theme/ThemeContext";
 import React, { useState } from "react";
-import { View, Text, Button } from "react-native";
+import { View, Text } from "react-native";
 import GameState from "@/src/state/state";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -46,6 +46,7 @@ export default function Index() {
 
   return (
     <ThemeProvider>
+      {/* @ts-ignore */}
       <QuotiacGame state={gameState} setGameState={setGameState} />
     </ThemeProvider>
   );
