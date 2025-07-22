@@ -6,7 +6,7 @@ import GameState from "@/src/state/state";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAppBootstrap, useFetchPuzzle, useRouteDateSync } from "./hooks";
-import { TutorialScreen } from "@/src/tutorial/welcome";
+import { TutorialScreen } from "@/src/help-menu/welcome";
 
 export default function Index() {
   const [gameState, setGameState] = useState<GameState | null>(null);
@@ -30,10 +30,6 @@ export default function Index() {
         <Text>Loading...</Text>
       </View>
     );
-  }
-
-  if (!hasSeenTutorial) {
-    return <TutorialScreen onComplete={handleTutorialComplete} />;
   }
 
   if (!gameState) {
