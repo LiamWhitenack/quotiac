@@ -25,6 +25,7 @@ import { useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
 import CustomIonicons from "@/src/custom-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import HelpDropdownButton from "./src/help-menu/help-button";
 
 const QuotiacGame = ({
   state,
@@ -124,13 +125,14 @@ const QuotiacGame = ({
                 <CustomIonicons
                   name="bulb-outline"
                   size={32}
-                  color={theme.lightBulbBorder}
+                  color={theme.text}
                   style={{ position: "absolute", top: 0, left: 0 }}
                 />
               </View>
             </TouchableOpacity>
+            <HelpDropdownButton />
 
-            <TouchableOpacity style={mainWindowStyles.iconContainer}>
+            {/* <TouchableOpacity style={mainWindowStyles.iconContainer}>
               <CustomIonicons
                 name={"refresh-outline"}
                 size={32}
@@ -143,7 +145,7 @@ const QuotiacGame = ({
                   updateState();
                 }}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
         {state.fireConfetti && (
