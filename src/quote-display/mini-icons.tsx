@@ -3,16 +3,15 @@ import { View, Text } from "react-native";
 import sizing from "../sizing/sizing";
 import { splitOnPercent } from "@/src/sizing/wrap-words";
 import CustomIonicons from "@/src/custom-icons";
-import type { Theme } from "@/src/theme/themes";
 import { useTheme } from "../theme/ThemeContext";
 
 export function TutorialIcons() {
   const { theme } = useTheme();
-  const quote = "I think, therefore I am.";
+  const quote = "I think,@therefore@I am.";
 
   const encodingEntries: [string, string][] = [
+    ["t", "tv"],
     ["i", "eye"],
-    ["t", "t"],
     ["h", "hammer"],
     ["n", "nuclear"],
     ["k", "key"],
@@ -24,32 +23,34 @@ export function TutorialIcons() {
     ["m", "map"],
   ];
 
-  const [decodingMap, setDecodingMap] = useState<Map<string, string>>(
+  const [decodingMap, setEncodingMap] = useState<Map<string, string>>(
     () => new Map(encodingEntries)
   );
   const [stepIndex, setStepIndex] = useState(0);
+  const [selectedLetter, setSelectedLetter] = useState<string | null>(null);
 
   const hintLetter = "t";
-  let selectedIcon: string = "";
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
 
     if (stepIndex < encodingEntries.length) {
+      const [letterToDecode] = encodingEntries[stepIndex];
+      setSelectedLetter(letterToDecode); // highlight current
+
       timeout = setTimeout(() => {
-        const [letterToDecode] = encodingEntries[stepIndex];
-        setDecodingMap((prev) => {
+        setEncodingMap((prev) => {
           const newMap = new Map(prev);
-          newMap.delete(letterToDecode); // Reveal the letter
+          newMap.delete(letterToDecode);
           return newMap;
         });
         setStepIndex(stepIndex + 1);
       }, 500);
     } else {
-      // Animation finished — wait 2s and restart
       timeout = setTimeout(() => {
-        setDecodingMap(new Map(encodingEntries)); // Reset icons
+        setEncodingMap(new Map(encodingEntries)); // reset
         setStepIndex(0);
+        setSelectedLetter(encodingEntries[0][0]); // restart highlight
       }, 2000);
     }
 
@@ -90,24 +91,31 @@ export function TutorialIcons() {
     </View>
   );
 
-  const renderIcon = (iconName: string, key: string) => (
-    <View
-      key={key}
-      style={{
-        alignItems: "center",
-        justifyContent: "center",
-        height: sizing.iconSize,
-        width: sizing.iconSize,
-      }}
-    >
-      <CustomIonicons
-        // @ts-ignore
-        name={iconName}
-        size={sizing.iconSize * 0.8}
-        color={iconName === selectedIcon ? theme.selected : theme.text}
-      />
-    </View>
-  );
+  const renderIcon = (
+    iconName: string,
+    key: string,
+    originalLetter: string
+  ) => {
+    const isSelected = originalLetter === selectedLetter;
+    return (
+      <View
+        key={key}
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          height: sizing.iconSize,
+          width: sizing.iconSize,
+        }}
+      >
+        <CustomIonicons
+          // @ts-ignore
+          name={iconName}
+          size={sizing.iconSize * 0.8}
+          color={isSelected && iconName !== "tv" ? theme.selected : theme.text}
+        />
+      </View>
+    );
+  };
 
   const renderNonLetterCharacter = (char: string, key: string) => (
     <View
@@ -143,7 +151,10 @@ export function TutorialIcons() {
             return renderNonLetterCharacter(element, key);
           }
         } else {
-          return renderIcon(element, key);
+          // element is the icon name, find the original letter for selection matching
+          const found = encodingEntries.find(([, icon]) => icon === element);
+          const originalLetter = found?.[0] ?? "";
+          return renderIcon(element, key, originalLetter);
         }
       })}
     </View>
