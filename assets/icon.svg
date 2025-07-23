@@ -1,6 +1,16 @@
-<svg width="200" height="275" viewBox="0 0 200 275" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="black" stroke-width="4">
+<svg width="200" height="350" viewBox="0 0 200 350" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="black" stroke-width="4">
+    <g transform="translate(0, 40)">
     <!-- Lock shackle -->
-    <path d="M50 55 A50 50 0 0 1 150 55 L150 105 L130 95 L130 55 A30 30 0 0 0 70 55 L70 95 L50 105 Z" fill="white" stroke="black" fill-rule="evenodd" />
+    <path d="M50 55 A50 50 0 0 1 150 55 L150 115 L130 115 L130 55 A30 30 0 0 0 70 55 L70 155 L50 155 Z" fill="white" stroke="black" fill-rule="evenodd">
+        <animateTransform
+            attributeName="transform"
+            begin="8s"
+            dur="0.5s"
+            type="translate"
+            by="0 -35"
+            repeatCount="once"
+            fill="freeze"  />
+    </path>
 
     <!-- Lock body -->
     <circle cx="100" cy="180" r="90" fill="white"/>
@@ -10,10 +20,40 @@
 
     <!-- Dial -->
     <g>
+        <animateTransform
+            attributeName="transform"
+            begin="0s"
+            dur="2s"
+            type="rotate"
+            from="0 100 180"
+            to="135 100 180"
+            repeatCount="once"
+            fill="freeze" 
+            id="first-rotation"/>
+        <animateTransform
+            attributeName="transform"
+            begin="2.5"
+            dur="3s"
+            type="rotate"
+            from="135 100 180"
+            to="-135 100 180"
+            repeatCount="once"
+            fill="freeze" />
+        <animateTransform
+            attributeName="transform"
+            begin="6"
+            dur="2s"
+            type="rotate"
+            from="-135 100 180"
+            to="90 100 180"
+            repeatCount="once"
+            fill="freeze" />            
+
+
         <!-- Dial circles-->
         <circle cx="100" cy="180" r="70" fill="black" />
         <circle cx="100" cy="180" r="30" stroke="white" stroke-width="2"/>
-        <text x="100" y="180">Quotiac</text>
+        <text x="100" y="180">Q</text>
 
         <!-- Major dial ticks -->
         <g stroke-linecap="round" stroke="white">
@@ -119,15 +159,15 @@
     </g>
     <style>
         text {
-            font-family: Arial, sans-serif;
-            font-size: 12px;
+            font-family: Cascadia Code,Arial, sans-serif;
+            font-size: 48px;
             text-anchor: middle;
             dominant-baseline: middle;
             user-select: none;
             fill: white;
             stroke: white;
-            stroke-width: 0.5;
-            font-weight: bold;
+            stroke-width: 1;
+            /* font-weight: bold; */
         }
     </style>
 </svg>
