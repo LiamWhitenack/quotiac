@@ -4,18 +4,24 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  Modal,
   Pressable,
 } from "react-native";
 import CustomIonicons from "@/src/custom-icons"; // Replace with actual import
 import { useTheme } from "../theme/ThemeContext";
+import InstructionsModal from "./help-modal";
 
 export default function HelpDropdownButton() {
   const { theme } = useTheme();
-  const [visible, setVisible] = useState(false);
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const menuItems = [
-    { label: "How to Play", onPress: () => {} },
+    {
+      label: "How to Play",
+      onPress: () => {
+        setModalVisible(true);
+      },
+    },
     { label: "Feedback", onPress: () => {} },
     { label: "Report a Bug", onPress: () => {} },
     { label: "Questions?", onPress: () => {} },
@@ -23,8 +29,14 @@ export default function HelpDropdownButton() {
 
   return (
     <View style={{ position: "relative" }}>
-      <TouchableOpacity onPress={() => setVisible(!visible)}>
-        {/* Circle with question mark */}
+      {/* Modal */}
+      <InstructionsModal
+        isVisible={modalVisible}
+        onClose={() => setModalVisible(false)}
+      />
+
+      {/* Help Button */}
+      <TouchableOpacity onPress={() => setDropdownVisible(!dropdownVisible)}>
         <View style={{ width: 32, height: 32 }}>
           <CustomIonicons
             name="ellipse-outline"
@@ -46,14 +58,14 @@ export default function HelpDropdownButton() {
       </TouchableOpacity>
 
       {/* Dropdown Menu */}
-      {visible && (
+      {dropdownVisible && (
         <View style={styles.dropdown}>
           {menuItems.map((item, index) => (
             <Pressable
               key={index}
               onPress={() => {
                 item.onPress();
-                setVisible(false);
+                setDropdownVisible(false);
               }}
               style={({ pressed }) => [
                 styles.menuItem,
