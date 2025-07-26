@@ -15,6 +15,7 @@ import { useTheme } from "@/src/theme/ThemeContext";
 import sizing from "@/src/sizing/sizing";
 import CustomIonicons from "@/src/custom-icons";
 import { createStyles } from "./styles";
+import { createAppStyles } from "../theme/styles";
 
 type PuzzleCompleteModalProps = {
   state: GameState;
@@ -31,6 +32,7 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
   const webRef = useRef<HTMLDivElement>(null);
   const { theme } = useTheme();
   const styles = createStyles(theme);
+  const appStyles = createAppStyles(theme);
 
   // Visible component shown in modal
   const YourVisibleComponent: React.FC<ViewProps> = (props) => (
@@ -178,9 +180,8 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
 
             <YourVisibleComponent />
             <View style={{ height: 20 }} />
-
-            <TouchableOpacity style={styles.modalButton} onPress={handleShare}>
-              <Text style={styles.modalButtonText}>Share your results</Text>
+            <TouchableOpacity style={appStyles.elevatedButton} onPress={handleShare}>
+              <Text style={appStyles.elevatedButtonText}>Share your results</Text>
             </TouchableOpacity>
           </View>
         </View>

@@ -101,7 +101,7 @@ export const createStyles = (theme: Theme) =>
       alignItems: "center",
     },
     modalButtonText: {
-      color: "white",
+      color: theme.textInverse,
       fontWeight: "600",
       fontSize: 18,
     },
