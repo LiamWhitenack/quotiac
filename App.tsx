@@ -23,12 +23,14 @@ import PuzzleDetailsModal from "./puzzle-info-modal/skeleton";
 import { useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
 import CustomIonicons from "./src/custom-icons";
+import LockSvg from "./app-effects/lock-icon";
 
 const QuotiacApp = () => {
   const [gameState, setGameState] = useState<GameState | null>(null);
   const [routeDate, setRouteDate] = useState<string | undefined>(undefined);
   const [hasCheckedURL, setHasCheckedURL] = useState(false);
   const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [minDelayPassed, setMinDelayPassed] = useState(false);
   const navigation = useNavigation();
   // Extract date from the path (e.g., /20250710)
   const extractDateFromPath = () => {
@@ -77,6 +79,11 @@ const QuotiacApp = () => {
     }
   }, [routeDate, hasCheckedURL, navigation]);
 
+  useEffect(() => {
+    const timer = setTimeout(() => setMinDelayPassed(true), 10000);
+    return () => clearTimeout(timer);
+  }, []);
+
   // Fetch the puzzle when routeDate is set
   useEffect(() => {
     const now = new Date();
@@ -90,11 +97,12 @@ const QuotiacApp = () => {
     );
   }, [routeDate]);
 
-  if (!gameState || !fontsLoaded) {
+  if (!gameState || !fontsLoaded || !minDelayPassed) {
     // Show loading screen or nothing while fetching puzzle
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text>Loading puzzle...</Text>
+        {/* <Text>Loading puzzle...</Text> */}
+        <LockSvg />
       </View>
     );
   }
