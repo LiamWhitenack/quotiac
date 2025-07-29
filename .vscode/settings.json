@@ -1,3 +1,4 @@
 {
   // "workbench.colorTheme": "Abyss"
+  "editor.formatOnSave": true
 }
