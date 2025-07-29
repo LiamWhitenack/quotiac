@@ -1,28 +1,28 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { View, Text } from "react-native";
-import sizing from "../sizing/sizing";
+import sizing from "../../../sizing/sizing";
 import { splitOnPercent } from "@/src/sizing/wrap-words";
 import CustomIonicons from "@/src/custom-icons";
-import { useTheme } from "../theme/ThemeContext";
+import { useTheme } from "../../../theme/ThemeContext";
 
-export function TutorialIcons() {
+export function SolvingDemonstration() {
   const { theme } = useTheme();
-  const quote = "I think,@therefore@I am.";
+  const quote = "a quack,@qujsjfwsq@a bx.";
 
   const encodingEntries = useMemo(
     () =>
       [
-        ["t", "tv"],
-        ["i", "eye"],
-        ["h", "hammer"],
-        ["n", "nuclear"],
+        ["a", "eye"],
+        ["q", "tv"],
+        ["u", "hammer"],
+        ["c", "nuclear"],
         ["k", "key"],
-        ["e", "egg"],
-        ["r", "radio"],
+        ["j", "egg"],
+        ["s", "radio"],
         ["f", "fish"],
-        ["o", "open"],
-        ["a", "airplane"],
-        ["m", "map"],
+        ["w", "open"],
+        ["b", "airplane"],
+        ["x", "map"],
       ] as [string, string][],
     []
   );
@@ -32,35 +32,68 @@ export function TutorialIcons() {
   );
   const [stepIndex, setStepIndex] = useState(0);
   const [selectedLetter, setSelectedLetter] = useState<string | null>(null);
+  const [direction, setDirection] = useState<"forward" | "backward">("forward");
 
-  const hintLetter = "t";
+  const kIndex = encodingEntries.findIndex(([letter]) => letter === "k");
+
+  const hintLetter = "0";
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
 
-    if (stepIndex < encodingEntries.length) {
-      const [letterToDecode] = encodingEntries[stepIndex];
-      setSelectedLetter(letterToDecode); // highlight current
-      // @ts-ignore
-      timeout = setTimeout(() => {
-        setEncodingMap((prev) => {
-          const newMap = new Map(prev);
-          newMap.delete(letterToDecode);
-          return newMap;
-        });
-        setStepIndex(stepIndex + 1);
-      }, 500);
-    } else {
-      // @ts-ignore
-      timeout = setTimeout(() => {
-        setEncodingMap(new Map(encodingEntries)); // reset
-        setStepIndex(0);
-        setSelectedLetter(encodingEntries[0][0]); // restart highlight
-      }, 2000);
+    if (direction === "forward") {
+      if (stepIndex < encodingEntries.length) {
+        const [letterToDecode] = encodingEntries[stepIndex];
+        setSelectedLetter(letterToDecode);
+        // @ts-ignore
+        timeout = setTimeout(() => {
+          setEncodingMap((prev) => {
+            const newMap = new Map(prev);
+            newMap.delete(letterToDecode);
+            return newMap;
+          });
+
+          if (letterToDecode === "k") {
+            setDirection("backward");
+          } else {
+            setStepIndex(stepIndex + 1);
+          }
+        }, 1000);
+      } else {
+        // @ts-ignore
+        timeout = setTimeout(() => {
+          setEncodingMap(new Map(encodingEntries));
+          setStepIndex(0);
+          setSelectedLetter(encodingEntries[0][0]);
+        }, 2000);
+      }
+    } else if (direction === "backward") {
+      if (stepIndex >= 0) {
+        const [letterToRestore, iconToRestore] = encodingEntries[stepIndex];
+        // @ts-ignore
+        timeout = setTimeout(() => {
+          setEncodingMap((prev) => {
+            const newMap = new Map(prev);
+            newMap.set(letterToRestore, iconToRestore);
+            return newMap;
+          });
+          setSelectedLetter(letterToRestore); // highlight the icon just restored
+          setStepIndex(stepIndex - 1);
+        }, 1000);
+      }
+      else {
+        // @ts-ignore
+        timeout = setTimeout(() => {
+          setDirection("forward");
+          setStepIndex(0);
+          setEncodingMap(new Map(encodingEntries));
+          setSelectedLetter(encodingEntries[0][0]);
+        }, 1000);
+      }
     }
 
     return () => clearTimeout(timeout);
-  }, [stepIndex, encodingEntries]);
+  }, [stepIndex, direction, encodingEntries]);
 
   const decodeQuote = (quote: string): string[] => {
     return quote
@@ -116,7 +149,7 @@ export function TutorialIcons() {
           // @ts-ignore
           name={iconName}
           size={sizing.iconSize * 0.8}
-          color={isSelected && iconName !== "tv" ? theme.selected : theme.text}
+          color={isSelected ? theme.selected : theme.text}
         />
       </View>
     );
@@ -156,7 +189,6 @@ export function TutorialIcons() {
             return renderNonLetterCharacter(element, key);
           }
         } else {
-          // element is the icon name, find the original letter for selection matching
           const found = encodingEntries.find(([, icon]) => icon === element);
           const originalLetter = found?.[0] ?? "";
           return renderIcon(element, key, originalLetter);
@@ -166,4 +198,4 @@ export function TutorialIcons() {
   ));
 }
 
-export default TutorialIcons;
+export default SolvingDemonstration;

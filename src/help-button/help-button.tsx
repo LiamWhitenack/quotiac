@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import CustomIonicons from "@/src/custom-icons"; // Replace with actual import
 import { useTheme } from "../theme/ThemeContext";
-import InstructionsModal from "./help-modal";
+import InstructionsModal from "./help-menu/help-modal";
 
 export default function HelpDropdownButton() {
   const { theme } = useTheme();
@@ -22,9 +22,9 @@ export default function HelpDropdownButton() {
         setModalVisible(true);
       },
     },
-    { label: "Feedback", onPress: () => {} },
-    { label: "Report a Bug", onPress: () => {} },
-    { label: "Questions?", onPress: () => {} },
+    { label: "Feedback", onPress: () => { } },
+    { label: "Report a Bug", onPress: () => { } },
+    { label: "Questions?", onPress: () => { } },
   ];
 
   return (

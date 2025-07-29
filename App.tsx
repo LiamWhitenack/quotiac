@@ -25,7 +25,7 @@ import { useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
 import CustomIonicons from "@/src/custom-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import HelpDropdownButton from "./src/help-menu/help-button";
+import HelpDropdownButton from "./src/help-button/help-button";
 
 const QuotiacGame = ({
   state,
