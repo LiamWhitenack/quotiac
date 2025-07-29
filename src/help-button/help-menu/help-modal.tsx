@@ -36,7 +36,7 @@ const CryptoHelpModal: React.FC<CryptoHelpModalProps> = ({ isVisible, onClose })
               • Each symbol represents a different hidden letter.
             </Text>
             <Text style={styles.bulletItem}>
-              • Punctuation doesn't represent a hidden letter.
+              • Punctuation does not represent a hidden letter.
             </Text>
           </View>
         </>
@@ -73,25 +73,22 @@ const CryptoHelpModal: React.FC<CryptoHelpModalProps> = ({ isVisible, onClose })
       content: (
         <>
           <HintDemonstration />
-          <Text style={styles.instructionsTitle}>Hint Button
-          </Text>
+          <Text style={styles.instructionsTitle}>Hint Button:</Text>
           <View style={{ height: 20 }}></View>
-          <View style={{ flexDirection: 'row', alignItems: 'center', padding: 16 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <CustomIonicons name="bulb-outline" size={48} />
             <View style={{ marginLeft: 10, flex: 1 }}>
-              <Text style={{ flexWrap: 'wrap' }}>
+              <Text style={styles.bulletItem || { flexWrap: 'wrap' }}>
                 Press the hint button to get a random new letter.
               </Text>
-              <Text style={{ flexWrap: 'wrap' }}>
+              <Text style={styles.bulletItem || { flexWrap: 'wrap' }}>
                 These new letters will be marked green to show that they are correct.
               </Text>
-              <Text style={{ flexWrap: 'wrap' }}>
+              <Text style={styles.bulletItem || { flexWrap: 'wrap' }}>
                 Be careful, you will only get 5 hints!
               </Text>
             </View>
           </View>
-
-
         </>
       ),
     },
@@ -101,17 +98,20 @@ const CryptoHelpModal: React.FC<CryptoHelpModalProps> = ({ isVisible, onClose })
 
   return (
     <Modal isVisible={isVisible} backdropOpacity={0.4}>
-      <View style={styles.container}>
-        {/* Close Button */}
-        <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
-          <Ionicons name="close" size={24} color="#444" />
-        </TouchableOpacity>
+      <View
+        style={[
+          styles.container,
+          { justifyContent: 'space-between' } // Added flex and space-between here
+        ]}
+      >
+        {/* Wrap all but footer */}
+        <View style={{ flexShrink: 1 }}>
+          {/* Title */}
+          <Text style={styles.title}>{current.title}</Text>
 
-        {/* Title */}
-        <Text style={styles.title}>{current.title}</Text>
-
-        {/* Body */}
-        <View style={styles.body}>{current.content}</View>
+          {/* Body */}
+          <View style={styles.body}>{current.content}</View>
+        </View>
 
         {/* Footer Buttons */}
         <View style={styles.footer}>
@@ -145,4 +145,3 @@ const CryptoHelpModal: React.FC<CryptoHelpModalProps> = ({ isVisible, onClose })
 };
 
 export default CryptoHelpModal;
-

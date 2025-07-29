@@ -7,7 +7,7 @@ import { useTheme } from "../../../theme/ThemeContext";
 
 export function SolvingDemonstration() {
   const { theme } = useTheme();
-  const quote = "a quack,@qujsjfwsq@a bx.";
+  const quote = "a quack,@qujsjfwsj@a bx.";
 
   const encodingEntries = useMemo(
     () =>
