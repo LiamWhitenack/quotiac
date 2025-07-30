@@ -5,16 +5,19 @@ import {
   TouchableOpacity,
   StyleSheet,
   Pressable,
+  Modal,
   Linking,
 } from "react-native";
-import CustomIonicons from "@/src/custom-icons"; // Replace with actual import
+import CustomIonicons from "@/src/custom-icons";
 import { useTheme } from "../theme/ThemeContext";
 import InstructionsModal from "./help-menu/help-modal";
 import { Theme } from "../theme/themes";
+import { createAppStyles } from "../theme/styles";
 
 export default function HelpDropdownButton() {
   const { theme } = useTheme();
   const styles = createStyles(theme);
+  const appStyles = createAppStyles(theme);
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -26,22 +29,26 @@ export default function HelpDropdownButton() {
       },
     },
     {
-      label: "Suggest a Quote", onPress: () => {
-        Linking.openURL('https://docs.google.com/forms/d/1wBT2wKb1gx_ZzfkJPblgAGsZ38VV_UfxbWXEFmVcPL0/edit');
-      }
+      label: "Suggest a Quote",
+      onPress: () => {
+        Linking.openURL(
+          "https://docs.google.com/forms/d/1wBT2wKb1gx_ZzfkJPblgAGsZ38VV_UfxbWXEFmVcPL0/edit"
+        );
+      },
     },
+    {
+      label: "Play",
+      onPress: () => {
+        setDropdownVisible(false);
+      },
+    },
+
   ];
 
   return (
     <View style={{ position: "relative" }}>
-      {/* Modal */}
-      <InstructionsModal
-        isVisible={modalVisible}
-        onClose={() => setModalVisible(false)}
-      />
-
       {/* Help Button */}
-      <TouchableOpacity onPress={() => setDropdownVisible(!dropdownVisible)}>
+      <TouchableOpacity onPress={() => setDropdownVisible(true)}>
         <View style={{ width: 32, height: 32, marginRight: 15 }}>
           <CustomIonicons
             name="ellipse-outline"
@@ -62,62 +69,95 @@ export default function HelpDropdownButton() {
         </View>
       </TouchableOpacity>
 
-      {/* Dropdown Menu */}
-      {dropdownVisible && (
-        <View style={styles.dropdown}>
-          {menuItems.map((item, index) => (
-            <Pressable
-              key={index}
-              onPress={() => {
-                item.onPress();
-                setDropdownVisible(false);
-              }}
-              style={({ pressed }) => [
-                styles.menuItem,
-                pressed && { backgroundColor: "#eee" },
-              ]}
-            >
-              <Text style={styles.menuText}>{item.label}</Text>
-
-              {item.label !== "How to Play" && (
-                <CustomIonicons
-                  name="arrow-forward-outline"
-                  size={16}
-                  color={theme.text}
-                />
-              )}
-            </Pressable>
-          ))}
-
+      {/* Fullscreen Modal Dropdown */}
+      <Modal
+        visible={dropdownVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setDropdownVisible(false)}
+      >
+        <View style={styles.fullscreenOverlay}>
+          <View style={styles.modalCard}>
+            <View style={styles.buttonsContainer}>
+              {menuItems.map((item, index) => (
+                <TouchableOpacity
+                  key={index}
+                  onPress={() => {
+                    item.onPress();
+                    setDropdownVisible(false);
+                  }}
+                  style={[appStyles.elevatedButton, styles.buttonSpacing]}
+                >
+                  <Text style={appStyles.elevatedButtonText}>{item.label}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
         </View>
-      )}
+      </Modal>
+
+      {/* Instructions Modal */}
+      <InstructionsModal
+        isVisible={modalVisible}
+        onClose={() => setModalVisible(false)}
+      />
     </View>
   );
 }
 
-export const createStyles = (theme: Theme) => StyleSheet.create({
-  dropdown: {
-    position: "absolute",
-    top: 40,
-    right: 0,
-    backgroundColor: theme.modalBackground,
-    borderWidth: 1,
-    borderColor: theme.text,
-    borderRadius: 4,
-    zIndex: 999,
-    elevation: 5,
-    width: 180,
-  },
-  menuItem: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: theme.text,
-  },
-  menuText: {
-    fontSize: 14,
-    color: theme.text,
-  },
-});
+export const createStyles = (theme: Theme) =>
+  StyleSheet.create({
+    fullscreenOverlay: {
+      flex: 1,
+      backgroundColor: "rgba(0,0,0,0.3)",
+      justifyContent: "center",
+      alignItems: "center",
+      padding: 20,
+    },
+    modalCard: {
+      backgroundColor: theme.modalBackground,
+      borderRadius: 12,
+      padding: 24,
+      width: "90%",
+      maxWidth: 300,
+      shadowColor: "#000",
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.3,
+      shadowRadius: 6,
+      elevation: 8,
+    },
+    closeButton: {
+      alignSelf: "flex-end",
+      padding: 4,
+    },
+    elevatedButton: {
+      backgroundColor: theme.elevatedButton,
+      borderRadius: 8,
+      paddingVertical: 12,
+      paddingHorizontal: 16,
+      marginTop: 12,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      elevation: 3,
+      shadowColor: "#000",
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.2,
+      shadowRadius: 4,
+    },
+    menuText: {
+      fontSize: 16,
+      color: theme.textInverse,
+    },
+    buttonsContainer: {
+      // Use vertical stacking with some spacing around or between
+      flexDirection: "column",
+      justifyContent: "space-between",
+      // Or: justifyContent: "center",
+      // paddingVertical: 10,
+    },
+
+    buttonSpacing: {
+      marginVertical: 6, // space above and below each button
+    },
+  });
