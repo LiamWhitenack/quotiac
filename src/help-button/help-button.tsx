@@ -76,8 +76,16 @@ export default function HelpDropdownButton() {
         animationType="fade"
         onRequestClose={() => setDropdownVisible(false)}
       >
-        <View style={styles.fullscreenOverlay}>
-          <View style={styles.modalCard}>
+        {/* Pressing here will close the modal */}
+        <Pressable
+          style={styles.fullscreenOverlay}
+          onPress={() => setDropdownVisible(false)}
+        >
+          {/* Prevent press propagation from modal card */}
+          <Pressable
+            style={styles.modalCard}
+            onPress={(e) => e.stopPropagation()}
+          >
             <View style={styles.buttonsContainer}>
               {menuItems.map((item, index) => (
                 <TouchableOpacity
@@ -92,8 +100,8 @@ export default function HelpDropdownButton() {
                 </TouchableOpacity>
               ))}
             </View>
-          </View>
-        </View>
+          </Pressable>
+        </Pressable>
       </Modal>
 
       {/* Instructions Modal */}
