@@ -2,22 +2,26 @@ import React from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '@/src/theme/ThemeContext';
+import CustomIonicons from '@/src/custom-icons';
+import { Theme } from '@/src/theme/themes';
 
 const iconData = [
-    { name: 'sad', label: 'S' },
-    { name: 'open', label: 'O' },
+    { name: 'paw', label: 'S' },
+    { name: 'boat', label: 'O' },
     { name: 'leaf', label: 'L' },
-    { name: 'videocam', label: 'V' },
+    { name: 'desktop', label: 'V' },
     { name: 'eye', label: 'E' },
 ];
 
 export default function IconInitialsWidget() {
     const { theme, mode } = useTheme();
+    const styles = createStyles(theme);
     return (
         <View style={styles.container}>
             {iconData.map((icon) => (
                 <View key={icon.name} style={styles.iconBlock}>
-                    <Ionicons name={`${icon.name}-outline`} size={32} color={theme.text} />
+                    {/* @ts-ignore */}
+                    <CustomIonicons name={`${icon.name}`} size={32} color={theme.text} />
                     <Text style={styles.label || { color: theme.text }}>{icon.label}</Text>
                 </View>
             ))}
@@ -25,7 +29,7 @@ export default function IconInitialsWidget() {
     );
 }
 
-const styles = StyleSheet.create({
+export const createStyles = (theme: Theme) => StyleSheet.create({
     container: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -39,6 +43,7 @@ const styles = StyleSheet.create({
     },
     label: {
         marginTop: 2,
-        fontSize: 12
+        fontSize: 12,
+        color: theme.text
     },
 });

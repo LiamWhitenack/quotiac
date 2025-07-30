@@ -2,12 +2,16 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import Modal from 'react-native-modal';
 import { Ionicons } from '@expo/vector-icons';
-import { styles } from '../styles';
+import { createStyles } from '../styles';
 import HintDemonstration from '@/src/help-button/help-menu/animations/hint-animation';
 import IconInitialsWidget from './animations/icon-letters';
 import SolvingDemonstration from './animations/solving-animation';
 import CustomIonicons from "@/src/custom-icons";
+import { useTheme } from '@/src/theme/ThemeContext';
+
 export default function getPages() {
+    const { theme, mode } = useTheme();
+    const styles = createStyles(theme);
     return [
         {
             title: 'How to Play',
@@ -63,7 +67,7 @@ export default function getPages() {
                     <Text style={styles.instructionsTitle}>Hint Button:</Text>
                     <View style={{ height: 20 }}></View>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <CustomIonicons name="bulb-outline" size={48} />
+                        <CustomIonicons name="bulb-outline" size={48} color={theme.text} />
                         <View style={{ marginLeft: 10, flex: 1 }}>
                             <Text style={styles.bulletItem || { flexWrap: 'wrap' }}>
                                 Press the hint button to get a random new letter.

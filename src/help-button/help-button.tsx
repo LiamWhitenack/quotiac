@@ -9,9 +9,11 @@ import {
 import CustomIonicons from "@/src/custom-icons"; // Replace with actual import
 import { useTheme } from "../theme/ThemeContext";
 import InstructionsModal from "./help-menu/help-modal";
+import { Theme } from "../theme/themes";
 
 export default function HelpDropdownButton() {
   const { theme } = useTheme();
+  const styles = createStyles(theme);
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -86,7 +88,7 @@ export default function HelpDropdownButton() {
   );
 }
 
-const styles = StyleSheet.create({
+export const createStyles = (theme: Theme) => StyleSheet.create({
   dropdown: {
     position: "absolute",
     top: 40,
