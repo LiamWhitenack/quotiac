@@ -77,6 +77,9 @@ class GameState {
     }
 
     giveAHint() {
+        if (this.givenHintLetters.length > 4) {
+            return;
+        }
         for (const [, hint] of this.puzzle.hints.entries()) {
             if (hint instanceof GiveALetterHint && !this.userHasDiscoveredLetter(hint)) {
                 this.givenHintLetters.push(hint.letter)
@@ -89,7 +92,6 @@ class GameState {
                 break
             }
         }
-
     }
 
     clone(): GameState {
