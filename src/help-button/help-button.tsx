@@ -39,7 +39,7 @@ export default function HelpDropdownButton() {
 
       {/* Help Button */}
       <TouchableOpacity onPress={() => setDropdownVisible(!dropdownVisible)}>
-        <View style={{ width: 32, height: 32 }}>
+        <View style={{ width: 32, height: 32, marginRight: 15 }}>
           <CustomIonicons
             name="ellipse-outline"
             size={32}
@@ -78,7 +78,7 @@ export default function HelpDropdownButton() {
               <CustomIonicons
                 name="arrow-forward-outline"
                 size={16}
-                color="#000"
+                color={theme.text}
               />
             </Pressable>
           ))}
@@ -93,9 +93,9 @@ export const createStyles = (theme: Theme) => StyleSheet.create({
     position: "absolute",
     top: 40,
     right: 0,
-    backgroundColor: "#fff",
+    backgroundColor: theme.modalBackground,
     borderWidth: 1,
-    borderColor: "#ddd",
+    borderColor: theme.text,
     borderRadius: 4,
     zIndex: 999,
     elevation: 5,
@@ -107,10 +107,10 @@ export const createStyles = (theme: Theme) => StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#ddd",
+    borderBottomColor: theme.text,
   },
   menuText: {
     fontSize: 14,
-    color: "#000",
+    color: theme.text,
   },
 });

@@ -126,7 +126,7 @@ const QuotiacGame = ({
                   name="bulb-outline"
                   size={32}
                   color={theme.text}
-                  style={{ position: "absolute", top: 0, left: 0 }}
+                  style={{ position: "absolute", top: 0, left: 0, marginRight: 5 }}
                 />
               </View>
             </TouchableOpacity>
