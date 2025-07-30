@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Pressable,
+  Linking,
 } from "react-native";
 import CustomIonicons from "@/src/custom-icons"; // Replace with actual import
 import { useTheme } from "../theme/ThemeContext";
@@ -24,9 +25,11 @@ export default function HelpDropdownButton() {
         setModalVisible(true);
       },
     },
-    { label: "Feedback", onPress: () => { } },
-    { label: "Report a Bug", onPress: () => { } },
-    { label: "Questions?", onPress: () => { } },
+    {
+      label: "Suggest a Quote", onPress: () => {
+        Linking.openURL('https://docs.google.com/forms/d/1wBT2wKb1gx_ZzfkJPblgAGsZ38VV_UfxbWXEFmVcPL0/edit');
+      }
+    },
   ];
 
   return (
@@ -75,13 +78,17 @@ export default function HelpDropdownButton() {
               ]}
             >
               <Text style={styles.menuText}>{item.label}</Text>
-              <CustomIonicons
-                name="arrow-forward-outline"
-                size={16}
-                color={theme.text}
-              />
+
+              {item.label !== "How to Play" && (
+                <CustomIonicons
+                  name="arrow-forward-outline"
+                  size={16}
+                  color={theme.text}
+                />
+              )}
             </Pressable>
           ))}
+
         </View>
       )}
     </View>
