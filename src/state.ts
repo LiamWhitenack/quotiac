@@ -5,32 +5,23 @@ import sizing from "@/src/sizing/sizing";
 import GiveALetterHint from "@/src/puzzles/hints/letter";
 import type { Theme } from "@/src/theme/themes";
 import CryptographBase from "@/src/puzzles/base";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function inverseMap(map: Map<string, string>): Map<string, string> {
-    const inverseDecodingMap = new Map<string, string>();
-    map.forEach((value, key) => {
-        inverseDecodingMap.set(value, key);
-    });
-    return inverseDecodingMap;
+    const inverse = new Map<string, string>();
+    map.forEach((v, k) => inverse.set(v, k));
+    return inverse;
 }
 function isACapitalLetter(x: string) {
-    return (x.length === 1 && x >= "A" && x <= "Z")
+    return x.length === 1 && x >= "A" && x <= "Z";
 }
-function findCharacterBackward(
-    charList: string[],
-    startingIndex: number,
-    searchForCharacter: string
-): number {
-    for (let i = startingIndex; i >= 0; i--) {
-        if (charList[i] === searchForCharacter) {
-            return i;
-        }
-    }
-    return -1; // Not found
+function findCharacterBackward(chars: string[], i: number, target: string): number {
+    for (; i >= 0; i--) if (chars[i] === target) return i;
+    return -1;
 }
-
 
 class GameState {
+    puzzleDate: string;
     puzzle: CryptographBase;
     quote: string;
     quoteHeight: number;
@@ -47,11 +38,12 @@ class GameState {
     encodedQuote: string[];
     showAppTitle: boolean;
 
-    constructor(puzzle: CryptographBase) {
-        this.puzzle = puzzle
+    constructor(puzzleDate: string, puzzle: CryptographBase) {
+        this.puzzleDate = puzzleDate;
+        this.puzzle = puzzle;
         this.quote = wrapWords(puzzle.stringToEncrypt.split(" "), (sizing.maxWidth * 0.9) / sizing.iconSize);
         this.quoteHeight = this.quote.split("@").length * sizing.iconSize - sizing.iconSize;
-        this.encodingMap = puzzle.encodingMap
+        this.encodingMap = puzzle.encodingMap;
         this.solution = inverseMap(this.encodingMap);
         this.fireConfetti = false;
         this.solved = false;
@@ -65,52 +57,101 @@ class GameState {
         this.showAppTitle = true;
     }
 
-    decreaseQuoteIconSize() {
-        sizing.iconSize -= 1;
-        this.quote = wrapWords(this.puzzle.stringToEncrypt.split(" "), (sizing.maxWidth * 0.9) / sizing.iconSize);
-        this.setQuoteHeight(sizing.iconSize)
-        this.encodedQuote = this.encodeQuote(this.quote);
+    static async create(puzzleDate: string, puzzle: CryptographBase): Promise<GameState> {
+        const gameState = new GameState(puzzleDate, puzzle);
+        await gameState.loadPersistedState();
+        return gameState;
+    }
+
+    get decodingMapKey() {
+        return `decodingMap-${this.puzzleDate}`;
+    }
+
+    get hintLettersKey() {
+        return `hintLetters-${this.puzzleDate}`;
+    }
+
+    async loadPersistedState() {
+        const decodingMapJson = await AsyncStorage.getItem(this.decodingMapKey);
+        const hintsJson = await AsyncStorage.getItem(this.hintLettersKey);
+
+        if (decodingMapJson) {
+            const entries = JSON.parse(decodingMapJson);
+            const decodingMap = new Map(entries);
+            await this.setDecodingMap(decodingMap);
+            this.updateKeyboardValues();
+            this.checkSolved();
+        }
+
+        if (hintsJson) {
+            this.givenHintLetters = JSON.parse(hintsJson);
+        }
+    }
+
+    async persistState() {
+        await AsyncStorage.setItem(this.decodingMapKey, JSON.stringify(Array.from(this.decodingMap.entries())));
+        await AsyncStorage.setItem(this.hintLettersKey, JSON.stringify(this.givenHintLetters));
+    }
+
+    async clearPersistedState() {
+        await AsyncStorage.removeItem(this.decodingMapKey);
+        await AsyncStorage.removeItem(this.hintLettersKey);
+    }
+
+    async giveAHint() {
+        if (this.givenHintLetters.length > 4) return;
+        for (const [, hint] of this.puzzle.hints.entries()) {
+            if (hint instanceof GiveALetterHint && !this.userHasDiscoveredLetter(hint)) {
+                this.givenHintLetters.push(hint.letter);
+                const updatedMap = new Map(this.decodingMap);
+                updatedMap.delete(this.inverseDecodingMap.get(hint.letter)!);
+                updatedMap.set(this.encodingMap.get(hint.letter)!, hint.letter);
+                await this.setDecodingMap(updatedMap);
+                this.updateKeyboardValues();
+                this.checkSolved();
+                await this.persistState();
+                break;
+            }
+        }
+    }
+
+    async setDecodingMap(map: Map<string, string>) {
+        this.decodingMap = map;
+        this.inverseDecodingMap = inverseMap(map);
+        await this.persistState();
+    }
+
+    async reactToResetButton() {
+        for (const key of this.decodingMap.keys()) {
+            if (!this.elementIsPartOfHint(key)) {
+                this.decodingMap.delete(key);
+            }
+        }
+        await this.setDecodingMap(new Map(this.decodingMap));
+        await this.clearPersistedState();
+        this.fireConfetti = false;
+        this.updateKeyboardValues();
+        this.setQuoteIndex(0);
+        this.setActiveIcon(this.encodedQuote[0]);
+        this.checkSolved();
     }
 
     userHasDiscoveredLetter(hint: GiveALetterHint) {
         return this.inverseDecodingMap.get(hint.letter) === this.encodingMap.get(hint.letter);
     }
 
-    giveAHint() {
-        if (this.givenHintLetters.length > 4) {
-            return;
-        }
-        for (const [, hint] of this.puzzle.hints.entries()) {
-            if (hint instanceof GiveALetterHint && !this.userHasDiscoveredLetter(hint)) {
-                this.givenHintLetters.push(hint.letter)
-                let updatedDecodingMap = new Map(this.decodingMap)
-                updatedDecodingMap.delete(this.inverseDecodingMap.get(hint.letter)!)
-                updatedDecodingMap.set(this.encodingMap.get(hint.letter)!, hint.letter)
-                this.setDecodingMap(updatedDecodingMap)
-                this.updateKeyboardValues()
-                this.checkSolved()
-                break
-            }
-        }
-    }
-
     clone(): GameState {
-        const cloned = new GameState(this.puzzle); // Use existing constructor
-
+        const cloned = new GameState(this.puzzleDate, this.puzzle);
         for (const key of Object.keys(this) as (keyof GameState)[]) {
-            const value = this[key];
-
             // @ts-ignore
-            cloned[key] = value
+            cloned[key] = this[key];
         }
-
         return cloned;
     }
 
     setEncodingMap(map: Map<string, string>) {
         this.encodingMap = map;
     }
-
 
     checkSolved() {
         this.solved = mapsAreEqual(this.solution, this.decodingMap);
@@ -121,11 +162,6 @@ class GameState {
 
     setQuoteHeight(iconSize: number) {
         this.quoteHeight = this.quote.split("@").length * iconSize;
-    }
-
-    setDecodingMap(map: Map<string, string>) {
-        this.decodingMap = map;
-        this.inverseDecodingMap = inverseMap(map);
     }
 
     setActiveIcon(icon: string) {
@@ -151,10 +187,7 @@ class GameState {
 
     encodeQuote(quote: string): string[] {
         return quote.split("").map((char, index) => {
-            if (index === 0) {
-                return;
-            }
-            char = char
+            if (index === 0) return;
             if (char >= "a" && char <= "z") {
                 return this.encodingMap.get(char)!;
             }
@@ -162,31 +195,26 @@ class GameState {
         }).filter((icon) => icon !== undefined);
     }
 
-
-
     updateKeyboardValues() {
         this.setKeyboardValues(
             KEYBOARD_LETTERS.map((row) =>
                 row.map((char) => {
-                    const associatedIconName = this.inverseDecodingMap.get(char.toLowerCase());
-                    return associatedIconName === undefined ? char : associatedIconName;
+                    const associated = this.inverseDecodingMap.get(char.toLowerCase());
+                    return associated === undefined ? char : associated;
                 })
             )
         );
-    };
+    }
 
-    getNextIconName(descending: boolean = false): string {
-        const stop = descending ? 0 : this.encodedQuote.length
+    getNextIconName(descending = false): string {
+        const stop = descending ? 0 : this.encodedQuote.length;
         const step = descending ? -1 : 1;
         for (let i = this.quoteIndex + step; descending ? i >= stop : i < stop; i += step) {
-            let iconName = this.encodedQuote[i];
-            if (iconName.length === 1) {
-                continue;
-            }
-            const char = this.decodingMap.get(iconName);
-            if (char === undefined) {
+            let icon = this.encodedQuote[i];
+            if (icon.length === 1) continue;
+            if (!this.decodingMap.has(icon)) {
                 this.setQuoteIndex(i);
-                return iconName;
+                return icon;
             }
         }
         this.setQuoteIndex(0);
@@ -194,82 +222,66 @@ class GameState {
     }
 
     elementColor(element: string, theme: Theme): string {
-        if (this.elementIsPartOfHint(element)) {
-            return theme.hint
-        } else if (element === this.activeIcon) {
-            return theme.selected
-        } else {
-            return theme.text
-        }
+        if (this.elementIsPartOfHint(element)) return theme.hint;
+        if (element === this.activeIcon) return theme.selected;
+        return theme.text;
     }
 
     reactToQuoteLetterPress(letter: string) {
-        if (this.solved || this.elementIsPartOfHint(letter)) {
-            return
-        }
-        this.removeLetterMapping({ letter: letter });
+        if (this.solved || this.elementIsPartOfHint(letter)) return;
+        this.removeLetterMapping({ letter });
     }
 
     elementIsPartOfHint(element: string) {
-        return this.givenHintLetters.includes(element) || this.givenHintLetters.includes(this.solution.get(element)!)
+        return this.givenHintLetters.includes(element) || this.givenHintLetters.includes(this.solution.get(element)!);
     }
 
     letterIsAssociatedWithIcon(letter: string) {
-        return this.inverseDecodingMap.get(letter) !== undefined
+        return this.inverseDecodingMap.get(letter) !== undefined;
     }
 
-
     reactToKeyboardPress(element: string) {
-        if (this.solved || this.elementIsPartOfHint(element) || (this.activeIcon === "" && !this.letterIsAssociatedWithIcon(element))) {
-            return;
-        }
+        if (
+            this.solved ||
+            this.elementIsPartOfHint(element) ||
+            (this.activeIcon === "" && !this.letterIsAssociatedWithIcon(element))
+        ) return;
 
         if (isACapitalLetter(element.toUpperCase())) {
-            const letter = element.toLowerCase()
-            // the letter is associated with an icon iff the user is using a keyboard
+            const letter = element.toLowerCase();
             if (this.letterIsAssociatedWithIcon(letter)) {
-                this.removeLetterMapping({ letter: letter })
+                this.removeLetterMapping({ letter });
             } else {
-                this.addLetterMapping({ letter: letter })
+                this.addLetterMapping({ letter });
                 this.checkSolved();
             }
-
         } else {
-            this.removeIconMapping({ icon: element })
+            this.removeIconMapping({ icon: element });
         }
-
     }
 
     getShareWorthyString() {
-        let res = ""
-        for (const character of this.quote.split("")) {
-            if (character >= "A" && character <= "Z") {
-                if (this.elementIsPartOfHint(character)) {
-                    res += "\u{1F4A1}";
-                } else {
-                    res += "\u{26AB}";
-                };
-            } else if (character === " ") {
-                res += "\u3000"; // emoji-sized space
-            } else if (character === "@") {
-                res += "\n"
+        let res = "";
+        for (const char of this.quote.split("")) {
+            if (char >= "A" && char <= "Z") {
+                res += this.elementIsPartOfHint(char) ? "\u{1F4A1}" : "\u{26AB}";
+            } else if (char === " ") {
+                res += "\u3000";
+            } else if (char === "@") {
+                res += "\n";
             }
         }
-        return res.slice(1)
+        return res.slice(1);
     }
 
     private removeLetterMapping({ letter }: { letter: string }) {
-        const icon = [...this.decodingMap].find(
-            ([, v]) => v === letter
-        )?.[0];
-        if (icon === undefined) {
-            throw Error;
-        }
+        const icon = [...this.decodingMap].find(([, v]) => v === letter)?.[0];
+        if (!icon) throw Error;
         this.decodingMap.delete(icon);
         this.setDecodingMap(this.decodingMap);
         this.updateKeyboardValues();
         this.setActiveIcon(icon);
-        this.quoteIndex = findCharacterBackward(this.encodedQuote, this.quoteIndex, letter)
+        this.quoteIndex = findCharacterBackward(this.encodedQuote, this.quoteIndex, letter);
     }
 
     private removeIconMapping({ icon }: { icon: string }) {
@@ -285,20 +297,6 @@ class GameState {
         this.setDecodingMap(this.decodingMap);
         this.updateKeyboardValues();
         this.setActiveIcon(this.getNextIconName());
-    }
-
-    reactToResetButton() {
-        for (const key of this.decodingMap.keys()) {
-            if (!this.elementIsPartOfHint(key)) {
-                this.decodingMap.delete(key)
-            }
-        }
-        this.setDecodingMap(new Map(this.decodingMap))
-        this.fireConfetti = false;
-        this.updateKeyboardValues();
-        this.setQuoteIndex(0);
-        this.setActiveIcon(this.encodedQuote[0]);
-        this.checkSolved();
     }
 }
 

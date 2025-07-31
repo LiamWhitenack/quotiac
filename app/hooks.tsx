@@ -56,18 +56,15 @@ function useFetchPuzzle(
     if (!routeDate || lastFetchedDateRef.current === routeDate) return;
 
     lastFetchedDateRef.current = routeDate;
-    fetchTodayQuote(routeDate).then((puzzle) => {
-      setGameState(new GameState(puzzle));
-    });
+
+    (async () => {
+      const puzzle = await fetchTodayQuote(routeDate);
+      const gameState = await GameState.create(routeDate, puzzle);
+      setGameState(gameState);
+    })();
   }, [routeDate, setGameState]);
 }
-function useFetchTutorial(setGameState: (state: GameState) => void) {
-  useEffect(() => {
-    fetchTutorialQuote().then((puzzle) => {
-      setGameState(new GameState(puzzle));
-    });
-  }, [setGameState]);
-}
+
 
 function useAppBootstrap(
   setFontsLoaded: (loaded: boolean) => void,
@@ -84,4 +81,4 @@ function useAppBootstrap(
   });
 }
 
-export { useRouteDateSync, useFetchPuzzle, useAppBootstrap, useFetchTutorial };
+export { useRouteDateSync, useFetchPuzzle, useAppBootstrap };
