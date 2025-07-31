@@ -79,20 +79,23 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
               {emojiString}
             </Text>
 
-            <View style={{ flexDirection: "row", marginTop: 20 }}>
-              <View style={{ alignItems: "center", marginHorizontal: 12 }}>
+            <View style={{ flexDirection: "row", marginTop: 20, width: "75%", justifyContent: "space-around" }}>
+              <View style={{ alignItems: "center", marginHorizontal: 6, width: 70 }}>
                 <Text style={{ fontSize: 18, fontWeight: "bold", color: theme.text }}>{puzzlesCompleted}</Text>
-                <Text style={{ fontSize: 14, color: theme.text }}>Completed</Text>
+                <Text style={{ fontSize: 13, color: theme.text, textAlign: "center" }}>Completed</Text>
               </View>
-              <View style={{ alignItems: "center", marginHorizontal: 12 }}>
+              <View style={{ alignItems: "center", marginHorizontal: 6, width: 70 }}>
                 <Text style={{ fontSize: 18, fontWeight: "bold", color: theme.text }}>{currentStreak}</Text>
-                <Text style={{ fontSize: 14, color: theme.text }}>Current Streak</Text>
+                <Text style={{ fontSize: 13, color: theme.text, textAlign: "center" }}>{"Current\nStreak"}</Text>
               </View>
-              <View style={{ alignItems: "center", marginHorizontal: 12 }}>
+              <View style={{ alignItems: "center", marginHorizontal: 6, width: 70 }}>
                 <Text style={{ fontSize: 18, fontWeight: "bold", color: theme.text }}>{maxStreak}</Text>
-                <Text style={{ fontSize: 14, color: theme.text }}>Max Streak</Text>
+                <Text style={{ fontSize: 13, color: theme.text, textAlign: "center" }}>{"Max\nStreak"}</Text>
               </View>
             </View>
+
+
+
           </View>
 
           <View style={{ height: 20 }} />
