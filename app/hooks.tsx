@@ -71,7 +71,6 @@ function useFetchTutorial(setGameState: (state: GameState) => void) {
 
 function useAppBootstrap(
   setFontsLoaded: (loaded: boolean) => void,
-  setHasSeenTutorial: (val: boolean) => void
 ) {
   useEffect(() => {
     const init = async () => {
@@ -79,9 +78,6 @@ function useAppBootstrap(
         Ionicons: require("@/assets/fonts/Ionicons.ttf"),
       });
       setFontsLoaded(true);
-
-      const val = await AsyncStorage.getItem("hasSeenTutorial");
-      setHasSeenTutorial(val === "true");
     };
 
     init();
