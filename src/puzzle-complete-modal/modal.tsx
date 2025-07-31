@@ -1,6 +1,6 @@
 import * as Sharing from "expo-sharing";
 import ViewShot from "react-native-view-shot";
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import {
   Modal,
   View,
@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Platform,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import GameState from "@/src/state/state";
 import * as Clipboard from "expo-clipboard";
 import { useTheme } from "@/src/theme/ThemeContext";
@@ -22,21 +23,23 @@ type PuzzleCompleteModalProps = {
   onClose: () => void;
 };
 
+const STORAGE_KEY = "streaks";
+
 const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
   state,
   visible,
   onClose,
 }) => {
   const viewShotRef = useRef<ViewShot>(null);
-  const webRef = useRef<HTMLDivElement>(null);
   const { theme } = useTheme();
   const styles = createStyles(theme);
   const appStyles = createAppStyles(theme);
-  const numHintsUsed = 2 // <-- Destructure new prop
+  const numHintsUsed = 2;
 
-  const currentStreak = 2;
-  const maxStreak = 19;
-  const puzzlesCompleted = 42;
+  const [currentStreak, setCurrentStreak] = useState(0);
+  const [maxStreak, setMaxStreak] = useState(0);
+  const [puzzlesCompleted, setPuzzlesCompleted] = useState(0);
+  const [lastPlayedDate, setLastPlayedDate] = useState<string | null>(null);
 
   const originalEmojis = ["\u{1F632}", "\u{1F601}", "\u{1F642}", "\u{1F60C}", "\u{1F636}"];
   const hintEmoji = "💡";
@@ -47,6 +50,63 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
   ];
 
   const emojiString = modifiedEmojiArray.join(" ");
+
+  // 🔄 Load streaks on modal open
+  useEffect(() => {
+    if (visible) {
+      loadAndUpdateStreaks();
+    }
+  }, [visible]);
+
+  const loadAndUpdateStreaks = async () => {
+    try {
+      const data = await AsyncStorage.getItem(STORAGE_KEY);
+      const today = new Date().toDateString();
+
+      let stored = {
+        currentStreak: 0,
+        maxStreak: 0,
+        puzzlesCompleted: 0,
+        lastPlayed: null,
+      };
+
+      if (data) {
+        stored = JSON.parse(data);
+      }
+
+      if (stored.lastPlayed === today) {
+        // Already recorded today, just update display
+        setCurrentStreak(stored.currentStreak);
+        setMaxStreak(stored.maxStreak);
+        setPuzzlesCompleted(stored.puzzlesCompleted);
+        return;
+      }
+
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      const yesterdayStr = yesterday.toDateString();
+
+      const updatedStreak = stored.lastPlayed === yesterdayStr ? stored.currentStreak + 1 : 1;
+      const updatedMax = Math.max(stored.maxStreak, updatedStreak);
+      const updatedCompleted = stored.puzzlesCompleted + 1;
+
+      // Save updated data
+      const newData = {
+        currentStreak: updatedStreak,
+        maxStreak: updatedMax,
+        puzzlesCompleted: updatedCompleted,
+        lastPlayed: today,
+      };
+
+      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(newData));
+
+      setCurrentStreak(updatedStreak);
+      setMaxStreak(updatedMax);
+      setPuzzlesCompleted(updatedCompleted);
+    } catch (err) {
+      console.error("Failed to load/update streaks:", err);
+    }
+  };
 
   const handleShare = async () => {
     try {
@@ -60,6 +120,16 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
       alert("Failed to copy to clipboard. Please try again.");
     }
   };
+
+  const StreakStat = ({ label1, label2, value }: { label1: string; label2?: string; value: number }) => (
+    <View style={{ alignItems: "center", marginHorizontal: 6, width: 70 }}>
+      <Text style={{ fontSize: 18, fontWeight: "bold", color: theme.text }}>{value}</Text>
+      <Text style={{ fontSize: 13, color: theme.text, textAlign: "center" }}>{label1}</Text>
+      {label2 ? (
+        <Text style={{ fontSize: 13, color: theme.text, textAlign: "center" }}>{label2}</Text>
+      ) : null}
+    </View>
+  );
 
   return (
     <Modal animationType="slide" transparent={true} visible={visible}>
@@ -79,23 +149,11 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
               {emojiString}
             </Text>
 
-            <View style={{ flexDirection: "row", marginTop: 20, width: "75%", justifyContent: "space-around" }}>
-              <View style={{ alignItems: "center", marginHorizontal: 6, width: 70 }}>
-                <Text style={{ fontSize: 18, fontWeight: "bold", color: theme.text }}>{puzzlesCompleted}</Text>
-                <Text style={{ fontSize: 13, color: theme.text, textAlign: "center" }}>Completed</Text>
-              </View>
-              <View style={{ alignItems: "center", marginHorizontal: 6, width: 70 }}>
-                <Text style={{ fontSize: 18, fontWeight: "bold", color: theme.text }}>{currentStreak}</Text>
-                <Text style={{ fontSize: 13, color: theme.text, textAlign: "center" }}>{"Current\nStreak"}</Text>
-              </View>
-              <View style={{ alignItems: "center", marginHorizontal: 6, width: 70 }}>
-                <Text style={{ fontSize: 18, fontWeight: "bold", color: theme.text }}>{maxStreak}</Text>
-                <Text style={{ fontSize: 13, color: theme.text, textAlign: "center" }}>{"Max\nStreak"}</Text>
-              </View>
+            <View style={{ flexDirection: "row", marginTop: 20, justifyContent: "space-around" }}>
+              <StreakStat label1="Completed" value={puzzlesCompleted} />
+              <StreakStat label1="Current" label2="Streak" value={currentStreak} />
+              <StreakStat label1="Max" label2="Streak" value={maxStreak} />
             </View>
-
-
-
           </View>
 
           <View style={{ height: 20 }} />
@@ -108,6 +166,5 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
     </Modal>
   );
 };
-
 
 export default PuzzleCompleteModal;
