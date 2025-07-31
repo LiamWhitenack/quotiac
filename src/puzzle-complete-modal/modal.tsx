@@ -34,7 +34,6 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
   const { theme } = useTheme();
   const styles = createStyles(theme);
   const appStyles = createAppStyles(theme);
-  const numHintsUsed = 2;
 
   const [currentStreak, setCurrentStreak] = useState(0);
   const [maxStreak, setMaxStreak] = useState(0);
@@ -42,7 +41,8 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
   const [lastPlayedDate, setLastPlayedDate] = useState<string | null>(null);
 
   const originalEmojis = ["\u{1F632}", "\u{1F601}", "\u{1F642}", "\u{1F60C}", "\u{1F636}"];
-  const hintEmoji = "💡";
+  const hintEmoji = "\u{1F4A1}";
+  const numHintsUsed = state.givenHintLetters.length;
 
   const modifiedEmojiArray = [
     ...Array(Math.min(numHintsUsed, originalEmojis.length)).fill(hintEmoji),
