@@ -83,4 +83,10 @@ export const createMainWindowStyles = (theme: Theme) =>
       height: sizing.keyboardHeight, // match your GameKeyboard height
       zIndex: 5,
     },
+    loadingScreen: { 
+      flex: 1, 
+      justifyContent: "center", 
+      alignItems: "center",
+      backgroundColor: theme.background, 
+    }
   });

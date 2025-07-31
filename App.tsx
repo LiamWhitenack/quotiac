@@ -32,6 +32,8 @@ const QuotiacApp = () => {
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const [minDelayPassed, setMinDelayPassed] = useState(false);
   const navigation = useNavigation();
+  const { theme, mode } = useTheme();
+  const mainWindowStyles = createMainWindowStyles(theme);
   // Extract date from the path (e.g., /20250710)
   const extractDateFromPath = () => {
     const params = new URLSearchParams(window.location.search);
@@ -80,7 +82,7 @@ const QuotiacApp = () => {
   }, [routeDate, hasCheckedURL, navigation]);
 
   useEffect(() => {
-    const timer = setTimeout(() => setMinDelayPassed(true), 10000);
+    const timer = setTimeout(() => setMinDelayPassed(true), 4000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -100,7 +102,7 @@ const QuotiacApp = () => {
   if (!gameState || !fontsLoaded || !minDelayPassed) {
     // Show loading screen or nothing while fetching puzzle
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View style={mainWindowStyles.loadingScreen}>
         {/* <Text>Loading puzzle...</Text> */}
         <LockSvg />
       </View>
@@ -127,6 +129,7 @@ const QuotiacGame = ({
   const fadeValue = useAnimatedValue(fadeTitleAnimation);
 
   const { theme, mode } = useTheme();
+  const mainWindowStyles = createMainWindowStyles(theme);
 
   function updateState() {
     const clone = state.clone();
@@ -167,7 +170,6 @@ const QuotiacGame = ({
   );
 
   const Wrapper = sizing.isMobile ? SafeAreaView : View;
-  const mainWindowStyles = createMainWindowStyles(theme);
 
   return (
     <>

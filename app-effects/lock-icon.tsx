@@ -15,30 +15,38 @@ import Svg, { G, Path, Circle, Text } from "react-native-svg"
 
 const AnimatedG = Animated.createAnimatedComponent(G);
 const AnimatedPath = Animated.createAnimatedComponent(Path);
+type LockSvgProps = {
+  duration?: number; // Optional, default fallback will be provided
+};
 
-function LockSvg() {
+const LockSvg: FC<LockSvgProps> = ({ duration = 3300 }) => {
   const rotation = useSharedValue(0);
   const translation = useSharedValue(0);
 
   useEffect(() => {
-    translation.value = withDelay(5500, withTiming(-35, { duration: 500, easing: Easing.ease }));
+    translation.value = withDelay(duration-(duration/11), withTiming(-35, { duration: duration/11, easing: Easing.ease }));
   }, []);
 
   useEffect(() => {
     // Sequence of animations:
-    // 1) 0 -> 135 over 2s
-    // 2) after 2.5s delay, 135 -> -135 over 3s
-    // 3) after 6s delay, -135 -> 90 over 2s
+    // 1) rotate 750ms
+    // 2) pause 250ms
+    // 3) rotate 750ms
+    // 4) pause 250ms
+    // 5) rotate 700ms
+    // 6) pause 300ms
+    // 6) translate 300ms
+    // total = 3.3s
 
-    rotation.value = withTiming(135, { duration: 1000, easing: Easing.ease }, () => {
+    rotation.value = withTiming(135+270*2, { duration: duration/4.4, easing: Easing.ease }, () => {
       // Step 2 after 0.5s pause (since total delay between first and second is 2.5s)
       rotation.value = withDelay(
-        500,
-        withTiming(-135, { duration: 1500, easing: Easing.ease }, () => {
+        duration/13.2,
+        withTiming(-135+(-270*2), { duration: duration/4.4, easing: Easing.ease }, () => {
           // Step 3 after 0.5s pause (total delay 6s means 2.5 + 3 + 0.5)
           rotation.value = withDelay(
-            500,
-            withTiming(90, { duration: 1000, easing: Easing.ease })
+            duration/13.2,
+            withTiming(90+270*2, { duration: duration/4.71, easing: Easing.ease })
           );
         })
       );
@@ -71,7 +79,7 @@ function LockSvg() {
     } else {
       return {
         transform: `rotate(${rotation.value}, ${centerX}, ${centerY})`,
-      };
+      } as unknown as Partial<{ transform: any }>;
     }
   });
   
