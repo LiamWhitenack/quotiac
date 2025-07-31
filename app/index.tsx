@@ -1,14 +1,17 @@
 import QuotiacGame from "@/App";
-import { ThemeProvider } from "@/src/theme/ThemeContext";
+import { ThemeProvider, useTheme } from "@/src/theme/ThemeContext";
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import GameState from "@/src/state/state";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAppBootstrap, useFetchPuzzle, useRouteDateSync } from "./hooks";
+import { createAppStyles } from "@/src/theme/styles";
 
 export default function Index() {
     const [showGame, setShowGame] = useState(false);
+    const { theme } = useTheme();
+    const styles = createAppStyles(theme);
 
     if (showGame) {
         return <App />;
@@ -18,14 +21,9 @@ export default function Index() {
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
             <TouchableOpacity
                 onPress={() => setShowGame(true)}
-                style={{
-                    backgroundColor: "#333",
-                    paddingVertical: 12,
-                    paddingHorizontal: 24,
-                    borderRadius: 8,
-                }}
+                style={styles.elevatedButton}
             >
-                <Text style={{ color: "white", fontSize: 18 }}>Play</Text>
+                <Text style={styles.elevatedButtonText}>Play</Text>
             </TouchableOpacity>
         </View>
     );
