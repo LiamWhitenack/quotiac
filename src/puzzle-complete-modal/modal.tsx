@@ -110,16 +110,23 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
 
   const handleShare = async () => {
     try {
+      const today = new Date();
+      const formattedDate = `${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}-${String(today.getFullYear()).slice(-2)}`;
+      const shareableString = `${emojiString}\n\n${formattedDate} — quotiac.com`;
+
       if (sizing.isMobile) {
-        await Clipboard.setStringAsync(emojiString);
+        await Clipboard.setStringAsync(shareableString);
       } else {
-        await navigator.clipboard.writeText(emojiString);
+        await navigator.clipboard.writeText(shareableString);
       }
+
       alert("Copied results to clipboard!");
     } catch (err) {
       alert("Failed to copy to clipboard. Please try again.");
     }
   };
+
+
 
   const StreakStat = ({ label1, label2, value }: { label1: string; label2?: string; value: number }) => (
     <View style={{ alignItems: "center", marginHorizontal: 6, width: 70 }}>
