@@ -2,7 +2,7 @@ import React from "react";
 import { Text, TouchableOpacity } from "react-native";
 import sizing from "../sizing/sizing";
 import { createStyles } from "./styles";
-import GameState from "@/src/state/state";
+import GameState from "@/src/state";
 import { useTheme } from "@/src/theme/ThemeContext";
 import CustomIonicons from "@/src/custom-icons";
 import KEYBOARD_LETTERS from "./keyboard-letters";

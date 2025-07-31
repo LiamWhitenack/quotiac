@@ -1,5 +1,5 @@
 import sizing from "../sizing/sizing";
-import GameState from "@/src/state/state";
+import GameState from "@/src/state";
 import { splitOnPercent } from "@/src/sizing/wrap-words";
 import type { Theme } from "@/src/theme/themes";
 import React from "react";

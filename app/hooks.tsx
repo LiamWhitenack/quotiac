@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import sizing from "@/src/sizing/sizing";
-import GameState from "@/src/state/state";
+import GameState from "@/src/state";
 import { fetchTodayQuote, fetchTutorialQuote } from "@/src/puzzles/get-puzzle";
 import * as Font from "expo-font";
 import AsyncStorage from "@react-native-async-storage/async-storage";

@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal, View, TouchableOpacity } from "react-native";
 import { createStyles } from "./styles";
-import GameState from "@/src/state/state";
+import GameState from "@/src/state";
 import { useTheme } from "@/src/theme/ThemeContext";
 
 import QuoteDetails from "./render-quote";

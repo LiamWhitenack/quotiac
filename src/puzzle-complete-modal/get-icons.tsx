@@ -1,6 +1,6 @@
 import { View } from "react-native";
 import sizing from "@/src/sizing/sizing";
-import GameState from "@/src/state/state";
+import GameState from "@/src/state";
 import { splitOnPercent, wrapWords } from "@/src/sizing/wrap-words";
 import type { Theme } from "@/src/theme/themes";
 import CustomIonicons from "@/src/custom-icons";

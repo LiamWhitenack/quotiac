@@ -2,7 +2,7 @@ import QuotiacGame from "@/App";
 import { ThemeProvider, useTheme } from "@/src/theme/ThemeContext";
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
-import GameState from "@/src/state/state";
+import GameState from "@/src/state";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAppBootstrap, useFetchPuzzle, useRouteDateSync } from "./hooks";

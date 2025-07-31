@@ -9,7 +9,7 @@ import {
   Platform,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import GameState from "@/src/state/state";
+import GameState from "@/src/state";
 import * as Clipboard from "expo-clipboard";
 import { useTheme } from "@/src/theme/ThemeContext";
 import sizing from "@/src/sizing/sizing";

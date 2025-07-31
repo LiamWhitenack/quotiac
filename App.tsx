@@ -13,7 +13,7 @@ import QuoteDisplay from "@/src/quote-display/quote-display";
 import LetterKeyboardDisplay from "@/src/keyboard/keyboard";
 import sizing from "@/src/sizing/sizing";
 import ConfettiCannon from "react-native-confetti-cannon";
-import GameState from "@/src/state/state";
+import GameState from "@/src/state";
 import { fetchTodayQuote } from "@/src/puzzles/get-puzzle";
 import PuzzleCompleteModal from "@/src/puzzle-complete-modal/modal";
 import { useTitleFade, useAnimatedValue } from "@/src/app-effects/title-fade";

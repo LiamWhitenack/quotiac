@@ -1,4 +1,4 @@
-import GameState from "@/src/state/state";
+import GameState from "@/src/state";
 import { useEffect, useRef } from "react";
 
 function useOnCompleteModal(
@@ -28,7 +28,7 @@ function usePuzzleDetailsModal(
   state: GameState,
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>
 ) {
-  useEffect(() => {});
+  useEffect(() => { });
 }
 
 export { useOnCompleteModal, usePuzzleDetailsModal };
