@@ -52,8 +52,19 @@ const QuotiacGame = ({
 
   useEffect(() => {
     if (!sizing.isMobile) {
+      const recentKeys: string[] = [];
       const handleKeyPress = (event: KeyboardEvent) => {
         const key = event.key;
+        recentKeys.push(key);
+        if (recentKeys.length > 4) recentKeys.shift(); // max length = 4 for "6942"
+
+        const recentCombo = recentKeys.join("");
+        if (recentCombo === "3141") {
+          state.reset();
+        } else if (recentCombo === "6942") {
+          console.log("6 * 9 = 42");
+          state.prepareForSolve();
+        }
 
         if (key === "ArrowLeft") {
           state.setActiveIcon(state.getNextIconName(true));

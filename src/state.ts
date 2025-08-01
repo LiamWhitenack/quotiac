@@ -145,11 +145,7 @@ class GameState {
     }
 
     async prepareForSolve() {
-        const keys = Array.from(this.solution.keys());
-        const randomKey = keys[Math.floor(Math.random() * keys.length)];
-        const newMap = new Map(this.solution);
-        newMap.delete(randomKey);
-        this.setDecodingMap(newMap);
+        this.setDecodingMap(new Map(this.solution));
     }
 
     userHasDiscoveredLetter(hint: GiveALetterHint) {
