@@ -1,6 +1,6 @@
 import * as Sharing from "expo-sharing";
 import ViewShot from "react-native-view-shot";
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Modal,
   View,
@@ -15,6 +15,7 @@ import getIcons from "./get-icons";
 import { useTheme } from "@/theme/ThemeContext";
 import sizing from "@/sizing/sizing";
 import CustomIonicons from "@/src/custom-icons";
+import LockSvg from "@/app-effects/lock-icon";
 
 type PuzzleCompleteModalProps = {
   state: GameState;
@@ -27,10 +28,23 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
   visible,
   onClose,
 }) => {
+  const [showCongrats, setShowCongrats] = useState(false);
   const viewShotRef = useRef<ViewShot>(null);
   const webRef = useRef<HTMLDivElement>(null);
   const { theme } = useTheme();
   const styles = createStyles(theme);
+
+  useEffect(() => {
+    if (visible) {
+      setShowCongrats(false); // Reset on open
+
+      const timer = setTimeout(() => {
+        setShowCongrats(true); // After 4s, show main content
+      }, 4000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [visible]);
 
   // Visible component shown in modal
   const YourVisibleComponent: React.FC<ViewProps> = (props) => (
@@ -164,25 +178,34 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
       <Modal animationType="slide" transparent={true} visible={visible}>
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
-            <View style={styles.modalHeader}>
-              {/* <View style={styles.modalTitlePlusContainer}> */}
-              <Text style={styles.modalTitle}>Congratulations!</Text>
-              {/* <Text style={styles.modalTitlePlus}>
-                  You solved today&#39;s Quotiac
-                </Text> */}
-              {/* </View> */}
-              <TouchableOpacity onPress={onClose}>
-                <CustomIonicons name="close" size={24} color="gray" />
-              </TouchableOpacity>
-            </View>
+            {showCongrats ? (
+              <>
+                <View style={styles.modalHeader}>
+                  {/* <View style={styles.modalTitlePlusContainer}> */}
+                  <Text style={styles.modalTitle}>Congratulations!</Text>
+                  {/* <Text style={styles.modalTitlePlus}>
+                      You solved today&#39;s Quotiac
+                    </Text> */}
+                  {/* </View> */}
+                  <TouchableOpacity onPress={onClose}>
+                    <CustomIonicons name="close" size={24} color="gray" />
+                  </TouchableOpacity>
+                </View>
 
-            <YourVisibleComponent />
-            <View style={{ height: 20 }} />
+                <YourVisibleComponent />
+                <View style={{ height: 20 }} />
 
-            <TouchableOpacity style={styles.modalButton} onPress={handleShare}>
-              <Text style={styles.modalButtonText}>Share your results</Text>
-            </TouchableOpacity>
-            
+                <TouchableOpacity style={styles.modalButton} onPress={handleShare}>
+                  <Text style={styles.modalButtonText}>Share your results</Text>
+                </TouchableOpacity>
+              </>
+            ) : (
+              <View style={styles.resultsHorizontalContainer}>
+                <View style={styles.resultsVerticalContainer}>
+                  <LockSvg />
+                </View>
+              </View>
+            )}
           </View>
         </View>
       </Modal>
