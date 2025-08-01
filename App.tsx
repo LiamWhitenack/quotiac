@@ -116,21 +116,26 @@ const QuotiacGame = ({
           <View style={mainWindowStyles.topBarIconContainer}>
             <TouchableOpacity
               style={mainWindowStyles.iconContainer}
-              onPress={() => {
-                state.giveAHint();
+              onPress={async () => {
+                await state.giveAHint();
                 updateState();
               }}
-              disabled={state.givenHintLetters.length == 5}
+              disabled={state.givenHintLetters.length === 5}
             >
               <View style={{ position: "relative", width: 32, height: 32 }}>
                 <CustomIonicons
                   name="bulb-outline"
                   size={32}
-                  color={state.givenHintLetters.length == 5 ? theme.surface : theme.text}
+                  color={
+                    state.givenHintLetters.length === 5
+                      ? theme.surface
+                      : theme.text
+                  }
                   style={{ position: "absolute", top: 0, left: 0, marginRight: 5 }}
                 />
               </View>
             </TouchableOpacity>
+
             <HelpDropdownButton />
 
             {/* <TouchableOpacity style={mainWindowStyles.iconContainer}>
