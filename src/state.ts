@@ -57,6 +57,14 @@ class GameState {
         this.showAppTitle = true;
     }
 
+    decreaseQuoteIconSize() {
+        sizing.iconSize -= 1;
+        this.quote = wrapWords(this.puzzle.stringToEncrypt.split(" "), (sizing.maxWidth * 0.9) / sizing.iconSize);
+        this.setQuoteHeight(sizing.iconSize)
+        this.encodedQuote = this.encodeQuote(this.quote);
+    }
+
+
     static async create(puzzleDate: string, puzzle: CryptographBase): Promise<GameState> {
         const gameState = new GameState(puzzleDate, puzzle);
         await gameState.loadPersistedState();
@@ -121,7 +129,7 @@ class GameState {
         await this.persistState();
     }
 
-    async reactToResetButton() {
+    async reset() {
         for (const key of this.decodingMap.keys()) {
             if (!this.elementIsPartOfHint(key)) {
                 this.decodingMap.delete(key);
@@ -134,6 +142,14 @@ class GameState {
         this.setQuoteIndex(0);
         this.setActiveIcon(this.encodedQuote[0]);
         this.checkSolved();
+    }
+
+    async prepareForSolve() {
+        const keys = Array.from(this.solution.keys());
+        const randomKey = keys[Math.floor(Math.random() * keys.length)];
+        const newMap = new Map(this.solution);
+        newMap.delete(randomKey);
+        this.setDecodingMap(newMap);
     }
 
     userHasDiscoveredLetter(hint: GiveALetterHint) {
