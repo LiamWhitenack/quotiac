@@ -44,7 +44,7 @@ export function IconsWithHeight({
     />
   );
 
-  const renderLetter = (letter: string, key: string) => (
+  const renderLetter = (letter: string, key: string, index: number) => (
     <View
       key={key}
       style={{
@@ -57,7 +57,7 @@ export function IconsWithHeight({
       <Text
         disabled={state.solved || state.elementIsPartOfHint(letter)}
         onPress={() => {
-          state.reactToQuoteLetterPress(letter);
+          state.reactToQuoteLetterPress(index, letter);
           updateState();
         }}
         style={{
@@ -126,7 +126,7 @@ export function IconsWithHeight({
             return renderSpace(key);
           } else if (element.length === 1) {
             if (element >= "a" && element <= "z") {
-              return renderLetter(element, key);
+              return renderLetter(element, key, quoteIndex);
             } else {
               return renderNonLetterCharacter(element, key);
             }

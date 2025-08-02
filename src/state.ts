@@ -240,9 +240,10 @@ class GameState {
         return theme.text;
     }
 
-    reactToQuoteLetterPress(letter: string) {
+    reactToQuoteLetterPress(index: number, letter: string) {
         if (this.solved || this.elementIsPartOfHint(letter)) return;
         this.removeLetterMapping({ letter });
+        this.setQuoteIndex(index)
     }
 
     elementIsPartOfHint(element: string) {
@@ -288,13 +289,13 @@ class GameState {
     }
 
     private removeLetterMapping({ letter }: { letter: string }) {
+        this.quoteIndex = findCharacterBackward(this.encodedQuote, this.quoteIndex, letter);
         const icon = [...this.decodingMap].find(([, v]) => v === letter)?.[0];
         if (!icon) throw Error;
         this.decodingMap.delete(icon);
         this.setDecodingMap(this.decodingMap);
         this.updateKeyboardValues();
         this.setActiveIcon(icon);
-        this.quoteIndex = findCharacterBackward(this.encodedQuote, this.quoteIndex, letter);
     }
 
     private removeIconMapping({ icon }: { icon: string }) {

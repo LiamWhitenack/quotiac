@@ -16,7 +16,7 @@ We can use random quotes or reuse quotes until then
 
 ### Fix: iOS content restrictions
 
-The only thing that could be causing the issue is 1. hosting the site with GH pages or 2. the url itself not looking as safe as something that ends with .app
+Contacted apple developer support, they started a case for me: 102657142717
 
 ### Add New Hint Types
 
