@@ -5,7 +5,7 @@ import { View, Text, TouchableOpacity } from "react-native";
 import GameState from "@/src/state";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useAppBootstrap, useFetchPuzzle, useRouteDateSync } from "./hooks";
+import { useAppBootstrap, useFetchPuzzle, useRouteDateSync } from "@/src/hooks";
 import { createAppStyles } from "@/src/theme/styles";
 
 export default function Index() {

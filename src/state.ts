@@ -53,7 +53,7 @@ class GameState {
         this.keyboardValues = KEYBOARD_LETTERS;
         this.encodedQuote = this.encodeQuote(this.quote.toLowerCase());
         this.activeIcon = this.encodedQuote[0];
-        this.quoteIndex = 0;
+        this.quoteIndex = -1;
         this.showAppTitle = true;
     }
 
@@ -87,6 +87,7 @@ class GameState {
         if (decodingMapJson) {
             const entries = JSON.parse(decodingMapJson);
             const decodingMap = new Map(entries);
+            // @ts-ignore
             await this.setDecodingMap(decodingMap);
             this.updateKeyboardValues();
             this.checkSolved();
