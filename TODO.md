@@ -2,13 +2,11 @@
 
 ## Needs
 
-### 1. Add a Tutorial
-
-### 2. Make a new icon to use on the loading page and the browser and app icon
+### 1. Make a new icon to use on the loading page and the browser and app icon
 
 Use the native RN icons so that we can easily make animations and integrate the icon within the app.
 
-### 3. Get 1 Month of Quotes Ready Starting With The Deployment Date
+### 2. Get 1 Month of Quotes Ready Starting With The Deployment Date
 
 We can use random quotes or reuse quotes until then
 

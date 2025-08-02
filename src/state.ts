@@ -68,6 +68,7 @@ class GameState {
     static async create(puzzleDate: string, puzzle: CryptographBase): Promise<GameState> {
         const gameState = new GameState(puzzleDate, puzzle);
         await gameState.loadPersistedState();
+        gameState.setActiveIcon(gameState.getNextIconName())
         return gameState;
     }
 
