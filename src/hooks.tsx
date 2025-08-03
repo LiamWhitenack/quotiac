@@ -74,6 +74,9 @@ function useAppBootstrap(
       await Font.loadAsync({
         Ionicons: require("@/assets/fonts/Ionicons.ttf"),
       });
+      await Font.loadAsync({
+        SpaceMono: require("@/assets/fonts/SpaceMono-Regular.ttf"),
+      });
       setFontsLoaded(true);
     };
 

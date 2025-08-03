@@ -87,6 +87,7 @@ export function HintDemonstration() {
     >
       <Text
         style={{
+          fontFamily: "SpaceMono",
           fontSize: sizing.iconSize * 0.8,
           color: letter === hintLetter ? theme.hint : theme.text,
         }}

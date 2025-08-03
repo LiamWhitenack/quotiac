@@ -61,6 +61,7 @@ export function IconsWithHeight({
           updateState();
         }}
         style={{
+          fontFamily: "SpaceMono",
           fontSize: sizing.iconSize * 0.8,
           color: state.elementColor(letter, theme),
         }}
