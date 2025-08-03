@@ -238,7 +238,8 @@ class GameState {
     elementColor(element: string, theme: Theme): string {
         if (this.elementIsPartOfHint(element)) return theme.hint;
         if (element === this.activeIcon) return theme.selected;
-        return theme.text;
+        if (element.length == 1 || this.iconIsAssociatedWithLetter(element)) return theme.text;
+        return theme.subtext;
     }
 
     reactToQuoteLetterPress(index: number, letter: string) {
@@ -249,6 +250,10 @@ class GameState {
 
     elementIsPartOfHint(element: string) {
         return this.givenHintLetters.includes(element) || this.givenHintLetters.includes(this.solution.get(element)!);
+    }
+
+    iconIsAssociatedWithLetter(icon: string) {
+        return this.decodingMap.get(icon) !== undefined;
     }
 
     letterIsAssociatedWithIcon(letter: string) {
