@@ -149,7 +149,7 @@ export function SolvingDemonstration() {
           // @ts-ignore
           name={iconName}
           size={sizing.iconSize * 0.8}
-          color={isSelected ? theme.selected : theme.text}
+          color={isSelected ? theme.selected : theme.subtext}
         />
       </View>
     );

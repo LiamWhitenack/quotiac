@@ -116,7 +116,7 @@ export function HintDemonstration() {
           // @ts-ignore
           name={iconName}
           size={sizing.iconSize * 0.8}
-          color={isSelected && iconName !== "tv" ? theme.selected : theme.text}
+          color={isSelected && iconName !== "tv" ? theme.selected : theme.subtext}
         />
       </View>
     );
