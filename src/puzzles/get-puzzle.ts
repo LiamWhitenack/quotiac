@@ -38,11 +38,8 @@ const fetchTodayQuote = async (dateString: string): Promise<CryptographBase> => 
     let puzzleData;
     let response: Response
     // TODO update this to use main when ready to use routing
-    if (dateString == "staging") {
-        response = await fetch(`http://localhost:6942/data.json`);
-    } else {
-        response = await fetch(`https://raw.githubusercontent.com/LiamWhitenack/codiac-puzzles/refs/heads/dev/resources/by-date/${dateString}.json`);
-    }
+    response = await fetch(`https://raw.githubusercontent.com/LiamWhitenack/codiac-puzzles/refs/heads/dev/resources/by-date/${dateString}.json`);
+
 
     if (response.ok) {
         puzzleData = await response.json();

@@ -18,8 +18,9 @@ function useRouteDateSync(
     const extractDateFromURL = () => {
       const params = new URLSearchParams(window.location.search);
       const maybeDate = params.get("date");
-      return maybeDate && /^\d{8}$/.test(maybeDate) ? maybeDate : null;
+      return maybeDate && (/^\d{8}$/.test(maybeDate) || maybeDate === "staging") ? maybeDate : null;
     };
+
 
     const initializeRouteDate = () => {
       const urlDate = extractDateFromURL();

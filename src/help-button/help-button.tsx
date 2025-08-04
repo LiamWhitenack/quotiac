@@ -32,7 +32,15 @@ export default function HelpDropdownButton() {
       label: "Suggest a Quote",
       onPress: () => {
         Linking.openURL(
-          "https://docs.google.com/forms/d/1wBT2wKb1gx_ZzfkJPblgAGsZ38VV_UfxbWXEFmVcPL0/edit"
+          "https://docs.google.com/forms/d/1wBT2wKb1gx_ZzfkJPblgAGsZ38VV_UfxbWXEFmVcPL0/"
+        );
+      },
+    },
+    {
+      label: "Suggest an Improvement",
+      onPress: () => {
+        Linking.openURL(
+          "https://docs.google.com/forms/d/1kchnuu5kwrTfz8Kuc5djRuAwbJpSdilYFv-VHBYyt8Q/"
         );
       },
     },
