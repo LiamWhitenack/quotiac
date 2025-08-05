@@ -30,7 +30,11 @@ function useRouteDateSync(
         navigation.setParams({ date: urlDate });
       } else {
         const now = new Date();
-        const today = now.toISOString().slice(0, 10).replace(/-/g, "");
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+        const day = String(now.getDate()).padStart(2, "0");
+
+        const today = `${year}${month}${day}`;
         setRouteDate(today);
         navigation.setParams({ date: today });
       }
