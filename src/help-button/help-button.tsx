@@ -29,7 +29,7 @@ export default function HelpDropdownButton() {
       },
     },
     {
-      label: "Suggest a Quote",
+      label: "Add a Quote",
       onPress: () => {
         Linking.openURL(
           "https://docs.google.com/forms/d/1wBT2wKb1gx_ZzfkJPblgAGsZ38VV_UfxbWXEFmVcPL0/"
@@ -37,7 +37,7 @@ export default function HelpDropdownButton() {
       },
     },
     {
-      label: "Suggest an Improvement",
+      label: "Suggestions",
       onPress: () => {
         Linking.openURL(
           "https://docs.google.com/forms/d/1kchnuu5kwrTfz8Kuc5djRuAwbJpSdilYFv-VHBYyt8Q/"

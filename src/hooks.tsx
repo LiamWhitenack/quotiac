@@ -4,6 +4,7 @@ import GameState from "@/src/state";
 import { fetchTodayQuote, fetchTutorialQuote } from "@/src/puzzles/get-puzzle";
 import * as Font from "expo-font";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { todayString } from "./utils";
 
 function useRouteDateSync(
   routeDate: string | undefined,
@@ -13,6 +14,7 @@ function useRouteDateSync(
   const hasInitializedRef = useRef(false);
 
   useEffect(() => {
+    const today = todayString()
     if (hasInitializedRef.current) return;
 
     const extractDateFromURL = () => {
@@ -29,12 +31,6 @@ function useRouteDateSync(
         setRouteDate(urlDate);
         navigation.setParams({ date: urlDate });
       } else {
-        const now = new Date();
-        const year = now.getFullYear();
-        const month = String(now.getMonth() + 1).padStart(2, "0"); // Months are 0-based
-        const day = String(now.getDate()).padStart(2, "0");
-
-        const today = `${year}${month}${day}`;
         setRouteDate(today);
         navigation.setParams({ date: today });
       }
@@ -63,12 +59,28 @@ function useFetchPuzzle(
     lastFetchedDateRef.current = routeDate;
 
     (async () => {
-      const puzzle = await fetchTodayQuote(routeDate);
-      const gameState = await GameState.create(routeDate, puzzle);
-      setGameState(gameState);
+      try {
+        const storageKey = `puzzle-${routeDate}`;
+        const storedPuzzle = await AsyncStorage.getItem(storageKey);
+
+        let puzzle;
+
+        if (storedPuzzle) {
+          puzzle = JSON.parse(storedPuzzle);
+        } else {
+          puzzle = await fetchTodayQuote(routeDate);
+          await AsyncStorage.setItem(storageKey, JSON.stringify(puzzle));
+        }
+
+        const gameState = await GameState.create(routeDate, puzzle);
+        setGameState(gameState);
+      } catch (error) {
+        console.error("Error fetching or loading puzzle:", error);
+      }
     })();
   }, [routeDate, setGameState]);
 }
+
 
 
 function useAppBootstrap(
