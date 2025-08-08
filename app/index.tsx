@@ -63,10 +63,9 @@ export default function Index() {
             />
         );
     }
-
     return (
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-            {urlDate ? (
+            {urlDate === todayDate ? (
                 // One button if urlDate exists
                 <TouchableOpacity
                     onPress={() => startGame(fixedDate)}
@@ -77,13 +76,20 @@ export default function Index() {
             ) : (
                 // Two buttons if no urlDate
                 <View style={{ width: 220 }}>
+
                     <TouchableOpacity
                         onPress={() => startGame(fixedDate)}
-                        style={styles.elevatedButton}
+                        style={[styles.elevatedButton, { marginTop: 20 }]}
                     >
-                        <Text style={styles.elevatedButtonText}>Play Current Puzzle</Text>
+                        <Text
+                            style={[
+                                styles.elevatedButtonText,
+                                { flexWrap: "wrap", textAlign: "center" }
+                            ]}
+                        >
+                            Play Current Puzzle
+                        </Text>
                     </TouchableOpacity>
-
                     <TouchableOpacity
                         onPress={() => startGame(todayDate)}
                         style={[styles.elevatedButton, { marginTop: 20 }]}
