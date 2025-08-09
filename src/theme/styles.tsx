@@ -16,4 +16,11 @@ export const createAppStyles = (theme: Theme) =>
       fontWeight: "600",
       fontSize: 18,
     },
+    title: {
+      fontSize: 28,
+      fontWeight: "700",
+      color: theme.text,
+      textAlign: "center",
+      marginBottom: 12,
+    },
   });

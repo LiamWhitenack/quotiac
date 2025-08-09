@@ -3,13 +3,11 @@ import { ThemeProvider, useTheme } from "@/src/theme/ThemeContext";
 import React, { useEffect, useState, useMemo } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import GameState from "@/src/state";
-import { useNavigation } from "@react-navigation/native";
-import { createAppStyles } from "@/src/theme/styles";
 import { fetchTodayQuote } from "@/src/puzzles/get-puzzle";
 import { todayString } from "@/src/utils";
+import LandingPage from "./landing-page";
+import { useNavigation } from "expo-router";
 import { useAppBootstrap, useRouteDateSync } from "@/src/hooks";
-
-
 
 function getDateFromURL(): string | null {
     try {
@@ -25,8 +23,6 @@ export default function Index() {
     const [showGame, setShowGame] = useState(false);
     const [gameDate, setGameDate] = useState<string | null>(null);
     const [eagerState, setEagerState] = useState<GameState | null>(null);
-    const { theme } = useTheme();
-    const styles = createAppStyles(theme);
 
     const todayDate = useMemo(() => todayString(), []);
     const urlDate = useMemo(() => getDateFromURL(), []);
@@ -42,7 +38,6 @@ export default function Index() {
     }, [fixedDate]);
 
     const startGame = async (date: string) => {
-        // If eager state matches the date, use it, otherwise fetch
         if (eagerState && eagerState.puzzleDate === date) {
             setGameDate(date);
             setShowGame(true);
@@ -63,53 +58,17 @@ export default function Index() {
             />
         );
     }
+
     return (
-        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-            {urlDate === todayDate ? (
-                // One button if urlDate exists
-                <TouchableOpacity
-                    onPress={() => startGame(fixedDate)}
-                    style={styles.elevatedButton}
-                >
-                    <Text style={styles.elevatedButtonText}>Play</Text>
-                </TouchableOpacity>
-            ) : (
-                // Two buttons if no urlDate
-                <View style={{ width: 220 }}>
-
-                    <TouchableOpacity
-                        onPress={() => startGame(fixedDate)}
-                        style={[styles.elevatedButton, { marginTop: 20 }]}
-                    >
-                        <Text
-                            style={[
-                                styles.elevatedButtonText,
-                                { flexWrap: "wrap", textAlign: "center" }
-                            ]}
-                        >
-                            Play Current Puzzle
-                        </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => startGame(todayDate)}
-                        style={[styles.elevatedButton, { marginTop: 20 }]}
-                    >
-                        <Text
-                            style={[
-                                styles.elevatedButtonText,
-                                { flexWrap: "wrap", textAlign: "center" }
-                            ]}
-                        >
-                            Play Today's Puzzle
-                        </Text>
-                    </TouchableOpacity>
-                </View>
-            )}
-        </View>
+        <LandingPage
+            urlDate={urlDate}
+            todayDate={todayDate}
+            fixedDate={fixedDate}
+            startGame={startGame}
+        />
     );
-
-
 }
+
 
 type AppProps = {
     eagerState: GameState | null;
