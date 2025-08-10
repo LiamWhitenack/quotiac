@@ -25,7 +25,7 @@ import { useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
 import CustomIonicons from "@/src/custom-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import HelpDropdownButton from "./src/help-button/help-button";
+import HelpModal from "./src/help-button/help-button";
 
 const QuotiacGame = ({
   state,
@@ -42,6 +42,7 @@ const QuotiacGame = ({
   const fadeTitleAnimation = useRef(new Animated.Value(1)).current;
   const [showAppTitle, setShowAppTitle] = useState(true);
   const fadeValue = useAnimatedValue(fadeTitleAnimation);
+  const [helpModalVisible, setHelpModalVisible] = useState(false);
 
   const { theme, mode } = useTheme();
 
@@ -113,18 +114,33 @@ const QuotiacGame = ({
           <Animated.View
             style={[mainWindowStyles.title, { opacity: Math.abs(fadeValue) }]}
           >
-            {fadeValue > 0 ? (
-              <Text style={mainWindowStyles.title}>Quotiac (Beta)</Text>
-            ) : (
-              <ShowPuzzleInfoButton
-                state={state}
-                puzzleDetailsModalDisabled={puzzleDetailsModalDisabled}
-                onPressed={setPuzzleDetailsModalVisible}
-              />
-            )}
+            <Text style={mainWindowStyles.title}>Quotiac (Beta)</Text>
           </Animated.View>
 
           <View style={mainWindowStyles.topBarIconContainer}>
+
+            <TouchableOpacity
+              style={mainWindowStyles.iconContainer}
+              onPress={async () => {
+                await state.giveAHint();
+                updateState();
+              }}
+              disabled={state.givenHintLetters.length === 5}
+            >
+              <View style={{ position: "relative", width: 32, height: 32 }}>
+                <CustomIonicons
+                  name="information"
+                  size={32}
+                  color={
+                    state.givenHintLetters.length === 5
+                      ? theme.surface
+                      : theme.text
+                  }
+                  style={{ position: "absolute", top: 0, left: 0 }}
+                />
+              </View>
+            </TouchableOpacity>
+
             <TouchableOpacity
               style={mainWindowStyles.iconContainer}
               onPress={async () => {
@@ -142,28 +158,30 @@ const QuotiacGame = ({
                       ? theme.surface
                       : theme.text
                   }
-                  style={{ position: "absolute", top: 0, left: 0, marginRight: 5 }}
+                  style={{ position: "absolute", top: 0, left: 0 }}
                 />
               </View>
             </TouchableOpacity>
 
-            <HelpDropdownButton />
+            {/* New question mark in ellipse icon */}
+            <TouchableOpacity
+              style={mainWindowStyles.iconContainer}
+              onPress={() => {
+                setHelpModalVisible(true);
+              }}
+            >
+              <View style={{ position: "relative", width: 32, height: 32 }}>
+                <CustomIonicons
+                  name="help-circle-outline"
+                  size={32}
+                  color={theme.text}
+                  style={{ position: "absolute", top: 0, left: 0 }}
+                />
+              </View>
+            </TouchableOpacity>
 
-            {/* <TouchableOpacity style={mainWindowStyles.iconContainer}>
-              <CustomIonicons
-                name={"refresh-outline"}
-                size={32}
-                color={theme.text}
-                onPress={() => {
-                  if (state.solved) {
-                    state.givenHintLetters.length = 0;
-                  }
-                  state.reactToResetButton();
-                  updateState();
-                }}
-              />
-            </TouchableOpacity> */}
           </View>
+
         </View>
         {state.fireConfetti && (
           <ConfettiCannon count={100} origin={{ x: 200, y: 0 }} fadeOut />
@@ -189,7 +207,11 @@ const QuotiacGame = ({
             setPuzzleDetailsModalVisible(false);
           }}
         />
-      </Wrapper>
+        <HelpModal
+          modalVisible={helpModalVisible}
+          setModalVisible={setHelpModalVisible}
+        />
+      </Wrapper >
     </>
   );
 };

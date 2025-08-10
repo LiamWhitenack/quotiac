@@ -133,13 +133,12 @@ class GameState {
 
     async reset() {
         for (const key of this.decodingMap.keys()) {
-            if (!this.elementIsPartOfHint(key)) {
-                this.decodingMap.delete(key);
-            }
+            this.decodingMap.delete(key);
         }
         await this.setDecodingMap(new Map(this.decodingMap));
         await this.clearPersistedState();
         this.fireConfetti = false;
+        this.inverseDecodingMap = inverseMap(this.decodingMap);
         this.updateKeyboardValues();
         this.setQuoteIndex(0);
         this.setActiveIcon(this.encodedQuote[0]);
