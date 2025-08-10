@@ -82,7 +82,7 @@ export default function LandingPage({
                 ) : (
                     <View>
                         <TouchableOpacity
-                            onPress={() => startGame(fixedDate)}
+                            onPress={() => startGame(urlDate)}
                             style={[styles.elevatedButton, { marginTop: 20 }]}
                         >
                             <Text
