@@ -7,6 +7,7 @@ import {
   Text,
   TouchableOpacity,
   Platform,
+  Share,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import GameState from "@/src/state";
@@ -111,18 +112,29 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
   const handleShare = async () => {
     try {
       const today = new Date();
-      const formattedDate = `${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}-${String(today.getFullYear()).slice(-2)}`;
-      const shareableString = `${emojiString}\n\n${formattedDate} — quotiac.com`;
+      const formattedDate = `${String(today.getMonth() + 1).padStart(2, "0")}/${String(today.getDate()).padStart(2, "0")}/${String(today.getFullYear())}`;
+      const shareableString = `${emojiString} - ${formattedDate}\nquotiac.com`;
 
-      if (sizing.isMobile) {
-        await Clipboard.setStringAsync(shareableString);
-      } else {
+
+      try {
+
+        const result = await Share.share({
+          message: shareableString,
+          title: 'Quotiac',
+        });
+
+        if (result.action === Share.sharedAction) {
+          console.log('Shared successfully');
+        } else if (result.action === Share.dismissedAction) {
+          console.log('Share dismissed');
+        }
+      } catch {
         await navigator.clipboard.writeText(shareableString);
       }
 
       alert("Copied results to clipboard!");
     } catch (err) {
-      alert("Failed to copy to clipboard. Please try again.");
+      alert("Failed to share or copy to clipboard. Please try again.");
     }
   };
 
