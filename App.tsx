@@ -118,12 +118,15 @@ const QuotiacGame = ({
           </Animated.View>
 
           <View style={mainWindowStyles.topBarIconContainer}>
-
+            {/* <ShowPuzzleInfoButton
+                state={state}
+                puzzleDetailsModalDisabled={puzzleDetailsModalDisabled}
+                onPressed={setPuzzleDetailsModalVisible}
+              /> */}
             <TouchableOpacity
               style={mainWindowStyles.iconContainer}
-              onPress={async () => {
-                await state.giveAHint();
-                updateState();
+              onPress={() => {
+                setPuzzleDetailsModalVisible(true);
               }}
               disabled={state.givenHintLetters.length === 5}
             >
