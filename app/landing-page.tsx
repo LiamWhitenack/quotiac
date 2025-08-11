@@ -2,7 +2,6 @@ import React from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import { createAppStyles } from "@/src/theme/styles";
 import { useTheme } from "@/src/theme/ThemeContext";
-import sizing from "@/src/sizing/sizing";
 
 interface LandingPageProps {
     urlDate: string | null;
@@ -12,9 +11,7 @@ interface LandingPageProps {
 }
 
 function getOrdinalSuffix(day: number) {
-    if (day >= 11 && day <= 13) {
-        return "th";
-    }
+    if (day >= 11 && day <= 13) return "th";
     switch (day % 10) {
         case 1: return "st";
         case 2: return "nd";
@@ -39,12 +36,11 @@ function formatDate(dateString: string) {
     }
 }
 
-
 export default function LandingPage({
     urlDate,
     todayDate,
     fixedDate,
-    startGame
+    startGame,
 }: LandingPageProps) {
     const { theme } = useTheme();
     const styles = createAppStyles(theme);
@@ -57,52 +53,68 @@ export default function LandingPage({
                 flex: 1,
                 justifyContent: "flex-start",
                 alignItems: "center",
-                paddingTop: sizing.screenHeight * 0.15, // 15% down from the top
+                paddingTop: "15%",
+                paddingHorizontal: "10%",
             }}
         >
             <Image
                 source={require("@/assets/favicon.png")}
                 style={{
-                    width: sizing.screenHeight * 0.09, // 9% of screen height
-                    height: sizing.screenHeight * 0.18, // 18% of screen height
+                    width: "45%", // 1.5 times bigger than 30%
+                    aspectRatio: 1 / 2,
                     resizeMode: "contain",
+                    marginBottom: "2%",
                 }}
             />
 
-            <Text style={[styles.title, { marginTop: sizing.screenHeight * 0.01 }]}>
+            <Text
+                style={[
+                    styles.title,
+                    {
+                        marginTop: "1%",
+                        fontSize: 24,
+                        textAlign: "center",
+                        width: "100%",
+                    },
+                ]}
+            >
                 Quotiac
             </Text>
 
             <Text
                 style={{
-                    fontSize: sizing.screenHeight * 0.02, // ~2% of screen height
+                    fontSize: 14,
                     textAlign: "center",
-                    marginBottom: sizing.screenHeight * 0.03,
+                    marginBottom: "4%",
                     color: theme.text,
-                    maxWidth: sizing.screenHeight * 0.27
+                    maxWidth: "60%", // narrower so it wraps naturally
+                    alignSelf: "center",
+                    lineHeight: 20, // makes two lines more comfortable
                 }}
+                numberOfLines={2} // force max 2 lines with truncation if needed
+                ellipsizeMode="tail"
             >
                 Decode a secret message by matching letters to icons.
             </Text>
 
-            <View style={{ width: sizing.screenHeight * 0.25 }}>
-                {(!urlDate || urlDate === todayDate) ? (
+            <View style={{ width: "70%", alignItems: "center" }}>
+                {!urlDate || urlDate === todayDate ? (
                     <TouchableOpacity
                         onPress={() => startGame(fixedDate)}
-                        style={styles.elevatedButton}
+                        style={[styles.elevatedButton, { width: "20%" }]} // half width of container
                     >
                         <Text style={styles.elevatedButtonText}>Play</Text>
                     </TouchableOpacity>
                 ) : (
-                    <View>
+                    <>
                         <TouchableOpacity
                             onPress={() => startGame(urlDate)}
-                            style={[styles.elevatedButton, { marginTop: sizing.screenHeight * 0.025 }]}
+                            style={[styles.elevatedButton, { width: "30%" }]}
                         >
                             <Text
                                 style={[
                                     styles.elevatedButtonText,
-                                    { flexWrap: "wrap", textAlign: "center" }
+                                    { flexWrap: "wrap", textAlign: "center" },
                                 ]}
                             >
                                 Play Current Puzzle
@@ -110,27 +122,28 @@ export default function LandingPage({
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => startGame(todayDate)}
-                            style={[styles.elevatedButton, { marginTop: sizing.screenHeight * 0.025 }]}
+                            style={[styles.elevatedButton, { marginTop: "2%", width: "30%" }]}
                         >
                             <Text
                                 style={[
                                     styles.elevatedButtonText,
-                                    { flexWrap: "wrap", textAlign: "center" }
+                                    { flexWrap: "wrap", textAlign: "center" },
                                 ]}
                             >
                                 Play Today's Puzzle
                             </Text>
                         </TouchableOpacity>
-                    </View>
+                    </>
                 )}
             </View>
 
             <Text
                 style={{
-                    fontSize: sizing.screenHeight * 0.018,
-                    marginTop: sizing.screenHeight * 0.02,
+                    fontSize: 16,
+                    marginTop: "3%",
                     color: theme.text,
                     fontWeight: "bold",
+                    textAlign: "center",
                 }}
             >
                 {displayDate}
