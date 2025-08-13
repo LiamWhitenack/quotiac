@@ -7,7 +7,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { todayString } from "./utils";
 
 function useRouteDateSync(
-  routeDate: string | undefined,
+  puzzle: GameState,
   setRouteDate: (date: string) => void,
   navigation: any
 ) {
@@ -25,15 +25,8 @@ function useRouteDateSync(
 
 
     const initializeRouteDate = () => {
-      const urlDate = extractDateFromURL();
-
-      if (urlDate) {
-        setRouteDate(urlDate);
-        navigation.setParams({ date: urlDate });
-      } else {
-        setRouteDate(today);
-        navigation.setParams({ date: today });
-      }
+      setRouteDate(puzzle.puzzleDate);
+      navigation.setParams({ date: puzzle.puzzleDate });
 
       hasInitializedRef.current = true;
     };
@@ -44,7 +37,7 @@ function useRouteDateSync(
       window.addEventListener("popstate", initializeRouteDate);
       return () => window.removeEventListener("popstate", initializeRouteDate);
     }
-  }, [navigation, routeDate, setRouteDate]);
+  }, [navigation, puzzle, setRouteDate]);
 }
 
 function useFetchPuzzle(
