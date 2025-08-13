@@ -113,7 +113,7 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
     try {
       const today = new Date();
       const formattedDate = `${String(today.getMonth() + 1).padStart(2, "0")}/${String(today.getDate()).padStart(2, "0")}/${String(today.getFullYear())}`;
-      const shareableString = `${emojiString} - ${formattedDate}\nquotiac.com`;
+      const shareableString = `${emojiString} - ${formattedDate}\nquotiac.io`;
 
 
       try {
