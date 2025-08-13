@@ -34,23 +34,55 @@ const parseEncryptionMap = (mapString: string): EncryptionMap => {
     return new Map<string, string>(Object.entries(obj));
 };
 
-const fetchTodayQuote = async (dateString: string): Promise<CryptographBase> => {
-    let puzzleData;
-    let response: Response
-    // TODO update this to use main when ready to use routing
-    response = await fetch(`https://raw.githubusercontent.com/LiamWhitenack/codiac-puzzles/refs/heads/dev/resources/by-date/${dateString}.json`);
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
+const fetchQuote = async (dateString: string): Promise<CryptographBase> => {
+    try {
+        // 1. Check AsyncStorage first
+        const storedPuzzle = await AsyncStorage.getItem(`quote_${dateString}`);
+        if (storedPuzzle) {
+            const puzzleData = JSON.parse(storedPuzzle);
+            return new CryptographBase(
+                puzzleData.string_to_encrypt,
+                puzzleData.puzzle_type,
+                parseHints(puzzleData.hints),
+                parseEncryptionMap(puzzleData.encryption_map),
+                parseOtherInfo(puzzleData.other_info)
+            );
+        }
 
-    if (response.ok) {
-        puzzleData = await response.json();
-    } else {
-        // TODO update this to use main when ready to use routing
-        const fallbackResponse = await fetch(`https://raw.githubusercontent.com/LiamWhitenack/codiac-puzzles/refs/heads/dev/resources/auto-generated/${dateString}.json`);
-        puzzleData = await fallbackResponse.json();
+        // 2. If not found in storage, fetch from network
+        let response = await fetch(
+            `https://raw.githubusercontent.com/LiamWhitenack/codiac-puzzles/refs/heads/dev/resources/by-date/${dateString}.json`
+        );
+
+        let puzzleData;
+        if (response.ok) {
+            puzzleData = await response.json();
+        } else {
+            const fallbackResponse = await fetch(
+                `https://raw.githubusercontent.com/LiamWhitenack/codiac-puzzles/refs/heads/dev/resources/auto-generated/${dateString}.json`
+            );
+            puzzleData = await fallbackResponse.json();
+        }
+
+        // 3. Save fetched data to AsyncStorage for future use
+        await AsyncStorage.setItem(`quote_${dateString}`, JSON.stringify(puzzleData));
+
+        return new CryptographBase(
+            puzzleData.string_to_encrypt,
+            puzzleData.puzzle_type,
+            parseHints(puzzleData.hints),
+            parseEncryptionMap(puzzleData.encryption_map),
+            parseOtherInfo(puzzleData.other_info)
+        );
+
+    } catch (error) {
+        console.error("Error fetching quote:", error);
+        throw error;
     }
-
-    return new CryptographBase(puzzleData.string_to_encrypt, puzzleData.puzzle_type, parseHints(puzzleData.hints), parseEncryptionMap(puzzleData.encryption_map), parseOtherInfo(puzzleData.other_info));
 };
+
 
 const fetchTutorialQuote = async (): Promise<CryptographBase> => {
     let puzzleData;
@@ -62,4 +94,4 @@ const fetchTutorialQuote = async (): Promise<CryptographBase> => {
     return new CryptographBase(puzzleData.string_to_encrypt, puzzleData.puzzle_type, parseHints(puzzleData.hints), parseEncryptionMap(puzzleData.encryption_map), parseOtherInfo(puzzleData.other_info));
 };
 
-export { fetchTodayQuote, fetchTutorialQuote };
+export { fetchQuote as fetchTodayQuote, fetchTutorialQuote };
