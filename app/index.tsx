@@ -19,6 +19,8 @@ function getDateFromURL(): string | null {
     }
 }
 
+// ...other imports
+
 export default function Index() {
     const [showGame, setShowGame] = useState(false);
     const [gameDate, setGameDate] = useState<string | null>(null);
@@ -27,6 +29,32 @@ export default function Index() {
     const todayDate = useMemo(() => todayString(), []);
     const urlDate = useMemo(() => getDateFromURL(), []);
     const fixedDate = urlDate || todayDate;
+
+    // Load Google Analytics once on component mount
+    useEffect(() => {
+        const GA_MEASUREMENT_ID = "G-4V14VP7203"; // <-- Replace with your ID
+
+        // Insert the GA script tag
+        const script = document.createElement("script");
+        script.async = true;
+        script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
+        document.head.appendChild(script);
+
+        // Initialize GA after script loads
+        script.onload = () => {
+            (window as any).dataLayer = (window as any).dataLayer || [];
+            function gtag(...args: any[]) {
+                (window as any).dataLayer.push(args);
+            }
+            (window as any).gtag = gtag;
+            gtag("js", new Date());
+            gtag("config", GA_MEASUREMENT_ID);
+        };
+
+        return () => {
+            document.head.removeChild(script);
+        };
+    }, []);
 
     // Eagerly fetch for the default (fixed) date
     useEffect(() => {
@@ -68,6 +96,7 @@ export default function Index() {
         />
     );
 }
+
 
 
 type AppProps = {
