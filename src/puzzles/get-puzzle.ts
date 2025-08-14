@@ -2,6 +2,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import CryptographBase, { EncryptionMap } from "./base";
 import HintBase from "./hints/base";
 import GiveALetterHint from "./hints/letter";
+import { initializeApp } from "firebase/app";
+import { getAnalytics, logEvent } from "firebase/analytics";
 
 type SupportedHintTypeName = "GiveALetterHint";
 
@@ -36,36 +38,29 @@ const parseEncryptionMap = (mapString: string): EncryptionMap => {
 };
 
 
-
-const GA_MEASUREMENT_ID = "G-4V14VP7203";
-
 // --- Google Analytics Helpers ---
-function initGoogleAnalytics() {
-    if (typeof document === "undefined") return; // Only run on web
+// Import the functions you need from the SDKs you need
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
-    const script = document.createElement("script");
-    script.async = true;
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
-    document.head.appendChild(script);
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+    apiKey: "AIzaSyDz3lp-IC8pIs4JNpONEPqBIaTb7xkk4D4",
+    authDomain: "quotiac-4d586.firebaseapp.com",
+    projectId: "quotiac-4d586",
+    storageBucket: "quotiac-4d586.firebasestorage.app",
+    messagingSenderId: "419348914870",
+    appId: "1:419348914870:web:1732808e772de1450d3c17",
+    measurementId: "G-LDNMWDBBL6"
+};
 
-    script.onload = () => {
-        (window as any).dataLayer = (window as any).dataLayer || [];
-        function gtag(...args: any[]) {
-            (window as any).dataLayer.push(args);
-        }
-        (window as any).gtag = gtag;
-        gtag("js", new Date());
-        gtag("config", GA_MEASUREMENT_ID);
-    };
-}
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
-function logGoogleAnalyticsEvent(action: string, params: Record<string, any>) {
-    if (typeof (window as any).gtag === "function") {
-        (window as any).gtag("event", action, params);
-    }
-}
 
-initGoogleAnalytics();
+
 // --- Main fetchQuote Function ---
 const fetchQuote = async (dateString: string): Promise<CryptographBase> => {
     try {
@@ -100,11 +95,7 @@ const fetchQuote = async (dateString: string): Promise<CryptographBase> => {
         }
 
         // 3. Log GA event
-        logGoogleAnalyticsEvent("fetch_from_github", {
-            event_category: "puzzle",
-            event_label: dateString,
-            source: source,
-        });
+        logEvent(analytics, "fetch-from-github");
 
         // 4. Save to AsyncStorage
         await AsyncStorage.setItem(`quote_${dateString}`, JSON.stringify(puzzleData));
