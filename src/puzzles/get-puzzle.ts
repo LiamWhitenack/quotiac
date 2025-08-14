@@ -3,7 +3,7 @@ import CryptographBase, { EncryptionMap } from "./base";
 import HintBase from "./hints/base";
 import GiveALetterHint from "./hints/letter";
 import { initializeApp } from "firebase/app";
-import { getAnalytics, logEvent } from "firebase/analytics";
+import { Analytics, getAnalytics, logEvent } from "firebase/analytics";
 
 type SupportedHintTypeName = "GiveALetterHint";
 
@@ -57,7 +57,12 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+let analytics: Analytics | null = null
+if (typeof window !== "undefined") {
+    console.log("analytics")
+    let analytics = getAnalytics(app);
+    logEvent(analytics, "page_view"); // Logs page load
+}
 
 
 
@@ -95,7 +100,10 @@ const fetchQuote = async (dateString: string): Promise<CryptographBase> => {
         }
 
         // 3. Log GA event
-        logEvent(analytics, "fetch-from-github");
+        if (analytics !== null) {
+            logEvent(analytics, "load_puzzle", { "date": dateString });
+        }
+        // logEvent(analytics, "fetch-from-github");
 
         // 4. Save to AsyncStorage
         await AsyncStorage.setItem(`quote_${dateString}`, JSON.stringify(puzzleData));
