@@ -6,111 +6,26 @@ import {
   TouchableOpacity,
   Animated,
   StatusBar,
+  Button,
 } from "react-native";
 import { createMainWindowStyles } from "./styles";
-import QuoteDisplay from "./quote-display/quote-display";
-import LetterKeyboardDisplay from "./keyboard/keyboard";
-import sizing from "./sizing/sizing";
+import QuoteDisplay from "@/src/quote-display/quote-display";
+import LetterKeyboardDisplay from "@/src/keyboard/keyboard";
+import sizing from "@/src/sizing/sizing";
 import ConfettiCannon from "react-native-confetti-cannon";
-import GameState from "./state/state";
-import { fetchTodayQuote } from "./puzzles/get-puzzle";
-import PuzzleCompleteModal from "./puzzle-complete-modal/modal";
-import { useTitleFade, useAnimatedValue } from "./app-effects/title-fade";
-import { useOnCompleteModal } from "./app-effects/show-modal";
-import { useTheme } from "./theme/ThemeContext";
-import ShowPuzzleInfoButton from "./puzzle-info-modal/button";
-import PuzzleDetailsModal from "./puzzle-info-modal/skeleton";
+import GameState from "@/src/state";
+import { fetchTodayQuote } from "@/src/puzzles/get-puzzle";
+import PuzzleCompleteModal from "@/src/puzzle-complete-modal/modal";
+import { useTitleFade, useAnimatedValue } from "@/src/app-effects/title-fade";
+import { useOnCompleteModal } from "@/src/app-effects/show-modal";
+import { useTheme } from "@/src/theme/ThemeContext";
+import ShowPuzzleInfoButton from "@/src/puzzle-info-modal/button";
+import PuzzleDetailsModal from "@/src/puzzle-info-modal/skeleton";
 import { useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
-import CustomIonicons from "./src/custom-icons";
-import LockSvg from "./app-effects/lock-icon";
-
-const QuotiacApp = () => {
-  const [gameState, setGameState] = useState<GameState | null>(null);
-  const [routeDate, setRouteDate] = useState<string | undefined>(undefined);
-  const [hasCheckedURL, setHasCheckedURL] = useState(false);
-  const [fontsLoaded, setFontsLoaded] = useState(false);
-  const [minDelayPassed, setMinDelayPassed] = useState(false);
-  const navigation = useNavigation();
-  const { theme, mode } = useTheme();
-  const mainWindowStyles = createMainWindowStyles(theme);
-  // Extract date from the path (e.g., /20250710)
-  const extractDateFromPath = () => {
-    const params = new URLSearchParams(window.location.search);
-    const maybeDate = params.get("date");
-    return maybeDate && /^\d{8}$/.test(maybeDate) ? maybeDate : undefined;
-  };
-
-  useEffect(() => {
-    Font.loadAsync({
-      Ionicons: require("./assets/fonts/Ionicons.ttf"),
-    }).then(() => setFontsLoaded(true));
-  }, []);
-
-  // On first load or popstate, update the date from the URL
-  useEffect(() => {
-    const updateDateFromURL = () => {
-      const urlDate = extractDateFromPath();
-      setHasCheckedURL(true);
-
-      if (urlDate && urlDate !== routeDate) {
-        setRouteDate(urlDate);
-        // @ts-ignore
-        navigation.setParams({ date: urlDate });
-      }
-    };
-
-    updateDateFromURL();
-    if (!sizing.isMobile) {
-      window.addEventListener("popstate", updateDateFromURL);
-      return () => window.removeEventListener("popstate", updateDateFromURL);
-    }
-  }, [navigation, routeDate]);
-
-  // Fallback to today's date only after checking the URL
-  useEffect(() => {
-    if (!sizing.isMobile && !routeDate && hasCheckedURL) {
-      const now = new Date();
-      const year = now.getFullYear();
-      const month = String(now.getMonth() + 1).padStart(2, "0");
-      const day = String(now.getDate()).padStart(2, "0");
-      const dateString = `${year}${month}${day}`;
-      setRouteDate(dateString);
-      // @ts-ignore
-      navigation.setParams({ date: dateString });
-    }
-  }, [routeDate, hasCheckedURL, navigation]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setMinDelayPassed(true), 4000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Fetch the puzzle when routeDate is set
-  useEffect(() => {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, "0");
-    const day = String(now.getDate()).padStart(2, "0");
-    fetchTodayQuote(routeDate ? routeDate : `${year}${month}${day}`).then(
-      (puzzle) => {
-        setGameState(new GameState(puzzle));
-      }
-    );
-  }, [routeDate]);
-
-  if (!gameState || !fontsLoaded || !minDelayPassed) {
-    // Show loading screen or nothing while fetching puzzle
-    return (
-      <View style={mainWindowStyles.loadingScreen}>
-        {/* <Text>Loading puzzle...</Text> */}
-        <LockSvg />
-      </View>
-    );
-  }
-  // @ts-ignore
-  return <QuotiacGame state={gameState} setGameState={setGameState} />;
-};
+import CustomIonicons from "@/src/custom-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import HelpModal from "./src/help-button/help-button";
 
 const QuotiacGame = ({
   state,
@@ -127,6 +42,7 @@ const QuotiacGame = ({
   const fadeTitleAnimation = useRef(new Animated.Value(1)).current;
   const [showAppTitle, setShowAppTitle] = useState(true);
   const fadeValue = useAnimatedValue(fadeTitleAnimation);
+  const [helpModalVisible, setHelpModalVisible] = useState(false);
 
   const { theme, mode } = useTheme();
   const mainWindowStyles = createMainWindowStyles(theme);
@@ -138,8 +54,19 @@ const QuotiacGame = ({
 
   useEffect(() => {
     if (!sizing.isMobile) {
+      const recentKeys: string[] = [];
       const handleKeyPress = (event: KeyboardEvent) => {
         const key = event.key;
+        recentKeys.push(key);
+        if (recentKeys.length > 4) recentKeys.shift(); // max length = 4 for "6942"
+
+        const recentCombo = recentKeys.join("");
+        if (recentCombo === "3141") {
+          state.reset();
+        } else if (recentCombo === "6942") {
+          console.log("6 * 9 = 42");
+          state.prepareForSolve();
+        }
 
         if (key === "ArrowLeft") {
           state.setActiveIcon(state.getNextIconName(true));
@@ -187,50 +114,77 @@ const QuotiacGame = ({
           <Animated.View
             style={[mainWindowStyles.title, { opacity: Math.abs(fadeValue) }]}
           >
-            {fadeValue > 0 ? (
-              <Text style={mainWindowStyles.title}>Quotiac (Beta)</Text>
-            ) : (
-              <ShowPuzzleInfoButton
-                state={state}
-                puzzleDetailsModalDisabled={puzzleDetailsModalDisabled}
-                onPressed={setPuzzleDetailsModalVisible}
-              />
-            )}
+            <Text style={mainWindowStyles.title}>Quotiac (Beta)</Text>
           </Animated.View>
 
           <View style={mainWindowStyles.topBarIconContainer}>
+            {/* <ShowPuzzleInfoButton
+                state={state}
+                puzzleDetailsModalDisabled={puzzleDetailsModalDisabled}
+                onPressed={setPuzzleDetailsModalVisible}
+              /> */}
             <TouchableOpacity
               style={mainWindowStyles.iconContainer}
               onPress={() => {
-                state.giveAHint();
-                updateState();
+                setPuzzleDetailsModalVisible(true);
               }}
+              disabled={state.givenHintLetters.length === 5}
             >
               <View style={{ position: "relative", width: 32, height: 32 }}>
                 <CustomIonicons
-                  name="bulb-outline"
+                  name="information"
                   size={32}
-                  color={theme.lightBulbBorder}
+                  color={
+                    state.givenHintLetters.length === 5
+                      ? theme.surface
+                      : theme.text
+                  }
                   style={{ position: "absolute", top: 0, left: 0 }}
                 />
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity style={mainWindowStyles.iconContainer}>
-              <CustomIonicons
-                name={"refresh-outline"}
-                size={32}
-                color={theme.text}
-                onPress={() => {
-                  if (state.solved) {
-                    state.givenHintLetters.length = 0;
+            <TouchableOpacity
+              style={mainWindowStyles.iconContainer}
+              onPress={async () => {
+                await state.giveAHint();
+                updateState();
+              }}
+              disabled={state.givenHintLetters.length === 5}
+            >
+              <View style={{ position: "relative", width: 32, height: 32 }}>
+                <CustomIonicons
+                  name="bulb-outline"
+                  size={32}
+                  color={
+                    state.givenHintLetters.length === 5
+                      ? theme.surface
+                      : theme.text
                   }
-                  state.reactToResetButton();
-                  updateState();
-                }}
-              />
+                  style={{ position: "absolute", top: 0, left: 0 }}
+                />
+              </View>
             </TouchableOpacity>
+
+            {/* New question mark in ellipse icon */}
+            <TouchableOpacity
+              style={mainWindowStyles.iconContainer}
+              onPress={() => {
+                setHelpModalVisible(true);
+              }}
+            >
+              <View style={{ position: "relative", width: 32, height: 32 }}>
+                <CustomIonicons
+                  name="help-circle-outline"
+                  size={32}
+                  color={theme.text}
+                  style={{ position: "absolute", top: 0, left: 0 }}
+                />
+              </View>
+            </TouchableOpacity>
+
           </View>
+
         </View>
         {state.fireConfetti && (
           <ConfettiCannon count={100} origin={{ x: 200, y: 0 }} fadeOut />
@@ -256,9 +210,13 @@ const QuotiacGame = ({
             setPuzzleDetailsModalVisible(false);
           }}
         />
-      </Wrapper>
+        <HelpModal
+          modalVisible={helpModalVisible}
+          setModalVisible={setHelpModalVisible}
+        />
+      </Wrapper >
     </>
   );
 };
 
-export default QuotiacApp;
+export default QuotiacGame;

@@ -1,4 +1,5 @@
 {
   "svg.preview.background": "transparent"
   // "workbench.colorTheme": "Abyss"
+  "editor.formatOnSave": true
 }

@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
-import sizing from "./sizing/sizing";
-import type { Theme } from "./theme/themes";
+import sizing from "@/src/sizing/sizing";
+import type { Theme } from "@/src/theme/themes";
 
 export const createMainWindowStyles = (theme: Theme) =>
   StyleSheet.create({
@@ -16,9 +16,12 @@ export const createMainWindowStyles = (theme: Theme) =>
     },
     topBarIconContainer: {
       width: 50,
-      flexDirection: "row", // Horizontally align items
-      alignItems: "center", // Vertically center the items
+      flexDirection: "row",
+      alignItems: "center",
       justifyContent: "flex-end",
+      marginRight: 20,
+      paddingHorizontal: 10,
+      flexShrink: 1,  // <-- allow shrinking
     },
     title: {
       fontSize: 24, // Size of the title text

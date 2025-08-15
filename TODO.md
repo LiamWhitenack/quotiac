@@ -2,25 +2,21 @@
 
 ## Needs
 
-### 1. Add a Tutorial
-
-### 2. Make a new icon to use on the loading page and the browser and app icon
+### 1. Make a new icon to use on the loading page and the browser and app icon
 
 Use the native RN icons so that we can easily make animations and integrate the icon within the app.
 
-### 3. Get 1 Month of Quotes Ready Starting With The Deployment Date
+### 2. Get 1 Month of Quotes Ready Starting With The Deployment Date
 
 We can use random quotes or reuse quotes until then
 
 ## Wants
 
-### Fix: fetching quote route twice
-
-Pls Josh if you're ever coming back this is the one for you
+### Fix: keyboard arrows not working anymore
 
 ### Fix: iOS content restrictions
 
-The only thing that could be causing the issue is 1. hosting the site with GH pages or 2. the url itself not looking as safe as something that ends with .app
+Contacted apple developer support, they started a case for me: 102657142717
 
 ### Add New Hint Types
 
