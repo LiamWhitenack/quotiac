@@ -107,8 +107,8 @@ const LockSvg: FC<LockSvgProps> = ({ duration = 3300 }) => {
         />
         <AnimatedG animatedProps={animatedProps}>
           <Circle cx={100} cy={180} r={70} fill="#000" />
-          <Circle cx={100} cy={180} r={30} stroke="#fff" strokeWidth={2} />
-          <Text
+          <Circle cx={100} cy={180} r={30} stroke="#fff" strokeWidth={4} />
+          {/* <Text
             x={100}
             y={isMobile ? 186 : 180}
             fontFamily="Arial,sans-serif"
@@ -120,7 +120,7 @@ const LockSvg: FC<LockSvgProps> = ({ duration = 3300 }) => {
             strokeWidth={1}
           >
             {"Q"}
-          </Text>
+          </Text> */}
           <G strokeLinecap="round" stroke="#fff">
             <Path d="M100 112L100 121" />
             <Path d="M148.5 131.5L142.4 137.6" />
