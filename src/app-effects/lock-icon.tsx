@@ -1,14 +1,14 @@
 import { isMobile } from '@/src/sizing/screen-properties'
-import React, {FC, useEffect} from 'react';
-import {View, StyleSheet} from 'react-native';
+import React, {FC, useEffect, useState} from 'react';
+import { StyleSheet } from 'react-native';
 import Animated, {
   useSharedValue,
   withTiming,
-  withRepeat,
   Easing,
   useAnimatedProps,
-  useAnimatedStyle,
   withDelay,
+  runOnJS,
+  useDerivedValue,
 } from "react-native-reanimated";
 import Svg, { G, Path, Circle, Text } from "react-native-svg"
 /* SVGR has dropped some elements not supported by react-native-svg: animateTransform */
@@ -19,39 +19,62 @@ type LockSvgProps = {
   duration?: number; // Optional, default fallback will be provided
 };
 
-const LockSvg: FC<LockSvgProps> = ({ duration = 3300 }) => {
+export const createIconStyles = () =>
+  StyleSheet.create({
+    hide: {
+      display: 'none',
+      visibility: 'hidden',
+      opacity: 0,
+    },
+    show: {
+      opacity: 1,
+    }
+  });
+
+const LockSvg: FC<LockSvgProps> = ({ duration = 2500 }) => {
   const rotation = useSharedValue(0);
   const translation = useSharedValue(0);
-
+  // const currentLetter = useSharedValue("Q");
+  const [animating, setAnimating] = useState(true);
+  const styles = createIconStyles();
+  // Sequence of animations:
+  // 1) rotate clockwise to 135 degs
+  // 2) Change icon to letter Q
+  // 3) Rotate counter-clockwise to -135 degs
+  // 4) Change icon to letter C
+  // 5) Rotate clockwise to 90 degs
+  // 6) Change icon to letter U
+  // 7) Rotate counter-clockwise to -90 degs
+  // 8) Change icon to letter A
+  // 9) Rotate clockwise to 45 degs
+  // 10) Change icon to letter O
+  // 11) Rotate counter-clockwise to -45 degs
+  // 12) Change icon to letter I
+  // 13) Rotate clockwise to 0 degs
+  // 14) Change icon to letter T
+  // 15) Open shackle (translate up)
+  // total = 3s
   useEffect(() => {
-    translation.value = withDelay(duration-(duration/11), withTiming(-35, { duration: duration/11, easing: Easing.ease }));
+    rotation.value = withTiming(
+      360*6,
+      { duration: duration *(7/8), easing: Easing.ease },
+      (finished) => {
+        if (finished) {
+          translation.value = withTiming(-35, {
+            duration: duration / 10,
+            easing: Easing.ease
+          });
+        }
+      }
+    );
   }, []);
 
-  useEffect(() => {
-    // Sequence of animations:
-    // 1) rotate 750ms
-    // 2) pause 250ms
-    // 3) rotate 750ms
-    // 4) pause 250ms
-    // 5) rotate 700ms
-    // 6) pause 300ms
-    // 6) translate 300ms
-    // total = 3.3s
-
-    rotation.value = withTiming(135+270*2, { duration: duration/4.4, easing: Easing.ease }, () => {
-      // Step 2 after 0.5s pause (since total delay between first and second is 2.5s)
-      rotation.value = withDelay(
-        duration/13.2,
-        withTiming(-135+(-270*2), { duration: duration/4.4, easing: Easing.ease }, () => {
-          // Step 3 after 0.5s pause (total delay 6s means 2.5 + 3 + 0.5)
-          rotation.value = withDelay(
-            duration/13.2,
-            withTiming(90+270*2, { duration: duration/4.71, easing: Easing.ease })
-          );
-        })
-      );
-    });
-  }, []);
+  useDerivedValue(() => {
+    // When rotation exceeds 2/3 of the target, set animating false
+    if (rotation.value >= (360 * 7) * 2 / 3) {
+      runOnJS(setAnimating)(false);
+    }
+  });
 
   const animatedTransProps = useAnimatedProps(() => {
     return {
@@ -108,19 +131,6 @@ const LockSvg: FC<LockSvgProps> = ({ duration = 3300 }) => {
         <AnimatedG animatedProps={animatedProps}>
           <Circle cx={100} cy={180} r={70} fill="#000" />
           <Circle cx={100} cy={180} r={30} stroke="#fff" strokeWidth={4} />
-          {/* <Text
-            x={100}
-            y={isMobile ? 186 : 180}
-            fontFamily="Arial,sans-serif"
-            fontSize="48px"
-            textAnchor="middle"
-            alignmentBaseline="middle"
-            fill="#fff"
-            stroke="#fff"
-            strokeWidth={1}
-          >
-            {"Q"}
-          </Text> */}
           <G strokeLinecap="round" stroke="#fff">
             <Path d="M100 112L100 121" />
             <Path d="M148.5 131.5L142.4 137.6" />
@@ -168,9 +178,25 @@ const LockSvg: FC<LockSvgProps> = ({ duration = 3300 }) => {
           <G fill="#fff">
             <G
               transform="translate(92, 128) scale(0.03125)"
+              style={animating ? {} : styles.hide }
             >
               <Path d="M122.06 122.06c-44.37 44.37-66.71 100.61-78 145.28l200.6 200.56c44.67-11.25 100.91-33.59 145.28-78s66.71-100.61 78-145.28L267.34 44.1c-44.67 11.25-100.91 33.59-145.28 77.96zm256.73 256.72zM300.65 189L323 166.71A15.78 15.78 0 01345.29 189L323 211.35l11.16 11.17a15.78 15.78 0 01-22.32 22.32l-11.16-11.16L278.32 256l11.16 11.16a15.78 15.78 0 11-22.32 22.32L256 278.32l-22.32 22.33 11.16 11.16a15.78 15.78 0 11-22.32 22.32L211.35 323 189 345.29A15.78 15.78 0 01166.71 323L189 300.65l-11.16-11.17a15.78 15.78 0 0122.32-22.32l11.16 11.16L233.68 256l-11.16-11.16a15.78 15.78 0 1122.32-22.32L256 233.68l22.32-22.33-11.16-11.16a15.78 15.78 0 0122.32-22.32zm175.92 10.63c7.31-54.53 4-120.26-20-144.21s-89.68-27.3-144.21-20c-2.51.34-5.16.72-7.91 1.15l171 171c.4-2.78.78-5.43 1.12-7.94zM35.43 312.37c-7.31 54.53-4 120.26 20 144.21C72.17 473.33 109.34 480 148.84 480a387 387 0 0050.79-3.43c2.51-.34 5.16-.72 7.91-1.15l-171-171c-.39 2.79-.77 5.44-1.11 7.95z" />
             </G>
+            <Text
+              x={100}
+              y={136}
+              fontFamily="Arial,sans-serif"
+              fontSize="16px"
+              textAnchor="middle"
+              alignmentBaseline="middle"
+              fill="#fff"
+              stroke="#fff"
+              strokeWidth={1}
+              opacity={animating ? 0 : 1}
+            >
+              {"T"}
+            </Text>
+
             <G
               transform="translate(92, 216) rotate(180 8 8) scale(0.03125)"
             >
@@ -178,17 +204,52 @@ const LockSvg: FC<LockSvgProps> = ({ duration = 3300 }) => {
             </G>
             <G
               transform="translate(48, 172) rotate(-90 8 8) scale(0.03125)"
+              style={animating ? {} : styles.hide }
             >
               <Path d="M96 416a16 16 0 01-14.3-23.16l24-48a16 16 0 0128.62 14.32l-24 48A16 16 0 0196 416zm24 64a16 16 0 01-14.3-23.16l16-32a16 16 0 0128.62 14.32l-16 32A16 16 0 01120 480zm256-64a16 16 0 01-14.3-23.16l24-48a16 16 0 0128.62 14.32l-24 48A16 16 0 01376 416zm24 64a16 16 0 01-14.3-23.16l16-32a16 16 0 0128.62 14.32l-16 32A16 16 0 01400 480z" />
               <Path d="M405.84 136.9a151.25 151.25 0 00-47.6-81.9 153 153 0 00-241.81 51.86C60.5 110.16 16 156.65 16 213.33 16 272.15 63.91 320 122.8 320h66.31l-12.89 77.37A16 16 0 00192 416h32v64a16 16 0 0029 9.3l80-112a16 16 0 00-13-25.3h-27.51l8-32h103.84a91.56 91.56 0 001.51-183.1z" />
             </G>
+            <Text
+              x={56}
+              y={180}
+              fontFamily="Arial,sans-serif"
+              fontSize="16px"
+              textAnchor="middle"
+              alignmentBaseline="middle"
+              fill="#fff"
+              stroke="#fff"
+              strokeWidth={1}
+              opacity={animating ? 0 : 1}
+              transform={"rotate(-90 56 180)"}
+            >
+              {"O"}
+            </Text>
+
             <G
               transform="translate(136, 172) rotate(90 8 8) scale(0.03125)"
+              style={animating ? {} : styles.hide }
             >
               <Path d="M96.85 286.62a8 8 0 00-12.53 8.25C102.07 373.28 172.3 432 256 432a175.31 175.31 0 0052.41-8 8 8 0 00.79-15 1120 1120 0 01-109.48-55.61 1126.24 1126.24 0 01-102.87-66.77zm395.87 52.89c-4.19-5.58-9.11-11.44-14.7-17.53a15.83 15.83 0 00-26.56 5.13c0 .16-.11.31-.17.47a15.75 15.75 0 003.15 16.06c22.74 25 26.42 38.51 25.48 41.36-2 2.23-17.05 6.89-58.15-3.53q-8.83-2.24-19.32-5.46-6.76-2.08-13.79-4.49a176.76 176.76 0 0019.54-27.25c.17-.29.35-.58.52-.88A175.39 175.39 0 00432 256a178.87 178.87 0 00-1-19c-9.57-88.17-84.4-157-175-157a175.37 175.37 0 00-106.4 35.89 177.4 177.4 0 00-45.83 51.84c-.16.29-.34.58-.51.87a175.48 175.48 0 00-13.83 30.52q-5.59-4.87-10.79-9.67c-5.39-5-10.17-9.63-14.42-14-29.57-30.26-33.09-45.61-32.16-48.45 2-2.23 15.54-5.87 48.62 1.31A15.82 15.82 0 0096.22 123l.36-.44a15.74 15.74 0 00-8.67-25.43A237.38 237.38 0 0064.13 93c-30.72-3.53-50.83 2.52-59.78 18-3.24 5.58-6.35 15.09-2.72 28.6C7 159.66 26.14 184 53.23 209.5c8.63 8.13 18.06 16.37 28.12 24.64 7.32 6 15 12.06 22.9 18.08q7.91 6 16.15 12T137.1 276c25.41 17.61 52.26 34.52 78.59 49.69q14.34 8.26 28.64 16t28.37 14.81c21.9 11 43.35 20.92 63.86 29.43q13.19 5.48 25.81 10.16c11.89 4.42 23.37 8.31 34.31 11.59l1.1.33c25.73 7.66 47.42 11.69 64.48 12H464c21.64 0 36.3-6.38 43.58-19 9.09-15.62 4.08-36.32-14.86-61.5z" />
             </G>
+            <Text
+              x={144}
+              y={180}
+              fontFamily="Arial,sans-serif"
+              fontSize="16px"
+              textAnchor="middle"
+              alignmentBaseline="middle"
+              fill="#fff"
+              stroke="#fff"
+              strokeWidth={1}
+              opacity={animating ? 0 : 1}
+              transform={"rotate(90 144 180)"}
+            >
+              {"A"}
+            </Text>
+
             <G
               transform="translate(124, 140) rotate(45 8 8) scale(0.03125)"
+              style={animating ? {} : styles.hide }
             >
               <Path
                 d="M200 144h40v-40a40 40 0 10-40 40zm152-40a40 40 0 00-80 0v40h40a40 40 0 0040-40z"
@@ -196,21 +257,87 @@ const LockSvg: FC<LockSvgProps> = ({ duration = 3300 }) => {
               />
               <Path d="M80 416a64 64 0 0064 64h92a4 4 0 004-4V292a4 4 0 00-4-4H88a8 8 0 00-8 8zm160-164V144h32v108a4 4 0 004 4h140a47.93 47.93 0 0016-2.75A48.09 48.09 0 00464 208v-16a48 48 0 00-48-48h-40.54a2 2 0 01-1.7-3A72 72 0 00256 58.82 72 72 0 00138.24 141a2 2 0 01-1.7 3H96a48 48 0 00-48 48v16a48.09 48.09 0 0032 45.25A47.93 47.93 0 0096 256h140a4 4 0 004-4zm32-148a40 40 0 1140 40h-40zm-74.86-39.9A40 40 0 01240 104v40h-40a40 40 0 01-2.86-79.89zM276 480h92a64 64 0 0064-64V296a8 8 0 00-8-8H276a4 4 0 00-4 4v184a4 4 0 004 4z" />
             </G>
+            <Text
+              x={132}
+              y={148}
+              fontFamily="Arial,sans-serif"
+              fontSize="16px"
+              textAnchor="middle"
+              alignmentBaseline="middle"
+              fill="#fff"
+              stroke="#fff"
+              strokeWidth={1}
+              opacity={animating ? 0 : 1}
+              transform={"rotate(45 132 148)"}
+            >
+              {"I"}
+            </Text>
+
             <G
               transform="translate(123, 203) rotate(135 8 8) scale(0.03125)"
+              style={animating ? {} : styles.hide }
             >
               <Path d="M121.72 32a4 4 0 00-3.72 5.56l2.3 5.43 40.7 94.9a4 4 0 006.88.82L243 38.4a4 4 0 00-3.2-6.4zm298.21 26.06l-41.28 96.37a4 4 0 003.68 5.57h101a4 4 0 003.4-6.11L427 57.53a4 4 0 00-7.07.53zM85 57.57l-59.71 96.32a4 4 0 003.4 6.11h101a4 4 0 003.67-5.58L92 58.1a4 4 0 00-7-.53zM393.27 32H267.82a1.94 1.94 0 00-1.56 3.11l79.92 106.46a1.94 1.94 0 003.34-.4L391.6 43l3.4-8.34a1.92 1.92 0 00-1.7-2.66zM239 448l-89.43-253.49A3.78 3.78 0 00146 192H25.7a3.72 3.72 0 00-2.95 6l216 279.81a5.06 5.06 0 006.39 1.37 5 5 0 002.39-6.08zm247.3-256H366a3.75 3.75 0 00-3.54 2.51l-98.2 278.16a5.21 5.21 0 002.42 6.31 5.22 5.22 0 006.61-1.39L489.25 198a3.72 3.72 0 00-2.95-6zM259.2 78.93l56 74.67a4 4 0 01-3.2 6.4H200a4 4 0 01-3.2-6.4l56-74.67a4 4 0 016.4 0zm-7 310.31l-67.7-191.91a4 4 0 013.77-5.33h135.46a4 4 0 013.77 5.33l-67.73 191.91a4 4 0 01-7.54 0z" />
             </G>
+            <Text
+              x={131}
+              y={211}
+              fontFamily="Arial,sans-serif"
+              fontSize="16px"
+              textAnchor="middle"
+              alignmentBaseline="middle"
+              fill="#fff"
+              stroke="#fff"
+              strokeWidth={1}
+              opacity={animating ? 0 : 1}
+              transform={"rotate(135 131 211)"}
+            >
+              {"C"}
+            </Text>
+
             <G
               transform="translate(62, 204) rotate(190 8 8) scale(0.03125)"
+              style={animating ? {} : styles.hide }
             >
               <Path d="M218.1 167.17c0 13 0 25.6 4.1 37.4-43.1 50.6-156.9 184.3-167.5 194.5a20.17 20.17 0 00-6.7 15c0 8.5 5.2 16.7 9.6 21.3 6.6 6.9 34.8 33 40 28 15.4-15 18.5-19 24.8-25.2 9.5-9.3-1-28.3 2.3-36s6.8-9.2 12.5-10.4 15.8 2.9 23.7 3c8.3.1 12.8-3.4 19-9.2 5-4.6 8.6-8.9 8.7-15.6.2-9-12.8-20.9-3.1-30.4s23.7 6.2 34 5 22.8-15.5 24.1-21.6-11.7-21.8-9.7-30.7c.7-3 6.8-10 11.4-11s25 6.9 29.6 5.9c5.6-1.2 12.1-7.1 17.4-10.4 15.5 6.7 29.6 9.4 47.7 9.4 68.5 0 124-53.4 124-119.2S408.5 48 340 48s-121.9 53.37-121.9 119.17zM400 144a32 32 0 11-32-32 32 32 0 0132 32z" />
             </G>
+            <Text
+              x={70}
+              y={212}
+              fontFamily="Arial,sans-serif"
+              fontSize="16px"
+              textAnchor="middle"
+              alignmentBaseline="middle"
+              fill="#fff"
+              stroke="#fff"
+              strokeWidth={1}
+              opacity={animating ? 0 : 1}
+              transform={"rotate(190 70 212)"}
+            >
+              {"Q"}
+            </Text>
+
             <G
               transform="translate(60, 140) rotate(-45 8 8) scale(0.03125)"
+              style={animating ? {} : styles.hide }
             >
               <Path d="M421.84 37.37a25.86 25.86 0 00-22.6-4.46L199.92 86.49A32.3 32.3 0 00176 118v226c0 6.74-4.36 12.56-11.11 14.83l-.12.05-52 18C92.88 383.53 80 402 80 423.91a55.54 55.54 0 0023.23 45.63A54.78 54.78 0 00135.34 480a55.82 55.82 0 0017.75-2.93l.38-.13 21.84-7.94A47.84 47.84 0 00208 423.91v-212c0-7.29 4.77-13.21 12.16-15.07l.21-.06L395 150.14a4 4 0 015 3.86v141.93c0 6.75-4.25 12.38-11.11 14.68l-.25.09-50.89 18.11A49.09 49.09 0 00304 375.92a55.67 55.67 0 0023.23 45.8 54.63 54.63 0 0049.88 7.35l.36-.12 21.84-7.95A47.83 47.83 0 00432 375.92V58a25.74 25.74 0 00-10.16-20.63z" />
             </G>
+            <Text
+              x={68}
+              y={148}
+              fontFamily="Arial,sans-serif"
+              fontSize="16px"
+              textAnchor="middle"
+              alignmentBaseline="middle"
+              fill="#fff"
+              stroke="#fff"
+              strokeWidth={1}
+              opacity={animating ? 0 : 1}
+              transform={"rotate(-45 68 148)"}
+            >
+              {"U"}
+            </Text>
           </G>
         </AnimatedG>
       </G>
