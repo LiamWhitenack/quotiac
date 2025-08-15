@@ -87,6 +87,7 @@ function App({ eagerState, dateString }: AppProps) {
     const { theme } = useTheme();
 
     useAppBootstrap(setFontsLoaded);
+    {/* @ts-ignore */}
     useRouteDateSync(routeDate, setRouteDate, navigation);
 
     useEffect(() => {
