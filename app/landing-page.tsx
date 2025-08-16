@@ -26,12 +26,12 @@ export const landingPageSizing = {
     },
     logo: {
         // Mobile: 3× bigger than old 0.45 * width → 1.35 * width, capped
-        width: isWeb
-            ? contentWidth * 0.45
-            : Math.min(contentWidth * 1.35, screenWidth * 0.9),
-        aspectRatio: 1 / 2,
-        marginBottom: scale(0.02 * screenHeight, 10),
-        resizeMode: "contain" as const,
+        // width: isWeb
+        //     ? contentWidth * 0.45
+        //     : Math.min(contentWidth * 1.35, screenWidth * 0.9),
+        // aspectRatio: 1 / 2,
+        // marginBottom: scale(0.02 * screenHeight, 10),
+        // resizeMode: "contain" as const,
     },
     title: {
         marginTop: scale(0.01 * screenHeight, 8),

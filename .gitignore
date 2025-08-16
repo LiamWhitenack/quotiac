@@ -3,6 +3,7 @@
 # dependencies
 node_modules/
 credentials.json
+firebaseConfig.json
 
 # Expo
 .expo/

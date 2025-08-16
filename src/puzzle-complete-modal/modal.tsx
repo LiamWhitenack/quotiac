@@ -118,16 +118,12 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
 
       try {
 
-        const result = await Share.share({
+        await Share.share({
           message: shareableString,
           title: 'Quotiac',
         });
 
-        if (result.action === Share.sharedAction) {
-          console.log('Shared successfully');
-        } else if (result.action === Share.dismissedAction) {
-          console.log('Share dismissed');
-        }
+        return
       } catch {
         await navigator.clipboard.writeText(shareableString);
       }

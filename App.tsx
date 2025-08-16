@@ -114,7 +114,7 @@ const QuotiacGame = ({
           <Animated.View
             style={[mainWindowStyles.title, { opacity: Math.abs(fadeValue) }]}
           >
-            <Text style={mainWindowStyles.title}>Quotiac (Beta)</Text>
+            <Text style={mainWindowStyles.title}>Quotiac</Text>
           </Animated.View>
 
           <View style={mainWindowStyles.topBarIconContainer}>
