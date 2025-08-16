@@ -1,0 +1,22 @@
+{
+  "configurations": [
+    {
+      "name": "Debug Android",
+      "request": "launch",
+      "type": "reactnative",
+      "cwd": "${workspaceFolder}",
+      "platform": "android",
+      "browserTarget": "chrome",
+      "url": "http://localhost:8081"
+    },
+    {
+      "name": "Debug Android",
+      "request": "launch",
+      "type": "reactnative",
+      "cwd": "${workspaceFolder}",
+      "platform": "expoweb",
+      "browserTarget": "chrome",
+      "url": "http://localhost:8081"
+    }
+  ]
+}
