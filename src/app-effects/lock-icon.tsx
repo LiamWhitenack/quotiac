@@ -6,11 +6,10 @@ import Animated, {
   withTiming,
   Easing,
   useAnimatedProps,
-  withDelay,
   runOnJS,
   useDerivedValue,
 } from "react-native-reanimated";
-import Svg, { G, Path, Circle, Text } from "react-native-svg"
+import Svg, { G, Path, Circle, Text, Rect } from "react-native-svg"
 /* SVGR has dropped some elements not supported by react-native-svg: animateTransform */
 
 const AnimatedG = Animated.createAnimatedComponent(G);
@@ -194,14 +193,31 @@ const LockSvg: FC<LockSvgProps> = ({ duration = 2500 }) => {
               strokeWidth={1}
               opacity={animating ? 0 : 1}
             >
-              {"T"}
+              {"Q"}
             </Text>
 
             <G
               transform="translate(92, 216) rotate(180 8 8) scale(0.03125)"
+              style={animating ? {} : styles.hide }
             >
               <Path d="M483.13 245.38C461.92 149.49 430 98.31 382.65 84.33A107.13 107.13 0 00352 80c-13.71 0-25.65 3.34-38.28 6.88C298.5 91.15 281.21 96 256 96s-42.51-4.84-57.76-9.11C185.6 83.34 173.67 80 160 80a115.74 115.74 0 00-31.73 4.32c-47.1 13.92-79 65.08-100.52 161C4.61 348.54 16 413.71 59.69 428.83a56.62 56.62 0 0018.64 3.22c29.93 0 53.93-24.93 70.33-45.34 18.53-23.1 40.22-34.82 107.34-34.82 59.95 0 84.76 8.13 106.19 34.82 13.47 16.78 26.2 28.52 38.9 35.91 16.89 9.82 33.77 12 50.16 6.37 25.82-8.81 40.62-32.1 44-69.24 2.57-28.48-1.39-65.89-12.12-114.37zM208 240h-32v32a16 16 0 01-32 0v-32h-32a16 16 0 010-32h32v-32a16 16 0 0132 0v32h32a16 16 0 010 32zm84 4a20 20 0 1120-20 20 20 0 01-20 20zm44 44a20 20 0 1120-19.95A20 20 0 01336 288zm0-88a20 20 0 1120-20 20 20 0 01-20 20zm44 44a20 20 0 1120-20 20 20 0 01-20 20z" />
             </G>
+            <Text
+              x={100}
+              y={224}
+              fontFamily="Arial,sans-serif"
+              fontSize="16px"
+              textAnchor="middle"
+              alignmentBaseline="middle"
+              fill="#fff"
+              stroke="#fff"
+              strokeWidth={1}
+              opacity={animating ? 0 : 1}
+              transform={"rotate(180 100 224)"}
+            >
+              {"I"}
+            </Text>
+
             <G
               transform="translate(48, 172) rotate(-90 8 8) scale(0.03125)"
               style={animating ? {} : styles.hide }
@@ -222,7 +238,7 @@ const LockSvg: FC<LockSvgProps> = ({ duration = 2500 }) => {
               opacity={animating ? 0 : 1}
               transform={"rotate(-90 56 180)"}
             >
-              {"O"}
+              {"C"}
             </Text>
 
             <G
@@ -244,7 +260,7 @@ const LockSvg: FC<LockSvgProps> = ({ duration = 2500 }) => {
               opacity={animating ? 0 : 1}
               transform={"rotate(90 144 180)"}
             >
-              {"A"}
+              {"O"}
             </Text>
 
             <G
@@ -270,7 +286,7 @@ const LockSvg: FC<LockSvgProps> = ({ duration = 2500 }) => {
               opacity={animating ? 0 : 1}
               transform={"rotate(45 132 148)"}
             >
-              {"I"}
+              {"U"}
             </Text>
 
             <G
@@ -292,7 +308,7 @@ const LockSvg: FC<LockSvgProps> = ({ duration = 2500 }) => {
               opacity={animating ? 0 : 1}
               transform={"rotate(135 131 211)"}
             >
-              {"C"}
+              {"T"}
             </Text>
 
             <G
@@ -312,32 +328,37 @@ const LockSvg: FC<LockSvgProps> = ({ duration = 2500 }) => {
               stroke="#fff"
               strokeWidth={1}
               opacity={animating ? 0 : 1}
-              transform={"rotate(190 70 212)"}
+              transform={"rotate(-135 70 212)"}
             >
-              {"Q"}
+              {"A"}
             </Text>
 
             <G
               transform="translate(60, 140) rotate(-45 8 8) scale(0.03125)"
-              style={animating ? {} : styles.hide }
             >
-              <Path d="M421.84 37.37a25.86 25.86 0 00-22.6-4.46L199.92 86.49A32.3 32.3 0 00176 118v226c0 6.74-4.36 12.56-11.11 14.83l-.12.05-52 18C92.88 383.53 80 402 80 423.91a55.54 55.54 0 0023.23 45.63A54.78 54.78 0 00135.34 480a55.82 55.82 0 0017.75-2.93l.38-.13 21.84-7.94A47.84 47.84 0 00208 423.91v-212c0-7.29 4.77-13.21 12.16-15.07l.21-.06L395 150.14a4 4 0 015 3.86v141.93c0 6.75-4.25 12.38-11.11 14.68l-.25.09-50.89 18.11A49.09 49.09 0 00304 375.92a55.67 55.67 0 0023.23 45.8 54.63 54.63 0 0049.88 7.35l.36-.12 21.84-7.95A47.83 47.83 0 00432 375.92V58a25.74 25.74 0 00-10.16-20.63z" />
+              {/* <Path d="M421.84 37.37a25.86 25.86 0 00-22.6-4.46L199.92 86.49A32.3 32.3 0 00176 118v226c0 6.74-4.36 12.56-11.11 14.83l-.12.05-52 18C92.88 383.53 80 402 80 423.91a55.54 55.54 0 0023.23 45.63A54.78 54.78 0 00135.34 480a55.82 55.82 0 0017.75-2.93l.38-.13 21.84-7.94A47.84 47.84 0 00208 423.91v-212c0-7.29 4.77-13.21 12.16-15.07l.21-.06L395 150.14a4 4 0 015 3.86v141.93c0 6.75-4.25 12.38-11.11 14.68l-.25.09-50.89 18.11A49.09 49.09 0 00304 375.92a55.67 55.67 0 0023.23 45.8 54.63 54.63 0 0049.88 7.35l.36-.12 21.84-7.95A47.83 47.83 0 00432 375.92V58a25.74 25.74 0 00-10.16-20.63z" /> */}
+              <Path
+                d="M336 208v-95a80 80 0 00-160 0v95"
+                fill="none"
+                stroke="#fff"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={32}
+              />
+              <Rect
+                x={96}
+                y={208}
+                width={320}
+                height={272}
+                rx={48}
+                ry={48}
+                fill="none"
+                stroke="#fff"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={32}
+              />
             </G>
-            <Text
-              x={68}
-              y={148}
-              fontFamily="Arial,sans-serif"
-              fontSize="16px"
-              textAnchor="middle"
-              alignmentBaseline="middle"
-              fill="#fff"
-              stroke="#fff"
-              strokeWidth={1}
-              opacity={animating ? 0 : 1}
-              transform={"rotate(-45 68 148)"}
-            >
-              {"U"}
-            </Text>
           </G>
         </AnimatedG>
       </G>
