@@ -16,6 +16,8 @@ const AnimatedG = Animated.createAnimatedComponent(G);
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 type LockSvgProps = {
   duration?: number; // Optional, default fallback will be provided
+  width?: number | string;
+  height?: number | string;
 };
 
 export const createIconStyles = () =>
@@ -30,7 +32,7 @@ export const createIconStyles = () =>
     }
   });
 
-const LockSvg: FC<LockSvgProps> = ({ duration = 2500 }) => {
+const LockSvg: FC<LockSvgProps> = ({ duration = 2500, width = 250, height = 300 }) => {
   const rotation = useSharedValue(0);
   const translation = useSharedValue(0);
   // const currentLetter = useSharedValue("Q");
@@ -107,8 +109,8 @@ const LockSvg: FC<LockSvgProps> = ({ duration = 2500 }) => {
   
   return (
     <Svg
-      width={200}
-      height={350}
+      width={width}
+      height={height}
       viewBox="0 0 200 350"
       fill="none"
       stroke="#000"

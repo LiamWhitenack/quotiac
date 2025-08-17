@@ -17,6 +17,7 @@ import sizing from "@/src/sizing/sizing";
 import CustomIonicons from "@/src/custom-icons";
 import { createStyles } from "./styles";
 import { createAppStyles } from "../theme/styles";
+import LockSvg from "../app-effects/lock-icon";
 
 type PuzzleCompleteModalProps = {
   state: GameState;
@@ -52,10 +53,22 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
 
   const emojiString = modifiedEmojiArray.join(" ");
 
-  // 🔄 Load streaks on modal open
+  const [showCongrats, setShowCongrats] = useState(false);
+
+  // Handle animation timing and load streaks on modal open
   useEffect(() => {
     if (visible) {
       loadAndUpdateStreaks();
+
+      // Reset modal to start with animation
+      setShowCongrats(false);
+
+      // Switch to congrats after animation duration
+      const timer = setTimeout(() => {
+        setShowCongrats(true);
+      }, 3250); // lock animation length
+
+      return () => clearTimeout(timer);
     }
   }, [visible]);
 
@@ -150,32 +163,38 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
     <Modal animationType="slide" transparent={true} visible={visible}>
       <View style={styles.modalOverlay}>
         <View style={styles.modalContent}>
-          <View style={styles.modalHeader}>
-            <Text style={styles.modalTitle}>Congratulations!</Text>
-            <TouchableOpacity onPress={onClose}>
-              <CustomIonicons name="close" size={24} color="gray" />
-            </TouchableOpacity>
-          </View>
+          {!showCongrats ? (
+            <LockSvg height={"242"}/>
+          ) : (
+            <>
+              <View style={styles.modalHeader}>
+                <Text style={styles.modalTitle}>Congratulations!</Text>
+                <TouchableOpacity onPress={onClose}>
+                  <CustomIonicons name="close" size={24} color="gray" />
+                </TouchableOpacity>
+              </View>
 
-          <View style={{ height: 20 }} />
+              <View style={{ height: 20 }} />
 
-          <View style={{ alignItems: "center" }}>
-            <Text style={{ fontSize: 28, lineHeight: 36, textAlign: "center" }}>
-              {emojiString}
-            </Text>
+              <View style={{ alignItems: "center" }}>
+                <Text style={{ fontSize: 28, lineHeight: 36, textAlign: "center" }}>
+                  {emojiString}
+                </Text>
 
-            <View style={{ flexDirection: "row", marginTop: 20, justifyContent: "space-around" }}>
-              <StreakStat label1="Completed" value={puzzlesCompleted} />
-              <StreakStat label1="Current" label2="Streak" value={currentStreak} />
-              <StreakStat label1="Max" label2="Streak" value={maxStreak} />
-            </View>
-          </View>
+                <View style={{ flexDirection: "row", marginTop: 20, justifyContent: "space-around" }}>
+                  <StreakStat label1="Completed" value={puzzlesCompleted} />
+                  <StreakStat label1="Current" label2="Streak" value={currentStreak} />
+                  <StreakStat label1="Max" label2="Streak" value={maxStreak} />
+                </View>
+              </View>
 
-          <View style={{ height: 20 }} />
+              <View style={{ height: 20 }} />
 
-          <TouchableOpacity style={appStyles.elevatedButton} onPress={handleShare}>
-            <Text style={appStyles.elevatedButtonText}>Share your results</Text>
-          </TouchableOpacity>
+              <TouchableOpacity style={appStyles.elevatedButton} onPress={handleShare}>
+                <Text style={appStyles.elevatedButtonText}>Share your results</Text>
+              </TouchableOpacity>
+            </>
+          )}
         </View>
       </View>
     </Modal>
