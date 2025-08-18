@@ -113,11 +113,22 @@ export function HintDemonstration() {
           width: sizing.iconSize,
         }}
       >
+        {isSelected && (
+          <View
+            style={{
+              position: "absolute",
+              height: sizing.iconSize * 0.9,
+              width: sizing.iconSize * 0.9,
+              borderRadius: (sizing.iconSize * 0.9) / 2,
+              backgroundColor: theme.selected,
+            }}
+          />
+        )}
         <CustomIonicons
           // @ts-ignore
           name={iconName}
-          size={sizing.iconSize * 0.8}
-          color={isSelected && iconName !== "tv" ? theme.selected : theme.subtext}
+          size={sizing.iconSize * (isSelected ? 0.6 : 0.8)}
+          color={isSelected ? theme.text : theme.subtext}
         />
       </View>
     );

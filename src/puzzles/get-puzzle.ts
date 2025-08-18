@@ -58,7 +58,7 @@ if (typeof window !== "undefined") {
 
 
 // --- Main fetchQuote Function ---
-const fetchQuote = async (dateString: string): Promise<CryptographBase> => {
+const fetchQuote = async (dateString: string): Promise<CryptographBase | null> => {
     try {
         // 1. Check AsyncStorage
         const storedPuzzle = await AsyncStorage.getItem(`quote_${dateString}`);
@@ -86,10 +86,12 @@ const fetchQuote = async (dateString: string): Promise<CryptographBase> => {
             const fallbackResponse = await fetch(
                 `https://raw.githubusercontent.com/LiamWhitenack/codiac-puzzles/refs/heads/dev/resources/auto-generated/${dateString}.json`
             );
+            if (!fallbackResponse.ok) {
+                return null;
+            }
             puzzleData = await fallbackResponse.json();
             source = "fallback";
         }
-
         // 3. Log GA event
         if (analytics !== null) {
             logEvent(analytics, "load_puzzle", { "date": dateString });

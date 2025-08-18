@@ -33,6 +33,9 @@ export default function Index() {
     useEffect(() => {
         (async () => {
             const puzzle = await fetchQuote(fixedDate);
+            if (!puzzle) {
+                throw Error()
+            }
             const gameState = await GameState.create(fixedDate, puzzle);
             setEagerState(gameState);
         })();
@@ -92,6 +95,9 @@ function App({ eagerState, dateString }: AppProps) {
                 setGameState(eagerState);
             } else {
                 const puzzle = await fetchQuote(routeDate);
+                if (!puzzle) {
+                    throw Error()
+                }
                 const newState = await GameState.create(routeDate, puzzle);
                 setGameState(newState);
             }
