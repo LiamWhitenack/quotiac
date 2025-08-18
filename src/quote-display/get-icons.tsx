@@ -87,7 +87,7 @@ export function IconsWithHeight({
     </View>
   );
   const renderIcon = (iconName: string, key: string, index: number) => {
-    const inCircle = state.activeIcon == iconName
+    const isSelected = state.activeIcon == iconName
 
     return (
       <View
@@ -99,22 +99,22 @@ export function IconsWithHeight({
           width: sizing.iconSize,
         }}
       >
-        {inCircle && (
+        {isSelected && (
           <View
             style={{
               position: "absolute",
               height: sizing.iconSize * 0.9,
               width: sizing.iconSize * 0.9,
               borderRadius: (sizing.iconSize * 0.9) / 2,
-              backgroundColor: inCircle ? theme.selected : theme.text,
+              backgroundColor: theme.selected,
             }}
           />
         )}
         <CustomIonicons
           // @ts-ignore
           name={iconName}
-          size={sizing.iconSize * (inCircle ? 0.6 : 0.8)}
-          color={theme.text}
+          size={sizing.iconSize * (isSelected ? 0.6 : 0.8)}
+          color={isSelected ? theme.text : theme.subtext}
           disabled={state.solved || state.elementIsPartOfHint(iconName)}
           onPress={() => {
             state.reactToQuoteIconPress(index, iconName);
