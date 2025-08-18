@@ -26,7 +26,7 @@ export function IconsWithHeight({
 }: IconsWithHeightProps) {
   for (let size = sizing.iconSize; size >= sizing.minIconSize; size -= 1) {
     if (
-      containerHeight < state.quoteHeight ||
+      containerHeight < (state.quoteHeight * sizing.quoteSafeAreaCoefficient) ||
       longestWordLength(state.puzzle.stringToEncrypt) > sizing.maxWidth
     ) {
       state.decreaseQuoteIconSize();
@@ -86,29 +86,46 @@ export function IconsWithHeight({
       </Text>
     </View>
   );
-  const renderIcon = (iconName: string, key: string, index: number) => (
-    <View
-      key={key}
-      style={{
-        alignItems: "center",
-        justifyContent: "center",
-        height: sizing.iconSize,
-        width: sizing.iconSize,
-      }}
-    >
-      <CustomIonicons
-        // @ts-ignore
-        name={iconName}
-        size={sizing.iconSize * 0.8}
-        color={state.elementColor(iconName, theme)}
-        disabled={state.solved || state.elementIsPartOfHint(iconName)}
-        onPress={() => {
-          state.reactToQuoteIconPress(index, iconName);
-          updateState();
+  const renderIcon = (iconName: string, key: string, index: number) => {
+    const inCircle = state.activeIcon == iconName
+
+    return (
+      <View
+        key={key}
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          height: sizing.iconSize,
+          width: sizing.iconSize,
         }}
-      />
-    </View>
-  );
+      >
+        {inCircle && (
+          <View
+            style={{
+              position: "absolute",
+              height: sizing.iconSize * 0.9,
+              width: sizing.iconSize * 0.9,
+              borderRadius: (sizing.iconSize * 0.9) / 2,
+              backgroundColor: inCircle ? theme.selected : theme.text,
+            }}
+          />
+        )}
+        <CustomIonicons
+          // @ts-ignore
+          name={iconName}
+          size={sizing.iconSize * (inCircle ? 0.6 : 0.8)}
+          color={theme.text}
+          disabled={state.solved || state.elementIsPartOfHint(iconName)}
+          onPress={() => {
+            state.reactToQuoteIconPress(index, iconName);
+            updateState();
+          }}
+        />
+      </View>
+    );
+  };
+
+
 
   const decodedQuote = decodeQuote(state.encodedQuote);
   let quoteIndex = -2;

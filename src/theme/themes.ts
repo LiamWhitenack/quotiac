@@ -1,6 +1,6 @@
 export const lightTheme = {
-  selected: "blue",
-  hint: "green",
+  selected: "#21a4fcff",
+  hint: "#16921672",
   background: "#F3F4F6",
   text: "#000000",
   textInverse: "#F8F8F8",

@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   Animated,
   StatusBar,
-  Button,
 } from "react-native";
 import { createMainWindowStyles } from "./styles";
 import QuoteDisplay from "@/src/quote-display/quote-display";
@@ -14,18 +13,14 @@ import LetterKeyboardDisplay from "@/src/keyboard/keyboard";
 import sizing from "@/src/sizing/sizing";
 import ConfettiCannon from "react-native-confetti-cannon";
 import GameState from "@/src/state";
-import { fetchTodayQuote } from "@/src/puzzles/get-puzzle";
 import PuzzleCompleteModal from "@/src/puzzle-complete-modal/modal";
 import { useTitleFade, useAnimatedValue } from "@/src/app-effects/title-fade";
 import { useOnCompleteModal } from "@/src/app-effects/show-modal";
 import { useTheme } from "@/src/theme/ThemeContext";
-import ShowPuzzleInfoButton from "@/src/puzzle-info-modal/button";
 import PuzzleDetailsModal from "@/src/puzzle-info-modal/skeleton";
-import { useNavigation } from "@react-navigation/native";
-import * as Font from "expo-font";
 import CustomIonicons from "@/src/custom-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import HelpModal from "./src/help-button/help-button";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const QuotiacGame = ({
   state,
@@ -65,6 +60,9 @@ const QuotiacGame = ({
         } else if (recentCombo === "6942") {
           console.log("6 * 9 = 42");
           state.prepareForSolve();
+        } else if (recentCombo === "2624") {
+          console.log("https://open.spotify.com/track/3H4XpNN0NRi12euYWsJf44")
+          AsyncStorage.clear();
         }
 
         if (key === "ArrowLeft") {
@@ -111,11 +109,7 @@ const QuotiacGame = ({
         ]}
       >
         <View style={mainWindowStyles.topBarContainer}>
-          <Animated.View
-            style={[mainWindowStyles.title, { opacity: Math.abs(fadeValue) }]}
-          >
-            <Text style={mainWindowStyles.title}>Quotiac</Text>
-          </Animated.View>
+          <Text style={mainWindowStyles.title}>Quotiac</Text>
 
           <View style={mainWindowStyles.topBarIconContainer}>
             {/* <ShowPuzzleInfoButton
