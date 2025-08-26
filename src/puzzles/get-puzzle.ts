@@ -64,13 +64,17 @@ const fetchQuote = async (dateString: string): Promise<CryptographBase | null> =
         const storedPuzzle = await AsyncStorage.getItem(`quote_${dateString}`);
         if (storedPuzzle) {
             const puzzleData = JSON.parse(storedPuzzle);
-            return new CryptographBase(
-                puzzleData.string_to_encrypt,
-                puzzleData.puzzle_type,
-                parseHints(puzzleData.hints),
-                parseEncryptionMap(puzzleData.encryption_map),
-                parseOtherInfo(puzzleData.other_info)
-            );
+            try {
+                return new CryptographBase(
+                    puzzleData.string_to_encrypt,
+                    puzzleData.puzzle_type,
+                    parseHints(puzzleData.hints),
+                    parseEncryptionMap(puzzleData.encryption_map),
+                    parseOtherInfo(puzzleData.other_info)
+                );
+            } catch (error) {
+                console.error("Error parsing stored puzzle:", error);
+            }
         }
 
         // 2. Fetch from network
@@ -79,7 +83,6 @@ const fetchQuote = async (dateString: string): Promise<CryptographBase | null> =
         );
 
         let puzzleData;
-        let source = "primary";
         if (response.ok) {
             puzzleData = await response.json();
         } else {
@@ -90,7 +93,6 @@ const fetchQuote = async (dateString: string): Promise<CryptographBase | null> =
                 return null;
             }
             puzzleData = await fallbackResponse.json();
-            source = "fallback";
         }
         // 3. Log GA event
         if (analytics !== null) {
