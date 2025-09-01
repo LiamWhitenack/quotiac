@@ -20,6 +20,8 @@ const PuzzleDetailsModal: React.FC<PuzzleDetailsModalProps> = ({
   const { theme } = useTheme();
   const styles = createStyles(theme);
 
+  const hasDetails = state.puzzle.otherInfo.size > 0;
+
   return (
     <Modal animationType="slide" transparent={true} visible={visible}>
       <TouchableOpacity
@@ -33,7 +35,15 @@ const PuzzleDetailsModal: React.FC<PuzzleDetailsModalProps> = ({
             {state.puzzle.puzzleType}
           </Text>
 
-          <QuoteDetails puzzle={state.puzzle} />
+          {hasDetails ? (
+            <QuoteDetails puzzle={state.puzzle} />
+          ) : (
+            <View style={{ alignItems: "center", paddingVertical: 10 }}>
+              <Text style={{ fontSize: 16, color: theme.subtext }}>
+                No additional details
+              </Text>
+            </View>
+          )}
         </View>
       </TouchableOpacity>
     </Modal>
