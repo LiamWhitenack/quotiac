@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { Appearance } from "react-native";
-import { lightTheme, darkTheme, Theme } from "./themes";
+import { lightTheme, darkTheme, Theme, nflTheme } from "./themes";
+import { todayString } from "../utils";
 
 interface ThemeContextType {
   theme: Theme;
@@ -11,7 +12,7 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType>({
   theme: lightTheme,
   mode: "light",
-  toggleTheme: () => {},
+  toggleTheme: () => { },
 });
 
 export const useTheme = () => useContext(ThemeContext);
@@ -26,7 +27,15 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     setMode((prev) => (prev === "light" ? "dark" : "light"));
   };
 
-  const theme = mode === "light" ? lightTheme : darkTheme;
+  let theme: Theme;
+
+  if (todayString() == "20250904") {
+    theme = nflTheme;
+  } else if (mode === "light") {
+    theme = lightTheme;
+  } else {
+    theme = darkTheme
+  }
 
   useEffect(() => {
     const subscription = Appearance.addChangeListener(({ colorScheme }) => {
