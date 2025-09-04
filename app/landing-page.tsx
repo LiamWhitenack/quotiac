@@ -62,6 +62,7 @@ export const createLandingPageStyles = (theme: Theme) =>
         },
     });
 
+
 interface LandingPageProps {
     urlDate: string | null;
     todayDate: string;
@@ -144,8 +145,8 @@ export default function LandingPage({
                         </Text>
                     </TouchableOpacity>
                 </>
-            )}
-
+            )
+            }
             <Text style={landingPageStyles.dateText}>{displayDate}</Text>
         </View>
     );
