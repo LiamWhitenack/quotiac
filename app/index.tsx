@@ -62,12 +62,15 @@ export default function Index() {
     }
 
     return (
-        <LandingPage
-            urlDate={urlDate}
-            todayDate={todayDate}
-            fixedDate={fixedDate}
-            startGame={startGame}
-        />
+        <ThemeProvider>
+            {/* @ts-ignore */}
+            <LandingPage
+                urlDate={urlDate}
+                todayDate={todayDate}
+                fixedDate={fixedDate}
+                startGame={startGame}
+            />
+        </ThemeProvider>
     );
 }
 

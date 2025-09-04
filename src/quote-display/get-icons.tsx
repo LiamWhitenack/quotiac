@@ -106,7 +106,7 @@ export function IconsWithHeight({
               height: sizing.iconSize * 0.9,
               width: sizing.iconSize * 0.9,
               borderRadius: (sizing.iconSize * 0.9) / 2,
-              backgroundColor: theme.selected,
+              backgroundColor: theme.accent1,
             }}
           />
         )}
@@ -114,7 +114,7 @@ export function IconsWithHeight({
           // @ts-ignore
           name={iconName}
           size={sizing.iconSize * (isSelected ? 0.6 : 0.8)}
-          color={isSelected ? theme.text : theme.subtext}
+          color={isSelected ? theme.primary : theme.subtext}
           disabled={state.solved || state.elementIsPartOfHint(iconName)}
           onPress={() => {
             state.reactToQuoteIconPress(index, iconName);

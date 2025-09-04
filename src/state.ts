@@ -236,8 +236,8 @@ class GameState {
 
     elementColor(element: string, theme: Theme): string {
         if (this.elementIsPartOfHint(element)) return theme.hint;
-        if (element === this.activeIcon) return theme.selected;
-        if (element.length == 1 || this.iconIsAssociatedWithLetter(element)) return theme.text;
+        if (element === this.activeIcon) return theme.accent1;
+        if (element.length == 1 || this.iconIsAssociatedWithLetter(element)) return theme.primary;
         return theme.subtext;
     }
 

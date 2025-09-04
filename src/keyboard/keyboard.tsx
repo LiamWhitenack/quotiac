@@ -25,7 +25,7 @@ const LetterKeyboardDisplay: React.FC<LetterKeyboardDisplayProps> = ({
   return (
     <>
       <BlurView
-        tint={mode === "dark" ? "dark" : "light"}
+        tint={theme.tint} // @ts-ignore
         intensity={60}
         style={mainWindowStyles.keyboardBlurOverlay}
         pointerEvents="none"
