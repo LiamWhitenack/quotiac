@@ -109,28 +109,10 @@ export default function LandingPage({
     return (
         // @ts-ignore
         <View style={landingPageSizing.container}>
-            <Image
-                source={require("@/assets/favicon.png")}
-                style={landingPageSizing.logo}
-            />
+            <LockSvg />
 
             <Text style={[styles.title, { textAlign: "center", width: "100%" }]}>
                 Quotiac
-            </Text>
-
-            <Text
-                style={[
-                    {
-                        textAlign: "center",
-                        color: theme.text,
-                        alignSelf: "center",
-                    },
-                    landingPageSizing.subtitle,
-                ]}
-                numberOfLines={2}
-                ellipsizeMode="tail"
-            >
-                Decode a secret message by matching letters to icons.
             </Text>
 
             <Text
