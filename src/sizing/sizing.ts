@@ -15,6 +15,7 @@ class Sizing {
     quoteHeight: number;
     iconSize: number;
     minIconSize: number;
+    quoteSafeAreaCoefficient: number;
 
     constructor() {
         this.screenHeight = screenHeight;
@@ -36,6 +37,8 @@ class Sizing {
 
         this.iconSize = 36;
         this.minIconSize = 28;
+
+        this.quoteSafeAreaCoefficient = 1.1
     }
 
     isMobileWeb(navigator: Navigator) {

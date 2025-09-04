@@ -20,7 +20,7 @@ const QuoteDisplay: React.FC<QuoteDisplayProps> = ({ state, updateState }) => {
   const scrollViewRef = useRef<ScrollView>(null);
   const scrollOffsetRef = useRef(0);
 
-  const canScroll = state.quoteHeight > containerHeight;
+  const canScroll = (state.quoteHeight * sizing.quoteSafeAreaCoefficient) > containerHeight;
 
   // Save scroll position on scroll 
   // @ts-ignore

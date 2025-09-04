@@ -4,6 +4,7 @@ import HintBase from "./hints/base";
 import GiveALetterHint from "./hints/letter";
 import { initializeApp } from "firebase/app";
 import { Analytics, getAnalytics, logEvent } from "firebase/analytics";
+import firebaseConfig from "@/firebaseConfig.json";
 
 type SupportedHintTypeName = "GiveALetterHint";
 
@@ -45,21 +46,11 @@ const parseEncryptionMap = (mapString: string): EncryptionMap => {
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-    apiKey: "AIzaSyDz3lp-IC8pIs4JNpONEPqBIaTb7xkk4D4",
-    authDomain: "quotiac-4d586.firebaseapp.com",
-    projectId: "quotiac-4d586",
-    storageBucket: "quotiac-4d586.firebasestorage.app",
-    messagingSenderId: "419348914870",
-    appId: "1:419348914870:web:1732808e772de1450d3c17",
-    measurementId: "G-LDNMWDBBL6"
-};
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 let analytics: Analytics | null = null
 if (typeof window !== "undefined") {
-    console.log("analytics")
     let analytics = getAnalytics(app);
     logEvent(analytics, "page_view"); // Logs page load
 }
@@ -67,19 +58,23 @@ if (typeof window !== "undefined") {
 
 
 // --- Main fetchQuote Function ---
-const fetchQuote = async (dateString: string): Promise<CryptographBase> => {
+const fetchQuote = async (dateString: string): Promise<CryptographBase | null> => {
     try {
         // 1. Check AsyncStorage
         const storedPuzzle = await AsyncStorage.getItem(`quote_${dateString}`);
         if (storedPuzzle) {
             const puzzleData = JSON.parse(storedPuzzle);
-            return new CryptographBase(
-                puzzleData.string_to_encrypt,
-                puzzleData.puzzle_type,
-                parseHints(puzzleData.hints),
-                parseEncryptionMap(puzzleData.encryption_map),
-                parseOtherInfo(puzzleData.other_info)
-            );
+            try {
+                return new CryptographBase(
+                    puzzleData.string_to_encrypt,
+                    puzzleData.puzzle_type,
+                    parseHints(puzzleData.hints),
+                    parseEncryptionMap(puzzleData.encryption_map),
+                    parseOtherInfo(puzzleData.other_info)
+                );
+            } catch (error) {
+                console.error("Error parsing stored puzzle:", error);
+            }
         }
 
         // 2. Fetch from network
@@ -88,17 +83,17 @@ const fetchQuote = async (dateString: string): Promise<CryptographBase> => {
         );
 
         let puzzleData;
-        let source = "primary";
         if (response.ok) {
             puzzleData = await response.json();
         } else {
             const fallbackResponse = await fetch(
                 `https://raw.githubusercontent.com/LiamWhitenack/codiac-puzzles/refs/heads/dev/resources/auto-generated/${dateString}.json`
             );
+            if (!fallbackResponse.ok) {
+                return null;
+            }
             puzzleData = await fallbackResponse.json();
-            source = "fallback";
         }
-
         // 3. Log GA event
         if (analytics !== null) {
             logEvent(analytics, "load_puzzle", { "date": dateString });

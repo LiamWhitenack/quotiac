@@ -95,7 +95,7 @@ export const createStyles = (theme: Theme) =>
     modalButton: {
       flex: 1,
       marginHorizontal: 8,
-      backgroundColor: theme.elevatedButton,
+      backgroundColor: theme.primary,
       paddingVertical: 12,
       borderRadius: 30,
       alignItems: "center",
