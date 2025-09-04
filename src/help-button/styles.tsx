@@ -35,7 +35,7 @@ export const createStyles = (theme: Theme) => StyleSheet.create({
         width: '100%',
     },
     footerButton: {
-        backgroundColor: theme.elevatedButton,
+        backgroundColor: theme.primary,
         paddingVertical: 10,
         paddingHorizontal: 24,
         borderRadius: 6,

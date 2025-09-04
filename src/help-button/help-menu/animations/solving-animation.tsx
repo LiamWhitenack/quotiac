@@ -153,7 +153,7 @@ export function SolvingDemonstration() {
               height: sizing.iconSize * 0.9,
               width: sizing.iconSize * 0.9,
               borderRadius: (sizing.iconSize * 0.9) / 2,
-              backgroundColor: theme.selected,
+              backgroundColor: theme.accent1,
             }}
           />
         )}

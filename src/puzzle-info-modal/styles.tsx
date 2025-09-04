@@ -90,7 +90,7 @@ export const createStyles = (theme: Theme) =>
       height: sizing.topBarHeight * 0.7,
       // transform: [{ scale: 1.5 }],
       marginHorizontal: 8,
-      backgroundColor: theme.elevatedButton,
+      backgroundColor: theme.primary,
       justifyContent: "center",
       borderRadius: 30,
       alignItems: "center",
@@ -98,7 +98,7 @@ export const createStyles = (theme: Theme) =>
     disabledModalButton: {
       height: sizing.topBarHeight * 0.7,
       marginHorizontal: 8,
-      borderColor: theme.elevatedButton, // set border color
+      borderColor: theme.primary, // set border color
       borderWidth: 2, // set border width
       justifyContent: "center",
       borderRadius: 30,

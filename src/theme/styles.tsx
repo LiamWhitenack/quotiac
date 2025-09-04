@@ -5,7 +5,7 @@ export const createAppStyles = (theme: Theme) =>
   StyleSheet.create({
     elevatedButton: {
       marginHorizontal: 8,
-      backgroundColor: theme.elevatedButton,
+      backgroundColor: theme.primary,
       paddingVertical: 12,
       paddingHorizontal: 30,
       borderRadius: 30,
