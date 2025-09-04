@@ -48,10 +48,11 @@ export function IconsWithHeight({
     <View
       key={key}
       style={{
-        alignItems: "center",
-        justifyContent: "center",
+        alignItems: "flex-start",
+        justifyContent: "flex-start",
         height: sizing.iconSize,
         width: sizing.iconSize,
+        overflow: "visible"
       }}
     >
       <Text
@@ -62,8 +63,10 @@ export function IconsWithHeight({
         }}
         style={{
           fontFamily: "SpaceMono",
-          fontSize: sizing.iconSize * 0.8,
+          fontSize: sizing.iconSize * 0.9,
           color: state.elementColor(letter, theme),
+          marginTop: -10 * 0.9,
+          marginLeft: 5 / 0.9
         }}
       >
         {letter.toUpperCase()}
