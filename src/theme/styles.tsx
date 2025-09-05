@@ -12,7 +12,7 @@ export const createAppStyles = (theme: Theme) =>
       alignItems: "center",
     },
     elevatedButtonText: {
-      color: theme.textInverse,
+      color: theme.primaryInverse,
       fontWeight: "600",
       fontSize: 18,
     },
