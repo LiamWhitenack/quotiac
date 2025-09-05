@@ -143,11 +143,11 @@ const LockSvg: FC<LockSvgProps> = ({ duration = 2500, width = 250, height = 300 
       <G transform="translate(0 40)">
         <AnimatedPath
           d="M50 55a50 50 0 01100 0v60h-20V55a30 30 0 00-60 0v100H50z"
-          fill={theme.primaryInverse}
+          fill={theme.background}
           fillRule="evenodd"
           animatedProps={animatedTransProps}
         />
-        <Circle cx={100} cy={180} r={90} fill={theme.primaryInverse} />
+        <Circle cx={100} cy={180} r={90} fill={theme.background} />
         <Polygon
           points="97.5,103.5 102.5,103.5 100,107"
           fill={theme.primary}
@@ -158,13 +158,13 @@ const LockSvg: FC<LockSvgProps> = ({ duration = 2500, width = 250, height = 300 
 
         <AnimatedG animatedProps={animatedProps}>
           <Circle cx={100} cy={180} r={70} fill={theme.primary} />
-          <Circle cx={100} cy={180} r={30} stroke={theme.primaryInverse} strokeWidth={4} />
+          <Circle cx={100} cy={180} r={30} stroke={theme.background} strokeWidth={4} />
 
           <Circle
             cx={100}
             cy={180}
             r={63}
-            stroke={theme.primaryInverse}
+            stroke={theme.background}
             strokeWidth={12}
             fill="none"
             strokeDasharray={bigTickStrokeDasharray}
@@ -174,7 +174,7 @@ const LockSvg: FC<LockSvgProps> = ({ duration = 2500, width = 250, height = 300 
             cx={100}
             cy={180}
             r={65}
-            stroke={theme.primaryInverse}
+            stroke={theme.background}
             strokeWidth={7}
             fill="none"
             strokeDasharray={smallTickStrokeDasharray}
@@ -182,7 +182,7 @@ const LockSvg: FC<LockSvgProps> = ({ duration = 2500, width = 250, height = 300 
           />
 
 
-          <G fill={theme.primaryInverse}>
+          <G fill={theme.background}>
             <G
               transform="translate(92, 128) scale(0.03125)"
               style={animating ? {} : styles.hide}
@@ -196,8 +196,8 @@ const LockSvg: FC<LockSvgProps> = ({ duration = 2500, width = 250, height = 300 
               fontSize="16px"
               textAnchor="middle"
               alignmentBaseline="middle"
-              fill={theme.primaryInverse}
-              stroke={theme.primaryInverse}
+              fill={theme.background}
+              stroke={theme.background}
               strokeWidth={1}
               opacity={animating ? 0 : 1}
             >
@@ -217,8 +217,8 @@ const LockSvg: FC<LockSvgProps> = ({ duration = 2500, width = 250, height = 300 
               fontSize="16px"
               textAnchor="middle"
               alignmentBaseline="middle"
-              fill={theme.primaryInverse}
-              stroke={theme.primaryInverse}
+              fill={theme.background}
+              stroke={theme.background}
               strokeWidth={1}
               opacity={animating ? 0 : 1}
               transform={"rotate(180 100 224)"}
@@ -240,8 +240,8 @@ const LockSvg: FC<LockSvgProps> = ({ duration = 2500, width = 250, height = 300 
               fontSize="16px"
               textAnchor="middle"
               alignmentBaseline="middle"
-              fill={theme.primaryInverse}
-              stroke={theme.primaryInverse}
+              fill={theme.background}
+              stroke={theme.background}
               strokeWidth={1}
               opacity={animating ? 0 : 1}
               transform={"rotate(-90 56 180)"}
@@ -262,8 +262,8 @@ const LockSvg: FC<LockSvgProps> = ({ duration = 2500, width = 250, height = 300 
               fontSize="16px"
               textAnchor="middle"
               alignmentBaseline="middle"
-              fill={theme.primaryInverse}
-              stroke={theme.primaryInverse}
+              fill={theme.background}
+              stroke={theme.background}
               strokeWidth={1}
               opacity={animating ? 0 : 1}
               transform={"rotate(90 144 180)"}
@@ -288,8 +288,8 @@ const LockSvg: FC<LockSvgProps> = ({ duration = 2500, width = 250, height = 300 
               fontSize="16px"
               textAnchor="middle"
               alignmentBaseline="middle"
-              fill={theme.primaryInverse}
-              stroke={theme.primaryInverse}
+              fill={theme.background}
+              stroke={theme.background}
               strokeWidth={1}
               opacity={animating ? 0 : 1}
               transform={"rotate(45 132 148)"}
@@ -310,8 +310,8 @@ const LockSvg: FC<LockSvgProps> = ({ duration = 2500, width = 250, height = 300 
               fontSize="16px"
               textAnchor="middle"
               alignmentBaseline="middle"
-              fill={theme.primaryInverse}
-              stroke={theme.primaryInverse}
+              fill={theme.background}
+              stroke={theme.background}
               strokeWidth={1}
               opacity={animating ? 0 : 1}
               transform={"rotate(135 131 211)"}
@@ -332,8 +332,8 @@ const LockSvg: FC<LockSvgProps> = ({ duration = 2500, width = 250, height = 300 
               fontSize="16px"
               textAnchor="middle"
               alignmentBaseline="middle"
-              fill={theme.primaryInverse}
-              stroke={theme.primaryInverse}
+              fill={theme.background}
+              stroke={theme.background}
               strokeWidth={1}
               opacity={animating ? 0 : 1}
               transform={"rotate(-135 70 212)"}
@@ -348,7 +348,7 @@ const LockSvg: FC<LockSvgProps> = ({ duration = 2500, width = 250, height = 300 
               <Path
                 d="M336 208v-95a80 80 0 00-160 0v95"
                 fill="none"
-                stroke={theme.primaryInverse}
+                stroke={theme.background}
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={32}
@@ -361,7 +361,7 @@ const LockSvg: FC<LockSvgProps> = ({ duration = 2500, width = 250, height = 300 
                 rx={48}
                 ry={48}
                 fill="none"
-                stroke={theme.primaryInverse}
+                stroke={theme.background}
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={32}
