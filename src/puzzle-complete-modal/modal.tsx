@@ -52,6 +52,8 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
 
   const emojiString = modifiedEmojiArray.join(" ");
 
+  const lockAnimationDuration = 3000;
+
   // crossfade animation value
   const fadeAnim = useRef(new Animated.Value(0)).current; // 0 = lock, 1 = congrats
 
@@ -66,7 +68,7 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
       Animated.timing(fadeAnim, {
         toValue: 1,
         duration: 750, // fade duration
-        delay: 2500,   // wait for lock animation
+        delay: lockAnimationDuration,   // wait for lock animation
         useNativeDriver: true,
         easing: Easing.inOut(Easing.ease),
       }).start();
@@ -167,7 +169,7 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
               alignItems: "center",
             }}
           >
-            <SolvingLockAnimation duration={2500} height={"242"} />
+            <SolvingLockAnimation duration={lockAnimationDuration} height={"242"} />
           </Animated.View>
 
           <Animated.View
