@@ -15,7 +15,6 @@ import ConfettiCannon from "react-native-confetti-cannon";
 import GameState from "@/src/state";
 import PuzzleCompleteModal from "@/src/puzzle-complete-modal/modal";
 import { useTitleFade, useAnimatedValue } from "@/src/app-effects/title-fade";
-import { useOnCompleteModal } from "@/src/app-effects/show-modal";
 import { useTheme } from "@/src/theme/ThemeContext";
 import PuzzleDetailsModal from "@/src/puzzle-info-modal/skeleton";
 import CustomIonicons from "@/src/custom-icons";
@@ -29,6 +28,7 @@ const QuotiacGame = ({
   state: GameState;
   setGameState: React.Dispatch<React.SetStateAction<GameState>>;
 }) => {
+  const [completionModalShown, setCompletionModalShown] = useState(false);
   const [completionModalVisible, setCompletionModalVisible] = useState(false);
   const [puzzleDetailsModalDisabled, setPuzzleDetailsModalDisabled] =
     useState(false);
@@ -47,7 +47,11 @@ const QuotiacGame = ({
     setGameState(clone);
   }
 
+
   useEffect(() => {
+    if (state.solved && !puzzleDetailsModalVisible) {
+      setCompletionModalVisible(true)
+    }
     if (!sizing.isMobile) {
       const recentKeys: string[] = [];
       const handleKeyPress = (event: KeyboardEvent) => {
@@ -88,11 +92,6 @@ const QuotiacGame = ({
   });
 
   useTitleFade(fadeTitleAnimation, showAppTitle, setShowAppTitle);
-  useOnCompleteModal(
-    state,
-    setCompletionModalVisible,
-    setPuzzleDetailsModalDisabled
-  );
 
   const Wrapper = sizing.isMobile ? SafeAreaView : View;
 
@@ -180,9 +179,6 @@ const QuotiacGame = ({
           </View>
 
         </View>
-        {state.fireConfetti && (
-          <ConfettiCannon count={100} origin={{ x: 200, y: 0 }} fadeOut />
-        )}
         <QuoteDisplay state={state} updateState={updateState} />
         <LetterKeyboardDisplay
           state={state}
@@ -192,8 +188,9 @@ const QuotiacGame = ({
 
         <PuzzleCompleteModal
           state={state}
-          visible={completionModalVisible}
+          visible={completionModalVisible && !completionModalShown}
           onClose={() => {
+            setCompletionModalShown(true);
             setCompletionModalVisible(false);
           }}
         />
