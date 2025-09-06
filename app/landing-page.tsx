@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Image, Platform, Dimensions, StyleSheet }
 import { createAppStyles } from "@/src/theme/styles";
 import { useTheme } from "@/src/theme/ThemeContext";
 import InfiniteLockAnimation from "@/src/icon/infinite-animation";
-import LockSvg from "@/src/icon/solving-animation";
+import SolvingLockAnimation from "@/src/icon/solving-animation";
 import type { Theme } from "@/src/theme/themes";
 
 const isWeb = Platform.OS === "web";
