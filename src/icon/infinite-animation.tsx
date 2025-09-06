@@ -59,8 +59,8 @@ const InfiniteLockAnimation: FC<LockSvgProps> = ({ duration = 2500, width = 250,
   useEffect(() => {
     function runLoop() {
       // Pick new min and max for this cycle
-      const min = Math.random() * 0.5;
-      const max = 1 - Math.random() * 0.5;
+      const min = Math.random();
+      const max = 2 - Math.random();
 
       // Animate to max
       rotation.value = withTiming(
@@ -91,7 +91,7 @@ const InfiniteLockAnimation: FC<LockSvgProps> = ({ duration = 2500, width = 250,
 
   useDerivedValue(() => {
     // When rotation exceeds 2/3 of the target, set animating false
-    if (rotation.value >= (360 * 7) * 2 / 3) {
+    if (rotation.value >= (360 * 4) * 2 / 3) {
       runOnJS(setAnimating)(false);
     }
   });

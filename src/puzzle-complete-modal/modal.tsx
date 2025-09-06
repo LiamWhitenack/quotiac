@@ -52,26 +52,10 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
 
   const emojiString = modifiedEmojiArray.join(" ");
 
-  const lockAnimationDuration = 3000;
-
-  // crossfade animation value
-  const fadeAnim = useRef(new Animated.Value(0)).current; // 0 = lock, 1 = congrats
-
   // Handle animation timing and load streaks on modal open
   useEffect(() => {
     if (visible) {
       loadAndUpdateStreaks();
-
-      // reset fade state
-      fadeAnim.setValue(0);
-
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 750, // fade duration
-        delay: lockAnimationDuration,   // wait for lock animation
-        useNativeDriver: true,
-        easing: Easing.inOut(Easing.ease),
-      }).start();
     }
   }, [visible]);
 
@@ -159,57 +143,39 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
     <Modal animationType="slide" transparent={true} visible={visible}>
       <View style={styles.modalOverlay}>
         <View style={styles.modalContent}>
-          {/* Lock animation */}
-          <Animated.View
-            style={{
-              opacity: fadeAnim.interpolate({ inputRange: [0, 1], outputRange: [1, 0] }),
-              position: "absolute",
-              bottom: 20,
-              width: "100%",
-              alignItems: "center",
-            }}
-          >
-            <SolvingLockAnimation duration={lockAnimationDuration} height={"242"} />
-          </Animated.View>
 
-          <Animated.View
-            style={{
-              opacity: fadeAnim.interpolate({ inputRange: [0, 1], outputRange: [0, 1] }),
-            }}
-          >
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Congratulations!</Text>
-              <TouchableOpacity onPress={onClose}>
-                <CustomIonicons name="close" size={24} color="gray" />
-              </TouchableOpacity>
-            </View>
-
-            <View style={{ height: 20 }} />
-
-            <View style={{ alignItems: "center" }}>
-              <Text style={{ fontSize: 28, lineHeight: 36, textAlign: "center" }}>
-                {emojiString}
-              </Text>
-
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginTop: 20,
-                  justifyContent: "space-around",
-                }}
-              >
-                <StreakStat label1="Completed" value={puzzlesCompleted} />
-                <StreakStat label1="Current" label2="Streak" value={currentStreak} />
-                <StreakStat label1="Max" label2="Streak" value={maxStreak} />
-              </View>
-            </View>
-
-            <View style={{ height: 20 }} />
-
-            <TouchableOpacity style={appStyles.elevatedButton} onPress={handleShare}>
-              <Text style={appStyles.elevatedButtonText}>Share your results</Text>
+          <View style={styles.modalHeader}>
+            <Text style={styles.modalTitle}>Congratulations!</Text>
+            <TouchableOpacity onPress={onClose}>
+              <CustomIonicons name="close" size={24} color="gray" />
             </TouchableOpacity>
-          </Animated.View>
+          </View>
+
+          <View style={{ height: 20 }} />
+
+          <View style={{ alignItems: "center" }}>
+            <Text style={{ fontSize: 28, lineHeight: 36, textAlign: "center" }}>
+              {emojiString}
+            </Text>
+
+            <View
+              style={{
+                flexDirection: "row",
+                marginTop: 20,
+                justifyContent: "space-around",
+              }}
+            >
+              <StreakStat label1="Completed" value={puzzlesCompleted} />
+              <StreakStat label1="Current" label2="Streak" value={currentStreak} />
+              <StreakStat label1="Max" label2="Streak" value={maxStreak} />
+            </View>
+          </View>
+
+          <View style={{ height: 20 }} />
+
+          <TouchableOpacity style={appStyles.elevatedButton} onPress={handleShare}>
+            <Text style={appStyles.elevatedButtonText}>Share your results</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </Modal>

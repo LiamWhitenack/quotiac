@@ -16,9 +16,10 @@ import Svg, { G, Path, Circle, Text, Rect } from "react-native-svg"
 const AnimatedG = Animated.createAnimatedComponent(G);
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 type LockSvgProps = {
-  duration?: number; // Optional, default fallback will be provided
+  duration: number; // Optional, default fallback will be provided
   width?: number | string;
   height?: number | string;
+  start?: boolean;
 };
 
 export const createIconStyles = () =>
@@ -51,37 +52,28 @@ function getCircleTicks(
 }
 
 
-const SolvingLockAnimation: FC<LockSvgProps> = ({ duration = 2500, width = 250, height = 300 }) => {
+const SolvingLockAnimation: FC<LockSvgProps> = ({
+  duration,
+  width = 250,
+  height = 300,
+  start = false, // default is false
+}) => {
   const { theme, mode } = useTheme();
 
   const animation = useSharedValue(0);
   const translation = useSharedValue(0);
-  // const currentLetter = useSharedValue("Q");
-  const [animating, setAnimating] = useState(true);
+  const [animating, setAnimating] = useState(false);
   const styles = createIconStyles();
-  // Sequence of animations:
-  // 1) rotate clockwise to 135 degs
-  // 2) Change icon to letter Q
-  // 3) Rotate counter-clockwise to -135 degs
-  // 4) Change icon to letter C
-  // 5) Rotate clockwise to 90 degs
-  // 6) Change icon to letter U
-  // 7) Rotate counter-clockwise to -90 degs
-  // 8) Change icon to letter A
-  // 9) Rotate clockwise to 45 degs
-  // 10) Change icon to letter O
-  // 11) Rotate counter-clockwise to -45 degs
-  // 12) Change icon to letter I
-  // 13) Rotate clockwise to 0 degs
-  // 14) Change icon to letter T
-  // 15) Open shackle (translate up)
-  // total = 3s
+
   useEffect(() => {
+    if (!start) return; // only start when true
+
+    setAnimating(true);
     animation.value = withTiming(
       1,
       {
         duration: duration * (7 / 8),
-        easing: Easing.inOut(Easing.cubic), // smoother easing
+        easing: Easing.inOut(Easing.cubic),
       },
       (finished) => {
         if (finished) {
@@ -92,7 +84,8 @@ const SolvingLockAnimation: FC<LockSvgProps> = ({ duration = 2500, width = 250, 
         }
       }
     );
-  }, []);
+  }, [start]);
+
 
   useDerivedValue(() => {
     // When rotation exceeds 2/3 of the target, set animating false

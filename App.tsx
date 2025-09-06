@@ -50,8 +50,11 @@ const QuotiacGame = ({
 
   useEffect(() => {
     if (state.solved && !puzzleDetailsModalVisible) {
-      setCompletionModalVisible(true)
+      setTimeout(() => {
+        setCompletionModalVisible(true);
+      }, 4500);
     }
+
     if (!sizing.isMobile) {
       const recentKeys: string[] = [];
       const handleKeyPress = (event: KeyboardEvent) => {
