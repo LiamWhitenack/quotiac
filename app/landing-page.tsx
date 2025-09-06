@@ -2,7 +2,8 @@ import React from "react";
 import { View, Text, TouchableOpacity, Image, Platform, Dimensions, StyleSheet } from "react-native";
 import { createAppStyles } from "@/src/theme/styles";
 import { useTheme } from "@/src/theme/ThemeContext";
-import LockSvg from "@/src/icon/static";
+import InfiniteLockAnimation from "@/src/icon/infinite-animation";
+import LockSvg from "@/src/icon/solving-animation";
 import type { Theme } from "@/src/theme/themes";
 
 const isWeb = Platform.OS === "web";
@@ -112,7 +113,7 @@ export default function LandingPage({
     return (
         // @ts-ignore
         <View style={landingPageStyles.container}>
-            <LockSvg />
+            <InfiniteLockAnimation />
 
             <Text style={[styles.title, { textAlign: "center", width: "100%" }]}>
                 Quotiac
