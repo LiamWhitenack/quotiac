@@ -17,7 +17,7 @@ import sizing from "@/src/sizing/sizing";
 import CustomIonicons from "@/src/custom-icons";
 import { createStyles } from "./styles";
 import { createAppStyles } from "../theme/styles";
-import LockSvg from "../app-effects/lock-icon";
+import LockSvg from "../icon/solving-animation";
 
 type PuzzleCompleteModalProps = {
   state: GameState;
@@ -164,7 +164,7 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
       <View style={styles.modalOverlay}>
         <View style={styles.modalContent}>
           {!showCongrats ? (
-            <LockSvg height={"242"}/>
+            <LockSvg height={"242"} />
           ) : (
             <>
               <View style={styles.modalHeader}>

@@ -148,12 +148,12 @@ const LockSvg: FC<LockSvgProps> = ({ duration = 2500, width = 250, height = 300 
           animatedProps={animatedTransProps}
         />
         <Circle cx={100} cy={180} r={90} fill={theme.background} />
-        <Polygon
+        {/* <Polygon
           points="97.5,103.5 102.5,103.5 100,107"
           fill={theme.primary}
           stroke={theme.primary}
           strokeWidth={1}
-        />
+        /> */}
 
 
         <AnimatedG animatedProps={animatedProps}>
