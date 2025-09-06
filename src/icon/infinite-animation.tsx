@@ -9,6 +9,7 @@ import Animated, {
   useAnimatedProps,
   runOnJS,
   useDerivedValue,
+  withRepeat,
 } from "react-native-reanimated";
 import Svg, { G, Path, Circle, Text, Rect, Polygon } from "react-native-svg"
 /* SVGR has dropped some elements not supported by react-native-svg: animateTransform */
@@ -77,19 +78,37 @@ const LockSvg: FC<LockSvgProps> = ({ duration = 2500, width = 250, height = 300 
   // 15) Open shackle (translate up)
   // total = 3s
   useEffect(() => {
-    rotation.value = withTiming(
-      360 * 6,
-      { duration: duration * (7 / 8), easing: Easing.ease },
-      (finished) => {
-        if (finished) {
-          translation.value = withTiming(-35, {
-            duration: duration / 10,
-            easing: Easing.ease
-          });
+    function runLoop() {
+      // Pick new min and max for this cycle
+      const min = Math.random() * 0.2; // between 0.0 and 0.2
+      const max = 1 - Math.random() * 0.2; // between 0.8 and 1.0
+
+      // Animate to max
+      rotation.value = withTiming(
+        max,
+        { duration, easing: Easing.inOut(Easing.ease) },
+        (finished) => {
+          if (finished) {
+            // Animate back to min
+            rotation.value = withTiming(
+              min,
+              { duration, easing: Easing.inOut(Easing.ease) },
+              (finished2) => {
+                if (finished2) {
+                  // Start again with new random bounds
+                  runOnJS(runLoop)();
+                }
+              }
+            );
+          }
         }
-      }
-    );
+      );
+    }
+
+    runLoop();
   }, []);
+
+
 
   useDerivedValue(() => {
     // When rotation exceeds 2/3 of the target, set animating false
@@ -111,13 +130,14 @@ const LockSvg: FC<LockSvgProps> = ({ duration = 2500, width = 250, height = 300 
   const centerY = 180;
 
   const animatedProps = useAnimatedProps(() => {
+    const angle = rotation.value * 360; // maps 0–1 → 0–360
     if (isMobile) {
       return {
         transform: [
-          { translateX: centerX }, // Translate to the desired origin
+          { translateX: centerX },
           { translateY: centerY },
-          { rotate: `${rotation.value}deg` },
-          { translateX: -centerX }, // Translate back
+          { rotate: `${angle}deg` },
+          { translateX: -centerX },
           { translateY: -centerY },
         ],
       };
