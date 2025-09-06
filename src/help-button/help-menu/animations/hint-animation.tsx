@@ -83,6 +83,7 @@ export function HintDemonstration() {
         justifyContent: "center",
         height: sizing.iconSize,
         width: sizing.iconSize,
+        overflow: "visible"
       }}
     >
       <Text

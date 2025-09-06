@@ -6,17 +6,18 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Platform,
   Share,
+  Animated,
+  Easing,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import GameState from "@/src/state";
 import * as Clipboard from "expo-clipboard";
 import { useTheme } from "@/src/theme/ThemeContext";
-import sizing from "@/src/sizing/sizing";
 import CustomIonicons from "@/src/custom-icons";
 import { createStyles } from "./styles";
 import { createAppStyles } from "../theme/styles";
+import SolvingLockAnimation from "../icon/solving-animation";
 
 type PuzzleCompleteModalProps = {
   state: GameState;
@@ -39,7 +40,6 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
   const [currentStreak, setCurrentStreak] = useState(0);
   const [maxStreak, setMaxStreak] = useState(0);
   const [puzzlesCompleted, setPuzzlesCompleted] = useState(0);
-  const [lastPlayedDate, setLastPlayedDate] = useState<string | null>(null);
 
   const originalEmojis = ["\u{1F632}", "\u{1F601}", "\u{1F642}", "\u{1F60C}", "\u{1F636}"];
   const hintEmoji = "\u{1F4A1}";
@@ -52,7 +52,7 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
 
   const emojiString = modifiedEmojiArray.join(" ");
 
-  // 🔄 Load streaks on modal open
+  // Handle animation timing and load streaks on modal open
   useEffect(() => {
     if (visible) {
       loadAndUpdateStreaks();
@@ -76,7 +76,6 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
       }
 
       if (stored.lastPlayed === today) {
-        // Already recorded today, just update display
         setCurrentStreak(stored.currentStreak);
         setMaxStreak(stored.maxStreak);
         setPuzzlesCompleted(stored.puzzlesCompleted);
@@ -91,7 +90,6 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
       const updatedMax = Math.max(stored.maxStreak, updatedStreak);
       const updatedCompleted = stored.puzzlesCompleted + 1;
 
-      // Save updated data
       const newData = {
         currentStreak: updatedStreak,
         maxStreak: updatedMax,
@@ -115,17 +113,14 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
       const formattedDate = `${String(today.getMonth() + 1).padStart(2, "0")}/${String(today.getDate()).padStart(2, "0")}/${String(today.getFullYear())}`;
       const shareableString = `${emojiString} - ${formattedDate}\nquotiac.io`;
 
-
       try {
-
         await Share.share({
           message: shareableString,
-          title: 'Quotiac',
+          title: "Quotiac",
         });
-
-        return
+        return;
       } catch {
-        await navigator.clipboard.writeText(shareableString);
+        await Clipboard.setStringAsync(shareableString);
       }
 
       alert("Copied results to clipboard!");
@@ -133,8 +128,6 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
       alert("Failed to share or copy to clipboard. Please try again.");
     }
   };
-
-
 
   const StreakStat = ({ label1, label2, value }: { label1: string; label2?: string; value: number }) => (
     <View style={{ alignItems: "center", marginHorizontal: 6, width: 70 }}>
@@ -150,6 +143,7 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
     <Modal animationType="slide" transparent={true} visible={visible}>
       <View style={styles.modalOverlay}>
         <View style={styles.modalContent}>
+
           <View style={styles.modalHeader}>
             <Text style={styles.modalTitle}>Congratulations!</Text>
             <TouchableOpacity onPress={onClose}>
@@ -164,7 +158,13 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
               {emojiString}
             </Text>
 
-            <View style={{ flexDirection: "row", marginTop: 20, justifyContent: "space-around" }}>
+            <View
+              style={{
+                flexDirection: "row",
+                marginTop: 20,
+                justifyContent: "space-around",
+              }}
+            >
               <StreakStat label1="Completed" value={puzzlesCompleted} />
               <StreakStat label1="Current" label2="Streak" value={currentStreak} />
               <StreakStat label1="Max" label2="Streak" value={maxStreak} />
@@ -179,6 +179,7 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
         </View>
       </View>
     </Modal>
+
   );
 };
 

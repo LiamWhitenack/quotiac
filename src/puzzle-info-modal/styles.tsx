@@ -114,7 +114,7 @@ export const createStyles = (theme: Theme) =>
       fontSize: 16,
     },
     modalButtonText: {
-      color: theme.textInverse,
+      color: theme.primaryInverse,
       fontWeight: "bold",
       fontSize: 14,
       paddingHorizontal: 16,

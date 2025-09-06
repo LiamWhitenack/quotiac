@@ -15,12 +15,12 @@ import ConfettiCannon from "react-native-confetti-cannon";
 import GameState from "@/src/state";
 import PuzzleCompleteModal from "@/src/puzzle-complete-modal/modal";
 import { useTitleFade, useAnimatedValue } from "@/src/app-effects/title-fade";
-import { useOnCompleteModal } from "@/src/app-effects/show-modal";
 import { useTheme } from "@/src/theme/ThemeContext";
 import PuzzleDetailsModal from "@/src/puzzle-info-modal/skeleton";
 import CustomIonicons from "@/src/custom-icons";
 import HelpModal from "./src/help-button/help-button";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { totalSolveAnimationDuration } from "./src/icon/durations";
 
 const QuotiacGame = ({
   state,
@@ -29,6 +29,7 @@ const QuotiacGame = ({
   state: GameState;
   setGameState: React.Dispatch<React.SetStateAction<GameState>>;
 }) => {
+  const [completionModalShown, setCompletionModalShown] = useState(false);
   const [completionModalVisible, setCompletionModalVisible] = useState(false);
   const [puzzleDetailsModalDisabled, setPuzzleDetailsModalDisabled] =
     useState(false);
@@ -40,13 +41,21 @@ const QuotiacGame = ({
   const [helpModalVisible, setHelpModalVisible] = useState(false);
 
   const { theme, mode } = useTheme();
+  const mainWindowStyles = createMainWindowStyles(theme);
 
   function updateState() {
     const clone = state.clone();
     setGameState(clone);
   }
 
+
   useEffect(() => {
+    if (state.solved && !puzzleDetailsModalVisible) {
+      setTimeout(() => {
+        setCompletionModalVisible(true);
+      }, totalSolveAnimationDuration);
+    }
+
     if (!sizing.isMobile) {
       const recentKeys: string[] = [];
       const handleKeyPress = (event: KeyboardEvent) => {
@@ -87,14 +96,8 @@ const QuotiacGame = ({
   });
 
   useTitleFade(fadeTitleAnimation, showAppTitle, setShowAppTitle);
-  useOnCompleteModal(
-    state,
-    setCompletionModalVisible,
-    setPuzzleDetailsModalDisabled
-  );
 
   const Wrapper = sizing.isMobile ? SafeAreaView : View;
-  const mainWindowStyles = createMainWindowStyles(theme);
 
   return (
     <>
@@ -180,9 +183,6 @@ const QuotiacGame = ({
           </View>
 
         </View>
-        {state.fireConfetti && (
-          <ConfettiCannon count={100} origin={{ x: 200, y: 0 }} fadeOut />
-        )}
         <QuoteDisplay state={state} updateState={updateState} />
         <LetterKeyboardDisplay
           state={state}
@@ -192,8 +192,9 @@ const QuotiacGame = ({
 
         <PuzzleCompleteModal
           state={state}
-          visible={completionModalVisible}
+          visible={completionModalVisible && !completionModalShown}
           onClose={() => {
+            setCompletionModalShown(true);
             setCompletionModalVisible(false);
           }}
         />

@@ -9,6 +9,7 @@ export const createStyles = (theme: Theme) =>
       borderRadius: 16,
       padding: 24,
       width: sizing.maxWidth * 0.8,
+      maxWidth: 360,
       alignItems: "center",
       shadowColor: "#000",
       shadowOffset: { width: 0, height: 4 },
@@ -94,6 +95,7 @@ export const createStyles = (theme: Theme) =>
 
     modalButton: {
       flex: 1,
+      paddingHorizontal: 16,
       marginHorizontal: 8,
       backgroundColor: theme.primary,
       paddingVertical: 12,
@@ -101,7 +103,7 @@ export const createStyles = (theme: Theme) =>
       alignItems: "center",
     },
     modalButtonText: {
-      color: theme.textInverse,
+      color: theme.primaryInverse,
       fontWeight: "600",
       fontSize: 18,
     },

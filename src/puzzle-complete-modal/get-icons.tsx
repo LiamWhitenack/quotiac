@@ -13,6 +13,7 @@ const defaultTheme = {
 };
 
 function getIcons(state: GameState, theme: Partial<Theme> = {}) {
+  state.puzzle.encodingMap
   const noThemePassed = Object.keys(theme).length === 0;
   const resolvedTheme = { ...defaultTheme, ...theme };
 
@@ -59,11 +60,12 @@ function getIcons(state: GameState, theme: Partial<Theme> = {}) {
   );
 
   const words = state.puzzle.stringToEncrypt.split(" ");
+  const uniqueChars = Array.from(state.encodingMap.keys());
   const maxLength = noThemePassed
-    ? Math.max(10, Math.max(...words.map((s) => s.length)))
+    ? Math.max(10, Math.max(...uniqueChars.map((s) => s.length)))
     : (sizing.maxWidth / sizing.iconSize) * 0.8;
 
-  const quote = wrapWords(words, maxLength, true)
+  const quote = wrapWords(uniqueChars, maxLength, true)
     .split("")
     .map((char) => state.encodingMap.get(char) ?? char);
 

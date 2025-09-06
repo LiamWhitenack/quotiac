@@ -8,6 +8,7 @@ import { todayString } from "@/src/utils";
 import LandingPage from "./landing-page";
 import { useNavigation } from "expo-router";
 import { useAppBootstrap, useRouteDateSync } from "@/src/hooks";
+import LoadingPage from "./loading-page";
 
 function getDateFromURL(): string | null {
     try {
@@ -86,8 +87,10 @@ function App({ eagerState, dateString }: AppProps) {
     const [routeDate, setRouteDate] = useState<string | undefined>(dateString);
     const [fontsLoaded, setFontsLoaded] = useState(false);
     const navigation = useNavigation();
+    const { theme } = useTheme();
 
     useAppBootstrap(setFontsLoaded);
+    {/* @ts-ignore */ }
     useRouteDateSync(routeDate, setRouteDate, navigation);
 
     useEffect(() => {
@@ -111,9 +114,9 @@ function App({ eagerState, dateString }: AppProps) {
 
     if (!fontsLoaded || !gameState) {
         return (
-            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                <Text>Loading...</Text>
-            </View>
+            <ThemeProvider>
+                <LoadingPage />
+            </ThemeProvider>
         );
     }
 
