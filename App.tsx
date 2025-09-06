@@ -20,6 +20,7 @@ import PuzzleDetailsModal from "@/src/puzzle-info-modal/skeleton";
 import CustomIonicons from "@/src/custom-icons";
 import HelpModal from "./src/help-button/help-button";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { totalSolveAnimationDuration } from "./src/icon/durations";
 
 const QuotiacGame = ({
   state,
@@ -52,7 +53,7 @@ const QuotiacGame = ({
     if (state.solved && !puzzleDetailsModalVisible) {
       setTimeout(() => {
         setCompletionModalVisible(true);
-      }, 4500);
+      }, totalSolveAnimationDuration);
     }
 
     if (!sizing.isMobile) {

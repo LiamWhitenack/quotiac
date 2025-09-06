@@ -1,6 +1,7 @@
 // app-effects/title-fade.ts
 import { useEffect, useState } from "react";
 import { Animated, Easing } from "react-native";
+import { solveAnimationDuration } from "../icon/durations";
 
 export function useTitleFade(
   fadeAnim: Animated.Value,
@@ -26,7 +27,7 @@ export function useTitleFade(
         ]).start(() => {
           setShowAppTitle(false);
         });
-      }, 3000);
+      }, solveAnimationDuration);
 
       return () => clearTimeout(timeout);
     }

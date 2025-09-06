@@ -6,6 +6,7 @@ import { useTheme } from "@/src/theme/ThemeContext";
 import sizing from "@/src/sizing/sizing";
 import { IconsWithHeight } from "./get-icons";
 import SolvingLockAnimation from "../icon/solving-animation";
+import { solveAnimationFadeDuration, solveAnimationDuration } from "../icon/durations";
 interface QuoteDisplayProps {
   state: GameState;
   updateState: () => void;
@@ -30,8 +31,6 @@ const QuoteDisplay: React.FC<QuoteDisplayProps> = ({ state, updateState }) => {
     scrollOffsetRef.current = event.nativeEvent.contentOffset.y;
   };
 
-  const lockAnimationDuration = 3000;
-
   // crossfade animation value
   const fadeAnim = useRef(new Animated.Value(0)).current; // 0 = lock, 1 = congrats
 
@@ -46,13 +45,12 @@ const QuoteDisplay: React.FC<QuoteDisplayProps> = ({ state, updateState }) => {
 
 
     if (state.solved) {
-      console.log("solved?")
       fadeAnim.setValue(0);
 
       Animated.sequence([
         Animated.timing(fadeAnim, {
           toValue: 1,
-          duration: 500,
+          duration: solveAnimationFadeDuration,
           useNativeDriver: true,
           easing: Easing.inOut(Easing.ease),
         }),
@@ -62,10 +60,10 @@ const QuoteDisplay: React.FC<QuoteDisplayProps> = ({ state, updateState }) => {
 
           // continue with the rest of the sequence
           Animated.sequence([
-            Animated.delay(lockAnimationDuration),
+            Animated.delay(solveAnimationDuration),
             Animated.timing(fadeAnim, {
               toValue: 0,
-              duration: 500,
+              duration: solveAnimationFadeDuration,
               useNativeDriver: true,
               easing: Easing.inOut(Easing.ease),
             }),
@@ -132,7 +130,7 @@ const QuoteDisplay: React.FC<QuoteDisplayProps> = ({ state, updateState }) => {
       }
       }
     >
-      <SolvingLockAnimation duration={lockAnimationDuration} start={startAnimation} height={242} />
+      <SolvingLockAnimation duration={solveAnimationDuration} start={startAnimation} height={242} />
     </Animated.View >
 
 
