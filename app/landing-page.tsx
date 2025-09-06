@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity, Image, Platform, Dimensions, StyleSheet } from "react-native";
 import { createAppStyles } from "@/src/theme/styles";
 import { useTheme } from "@/src/theme/ThemeContext";
-import LockSvg from "@/src/icon/solving-animation";
+import LockSvg from "@/src/icon/static";
 import type { Theme } from "@/src/theme/themes";
 
 const isWeb = Platform.OS === "web";
