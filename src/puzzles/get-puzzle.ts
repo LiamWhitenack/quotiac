@@ -79,7 +79,7 @@ const fetchQuote = async (dateString: string): Promise<CryptographBase | null> =
 
         // 2. Fetch from network
         let response = await fetch(
-            `https://raw.githubusercontent.com/LiamWhitenack/codiac-puzzles/refs/heads/dev/resources/by-date/${dateString}.json`
+            `https://raw.githubusercontent.com/LiamWhitenack/quotiac-puzzles/refs/heads/dev/resources/by-date/${dateString}.json`
         );
 
         let puzzleData;
@@ -87,7 +87,7 @@ const fetchQuote = async (dateString: string): Promise<CryptographBase | null> =
             puzzleData = await response.json();
         } else {
             const fallbackResponse = await fetch(
-                `https://raw.githubusercontent.com/LiamWhitenack/codiac-puzzles/refs/heads/dev/resources/auto-generated/${dateString}.json`
+                `https://raw.githubusercontent.com/LiamWhitenack/quotiac-puzzles/refs/heads/dev/resources/auto-generated/${dateString}.json`
             );
             if (!fallbackResponse.ok) {
                 return null;
@@ -121,7 +121,7 @@ const fetchTutorialQuote = async (): Promise<CryptographBase> => {
     let puzzleData;
 
     // TODO update this to use main when ready to use routing
-    const response = await fetch(`https://raw.githubusercontent.com/LiamWhitenack/codiac-puzzles/refs/heads/dev/resources/tutorial.json`);
+    const response = await fetch(`https://raw.githubusercontent.com/LiamWhitenack/quotiac-puzzles/refs/heads/dev/resources/tutorial.json`);
     puzzleData = await response.json();
     console.log(puzzleData);
     return new CryptographBase(puzzleData.string_to_encrypt, puzzleData.puzzle_type, parseHints(puzzleData.hints), parseEncryptionMap(puzzleData.encryption_map), parseOtherInfo(puzzleData.other_info));
