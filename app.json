@@ -39,6 +39,19 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          },
+          "android": {
+            "extraMavenRepos": [
+              "https://maven.google.com"
+            ]
+          }
+        }
       ]
     ],
     "experiments": {
