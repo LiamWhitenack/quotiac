@@ -27,7 +27,6 @@ const QuoteDisplay: React.FC<QuoteDisplayProps> = ({ state, updateState }) => {
   // Save scroll position on scroll 
   // @ts-ignore
   const onScroll = (event) => {
-    console.log(event)
     scrollOffsetRef.current = event.nativeEvent.contentOffset.y;
   };
 
@@ -93,6 +92,7 @@ const QuoteDisplay: React.FC<QuoteDisplayProps> = ({ state, updateState }) => {
           scrollEventThrottle={16}
         >
           {children}
+          <View style={{ height: sizing.keyboardHeight * 0.1 }} />
         </ScrollView>
       );
     } else {
@@ -114,6 +114,21 @@ const QuoteDisplay: React.FC<QuoteDisplayProps> = ({ state, updateState }) => {
   };
 
   return (<>
+    <ConditionalScrollView>
+      <Animated.View
+        style={{
+          opacity: fadeAnim.interpolate({ inputRange: [0, 1], outputRange: [1, 0] }),
+          pointerEvents: "box-none"
+        }}
+      >
+        <IconsWithHeight
+          containerHeight={containerHeight}
+          state={state}
+          updateState={updateState}
+          theme={theme}
+        />
+      </Animated.View>
+    </ConditionalScrollView>
     < Animated.View
       style={{
         opacity: fadeAnim.interpolate({ inputRange: [0, 1], outputRange: [0, 1] }),
@@ -127,6 +142,7 @@ const QuoteDisplay: React.FC<QuoteDisplayProps> = ({ state, updateState }) => {
         alignContent: "center",
         justifyContent: "center",
         alignItems: "center",
+        pointerEvents: "box-none"
       }
       }
     >
@@ -134,20 +150,6 @@ const QuoteDisplay: React.FC<QuoteDisplayProps> = ({ state, updateState }) => {
     </Animated.View >
 
 
-    <Animated.View
-      style={{
-        opacity: fadeAnim.interpolate({ inputRange: [0, 1], outputRange: [1, 0] }),
-      }}
-    >
-      <ConditionalScrollView>
-        <IconsWithHeight
-          containerHeight={containerHeight}
-          state={state}
-          updateState={updateState}
-          theme={theme}
-        />
-      </ConditionalScrollView>
-    </Animated.View>
   </>
   );
 };
