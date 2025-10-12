@@ -89,7 +89,7 @@ function getOrdinalSuffix(day: number) {
 function formatDate(dateString: string) {
     try {
         const year = Number(dateString.slice(0, 4));
-        const month = Number(dateString.slice(6, 8)) - 1;
+        const month = Number(dateString.slice(4, 6)) - 1;
         const day = Number(dateString.slice(6, 8));
         const date = new Date(year, month, day);
         const monthName = date.toLocaleString("en-US", { month: "long" });

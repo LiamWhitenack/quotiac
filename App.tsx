@@ -125,17 +125,11 @@ const QuotiacGame = ({
               onPress={() => {
                 setPuzzleDetailsModalVisible(true);
               }}
-              disabled={state.givenHintLetters.length === 5}
             >
               <View style={{ position: "relative", width: 32, height: 32 }}>
                 <CustomIonicons
                   name="information"
                   size={32}
-                  color={
-                    state.givenHintLetters.length === 5
-                      ? theme.surface
-                      : theme.text
-                  }
                   style={{ position: "absolute", top: 0, left: 0 }}
                 />
               </View>
