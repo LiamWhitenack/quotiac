@@ -1,7 +1,7 @@
 import { View } from "react-native";
 import sizing from "@/src/sizing/sizing";
 import GameState from "@/src/state";
-import { splitOnPercent, wrapWords } from "@/src/sizing/wrap-words";
+import { splitByLine, wrapWords } from "@/src/sizing/wrap-words";
 import type { Theme } from "@/src/theme/themes";
 import CustomIonicons from "@/src/custom-icons";
 
@@ -71,7 +71,7 @@ function getIcons(state: GameState, theme: Partial<Theme> = {}) {
 
   return (
     <View>
-      {splitOnPercent(quote).map((line, lineIndex) => {
+      {splitByLine(quote).map((line, lineIndex) => {
         return (
           <View
             key={`line-${lineIndex}`}

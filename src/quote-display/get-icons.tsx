@@ -1,6 +1,6 @@
 import sizing from "../sizing/sizing";
 import GameState from "@/src/state";
-import { splitOnPercent } from "@/src/sizing/wrap-words";
+import { splitByLine } from "@/src/sizing/wrap-words";
 import type { Theme } from "@/src/theme/themes";
 import React from "react";
 import { View, Text } from "react-native";
@@ -44,6 +44,30 @@ export function IconsWithHeight({
     />
   );
 
+  const renderBulletPoint = (key: string) => (
+    <View
+      key={key}
+      style={{
+        alignItems: "flex-start",
+        justifyContent: "flex-start",
+        height: sizing.iconSize,
+        width: sizing.iconSize,
+        overflow: "visible"
+      }}
+    >
+      <Text
+        style={{
+          fontFamily: "SpaceMono",
+          fontSize: sizing.iconSize * 0.9,
+          color: theme.text,
+          marginTop: -10 * 0.9,
+          marginLeft: 5 / 0.9
+        }}
+      >
+        {"-"}
+      </Text>
+    </View>
+  );
   const renderLetter = (letter: string, key: string, index: number) => (
     <View
       key={key}
@@ -132,7 +156,7 @@ export function IconsWithHeight({
 
   const decodedQuote = decodeQuote(state.encodedQuote);
   let quoteIndex = -2;
-  return splitOnPercent(decodedQuote).map((line, lineIndex) => {
+  return splitByLine(decodedQuote).map((line, lineIndex) => {
     quoteIndex++;
     return (
       <View
@@ -145,7 +169,7 @@ export function IconsWithHeight({
 
           if (element === " ") {
             return renderSpace(key);
-          } else if (element.length === 1) {
+          } else if (element == "*") { return renderBulletPoint(key); } else if (element.length === 1) {
             if (element >= "a" && element <= "z") {
               return renderLetter(element, key, quoteIndex);
             } else {
