@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { View, Text } from "react-native";
 import sizing from "../../../sizing/sizing";
-import { splitOnPercent } from "@/src/sizing/wrap-words";
+import { splitByLine } from "@/src/sizing/wrap-words";
 import CustomIonicons from "@/src/custom-icons";
 import { useTheme } from "../../../theme/ThemeContext";
 
@@ -153,7 +153,7 @@ export function HintDemonstration() {
 
   const decodedQuote = decodeQuote(quote);
 
-  return splitOnPercent(decodedQuote).map((line, lineIndex) => (
+  return splitByLine(decodedQuote).map((line, lineIndex) => (
     <View
       key={`line-${lineIndex}`}
       style={{ flexDirection: "row", justifyContent: "center" }}
