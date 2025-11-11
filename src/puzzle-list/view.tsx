@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useRef } from "react";
 import {
     View,
@@ -12,62 +13,39 @@ import {
 } from "react-native";
 import { useTheme } from "@/src/theme/ThemeContext";
 
-type LinkItem = {
+type PuzzleRouteItem = {
     id: string;
-    url: string;
+    date: string;
     description: string;
 };
 
-type LinksViewProps = {
+type PuzzlesViewProps = {
     visible: boolean;
     onClose?: () => void;
+    startGame: (date: string) => void;
 };
 
-export default function PuzzlesView({ visible, onClose }: LinksViewProps) {
+export default function PuzzlesView({ visible, onClose, startGame }: PuzzlesViewProps) {
     const { theme } = useTheme();
     const screenWidth = Dimensions.get("window").width;
     const slideAnim = useRef(new Animated.Value(screenWidth)).current;
 
-    const links: LinkItem[] = [
-        {
-            id: "1",
-            url: "https://example.com",
-            description: "Example resource",
-        },
-        {
-            id: "2",
-            url: "https://github.com/",
-            description: "GitHub homepage",
-        },
+    const navigation = useNavigation(); // ✅ Move hook to top level
+
+    const links: PuzzleRouteItem[] = [
+        { id: "1", date: "20250911", description: "9/11" },
+        { id: "2", date: "20251031", description: "Halloween" },
     ];
 
-    // Slide in/out animation based on visibility
+
     useEffect(() => {
-        if (visible) {
-            Animated.timing(slideAnim, {
-                toValue: 0,
-                duration: 300,
-                useNativeDriver: true,
-            }).start();
-        } else {
-            Animated.timing(slideAnim, {
-                toValue: screenWidth,
-                duration: 300,
-                useNativeDriver: true,
-            }).start();
-        }
+        Animated.timing(slideAnim, {
+            toValue: visible ? 0 : screenWidth,
+            duration: 300,
+            useNativeDriver: true,
+        }).start();
     }, [visible]);
 
-    const handleOpenLink = async (url: string) => {
-        const supported = await Linking.canOpenURL(url);
-        if (supported) {
-            await Linking.openURL(url);
-        } else {
-            console.warn("Cannot open URL:", url);
-        }
-    };
-
-    // Slide-out animation used for both swipe and close button
     const animateClose = () => {
         Animated.timing(slideAnim, {
             toValue: screenWidth,
@@ -78,39 +56,24 @@ export default function PuzzlesView({ visible, onClose }: LinksViewProps) {
         });
     };
 
-    // Pan responder for swipe-to-close gesture
     const panResponder = useRef(
         PanResponder.create({
-            onMoveShouldSetPanResponder: (_, gestureState) => {
-                return gestureState.dx > 10; // Start gesture if user swipes right
-            },
+            onMoveShouldSetPanResponder: (_, gestureState) => gestureState.dx > 10,
             onPanResponderMove: (_, gestureState) => {
-                if (gestureState.dx > 0) {
-                    slideAnim.setValue(gestureState.dx);
-                }
+                if (gestureState.dx > 0) slideAnim.setValue(gestureState.dx);
             },
             onPanResponderRelease: (_, gestureState) => {
                 if (gestureState.dx > screenWidth * 0.3) {
-                    // If swiped enough, close it
                     animateClose();
                 } else {
-                    // Otherwise snap back
-                    Animated.spring(slideAnim, {
-                        toValue: 0,
-                        useNativeDriver: true,
-                    }).start();
+                    Animated.spring(slideAnim, { toValue: 0, useNativeDriver: true }).start();
                 }
             },
         })
     ).current;
 
     return (
-        <Modal
-            visible={visible}
-            animationType="none"
-            transparent={true}
-            onRequestClose={animateClose}
-        >
+        <Modal visible={visible} animationType="none" transparent onRequestClose={animateClose}>
             <Animated.View
                 {...panResponder.panHandlers}
                 style={{
@@ -120,15 +83,7 @@ export default function PuzzlesView({ visible, onClose }: LinksViewProps) {
                     padding: 20,
                 }}
             >
-                <Text
-                    style={{
-                        fontSize: 24,
-                        fontWeight: "bold",
-                        color: theme.text,
-                        marginBottom: 12,
-                        textAlign: "center",
-                    }}
-                >
+                <Text style={{ fontSize: 24, fontWeight: "bold", color: theme.text, marginBottom: 12, textAlign: "center" }}>
                     Previous Puzzles
                 </Text>
 
@@ -136,29 +91,12 @@ export default function PuzzlesView({ visible, onClose }: LinksViewProps) {
                     data={links}
                     keyExtractor={(item) => item.id}
                     renderItem={({ item }) => (
-                        <View
-                            style={{
-                                paddingVertical: 12,
-                                borderBottomWidth: 1,
-                                borderColor: theme.border,
-                            }}
+                        <TouchableOpacity
+                            style={{ paddingVertical: 12, borderBottomWidth: 1, borderColor: theme.border }}
+                            onPress={() => startGame(item.date)}
                         >
-                            <Text style={{ color: theme.text, fontWeight: "600" }}>
-                                {item.description}
-                            </Text>
-
-                            <TouchableOpacity onPress={() => handleOpenLink(item.url)}>
-                                <Text
-                                    style={{
-                                        color: theme.primary,
-                                        textDecorationLine: "underline",
-                                        marginTop: 4,
-                                    }}
-                                >
-                                    {item.url}
-                                </Text>
-                            </TouchableOpacity>
-                        </View>
+                            <Text style={{ color: theme.text, fontWeight: "600" }}>{item.description}</Text>
+                        </TouchableOpacity>
                     )}
                 />
 
@@ -172,16 +110,13 @@ export default function PuzzlesView({ visible, onClose }: LinksViewProps) {
                             paddingHorizontal: 20,
                             paddingVertical: 10,
                         }}
-                        onPress={animateClose} // 👈 triggers the same slide-out animation
+                        onPress={animateClose}
                     >
-                        <Text
-                            style={{ color: theme.primaryInverse, fontWeight: "600" }}
-                        >
-                            Close
-                        </Text>
+                        <Text style={{ color: theme.primaryInverse, fontWeight: "600" }}>Close</Text>
                     </TouchableOpacity>
                 )}
             </Animated.View>
         </Modal>
     );
 }
+

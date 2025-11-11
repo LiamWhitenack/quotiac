@@ -159,7 +159,7 @@ export default function LandingPage({
                 transparent
                 onRequestClose={() => setShowModal(false)}
             >
-                <PuzzlesView visible={showModal} onClose={() => setShowModal(false)} />
+                <PuzzlesView startGame={startGame} visible={showModal} onClose={() => setShowModal(false)} />
             </Modal>
         </View>
     );

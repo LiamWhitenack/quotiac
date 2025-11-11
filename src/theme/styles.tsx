@@ -26,7 +26,6 @@ export const createAppStyles = (theme: Theme) =>
       borderWidth: 2,
       borderColor: theme.elevatedSurface,
     },
-
     invertedElevatedButtonText: {
       color: theme.primary,
       fontWeight: "600",
