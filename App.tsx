@@ -131,6 +131,7 @@ const QuotiacGame = ({
                   name="information"
                   size={32}
                   style={{ position: "absolute", top: 0, left: 0 }}
+                  color={theme.text}
                 />
               </View>
             </TouchableOpacity>
