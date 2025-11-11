@@ -1,10 +1,11 @@
-import React from "react";
-import { View, Text, TouchableOpacity, Image, Platform, Dimensions, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, Image, Platform, Dimensions, StyleSheet, Modal, Pressable } from "react-native";
 import { createAppStyles } from "@/src/theme/styles";
 import { useTheme } from "@/src/theme/ThemeContext";
 import InfiniteLockAnimation from "@/src/icon/infinite-animation";
 import SolvingLockAnimation from "@/src/icon/solving-animation";
 import type { Theme } from "@/src/theme/themes";
+import React, { useState } from "react";
+import PuzzlesView from "@/src/puzzle-list/view";
 
 const isWeb = Platform.OS === "web";
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
@@ -111,8 +112,9 @@ export default function LandingPage({
     const landingPageStyles = createLandingPageStyles(theme);
     const displayDate = formatDate(fixedDate);
 
+    const [showModal, setShowModal] = useState(false);
+
     return (
-        // @ts-ignore
         <View style={landingPageStyles.container}>
             <InfiniteLockAnimation />
 
@@ -135,7 +137,6 @@ export default function LandingPage({
                 Decode a secret message by matching letters to icons.
             </Text>
 
-
             <TouchableOpacity
                 onPress={() => startGame(fixedDate)}
                 style={[styles.elevatedButton, landingPageStyles.button]}
@@ -143,7 +144,24 @@ export default function LandingPage({
                 <Text style={styles.elevatedButtonText}>Play</Text>
             </TouchableOpacity>
 
+            <TouchableOpacity
+                onPress={() => setShowModal(true)}
+                style={[styles.invertedElevatedButton, landingPageStyles.button]}
+            >
+                <Text style={styles.invertedElevatedButtonText}>Explore Puzzles</Text>
+            </TouchableOpacity>
+
             <Text style={landingPageStyles.dateText}>{displayDate}</Text>
+
+            <Modal
+                animationType="slide"
+                visible={showModal}
+                transparent
+                onRequestClose={() => setShowModal(false)}
+            >
+                <PuzzlesView visible={showModal} onClose={() => setShowModal(false)} />
+            </Modal>
         </View>
     );
 }
+
