@@ -135,34 +135,14 @@ export default function LandingPage({
                 Decode a secret message by matching letters to icons.
             </Text>
 
-            {!urlDate || urlDate === todayDate ? (
-                <TouchableOpacity
-                    onPress={() => startGame(fixedDate)}
-                    style={[styles.elevatedButton, landingPageStyles.button]}
-                >
-                    <Text style={styles.elevatedButtonText}>Play</Text>
-                </TouchableOpacity>
-            ) : (
-                <>
-                    <TouchableOpacity
-                        onPress={() => startGame(urlDate)}
-                        style={[styles.elevatedButton, landingPageStyles.button]}
-                    >
-                        <Text style={[styles.elevatedButtonText, landingPageStyles.buttonText]}>
-                            Play Current Puzzle
-                        </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => startGame(todayDate)}
-                        style={[styles.elevatedButton, landingPageStyles.button]}
-                    >
-                        <Text style={[styles.elevatedButtonText, landingPageStyles.buttonText]}>
-                            Play Today's Puzzle
-                        </Text>
-                    </TouchableOpacity>
-                </>
-            )
-            }
+
+            <TouchableOpacity
+                onPress={() => startGame(fixedDate)}
+                style={[styles.elevatedButton, landingPageStyles.button]}
+            >
+                <Text style={styles.elevatedButtonText}>Play</Text>
+            </TouchableOpacity>
+
             <Text style={landingPageStyles.dateText}>{displayDate}</Text>
         </View>
     );
