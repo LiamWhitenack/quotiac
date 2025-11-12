@@ -113,6 +113,7 @@ function App({ eagerState, dateString }: AppProps) {
             if (routeDate === dateString && eagerState) {
                 setGameState(eagerState);
             } else {
+                console.log(routeDate)
                 const puzzle = await fetchQuote(routeDate);
                 if (!puzzle) throw Error();
                 const newState = await GameState.create(routeDate, puzzle);

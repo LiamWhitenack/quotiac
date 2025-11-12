@@ -18,7 +18,7 @@ export async function getPuzzleRouteItems(): Promise<PuzzleRouteItem[]> {
         const month = String(current.getMonth() + 1).padStart(2, "0");
         const day = String(current.getDate()).padStart(2, "0");
         const key = `quote_${year}${month}${day}`;
-        const formattedDate = `${year}-${month}-${day}`;
+        const formattedDate = `${year}${month}${day}`;
         keysToCheck.push({ key, date: formattedDate });
         current.setDate(current.getDate() + 1);
     }

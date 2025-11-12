@@ -79,11 +79,9 @@ export default function PuzzlesView({ visible, onClose, startGame }: PuzzlesView
     // Stable callback for onPress
     const openPuzzleCallback = useCallback(async (date: string) => {
         try {
-            const puzzleData = await AsyncStorage.getItem(`puzzle:${date}`);
-            if (puzzleData) {
-                const puzzle = JSON.parse(puzzleData);
-                startGame?.(puzzle);
-            }
+            console.log("here")
+            startGame?.(date);
+
         } catch (error) {
             console.error("Failed to open puzzle:", error);
         }
@@ -124,8 +122,9 @@ export default function PuzzlesView({ visible, onClose, startGame }: PuzzlesView
                     data={puzzles}
                     keyExtractor={(item) => item.id}
                     renderItem={renderItem}
-                    initialNumToRender={5}
-                    windowSize={5}
+                    initialNumToRender={25}
+                    windowSize={25}
+                    showsVerticalScrollIndicator={false}
                     removeClippedSubviews
                 />
 
