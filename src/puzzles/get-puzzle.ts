@@ -13,12 +13,36 @@ const HINT_TYPE_MAP = new Map<SupportedHintTypeName, new (...args: any[]) => Hin
     ["GiveALetterHint", GiveALetterHint],
 ]);
 
+export const loadPersistedState = async (dateString: string) => {
+    const decodingMapJson = await AsyncStorage.getItem(`decodingMap-${dateString}`);
+    const hintsJson = await AsyncStorage.getItem(`hintLetters-${dateString}`);
+
+    let decodingMap: Map<string, string> | null = null;
+    let givenHintLetters: string[] | null = null;
+
+    if (decodingMapJson) {
+        const entries = JSON.parse(decodingMapJson);
+        decodingMap = new Map(entries);
+    }
+
+    if (hintsJson) {
+        givenHintLetters = JSON.parse(hintsJson);
+    }
+
+    return { decodingMap, givenHintLetters };
+};
+
 
 
 const parseHints = (rawHints: string): HintBase[] => {
-    const validJson = rawHints.replace(/'/g, '"');
 
-    const parsed: { letter: string; type: string }[] = JSON.parse(validJson);
+    let parsed: { letter: string; type: string }[];
+    if (typeof rawHints === "string") {
+        const validJson = rawHints.replace(/'/g, '"');
+        parsed = JSON.parse(validJson);
+    } else {
+        parsed = rawHints;
+    }
     return parsed.map((hintData: any) => {
         const HintClass = HINT_TYPE_MAP.get(hintData.type as SupportedHintTypeName);
         if (!HintClass) throw new Error(`Unsupported hint type: ${hintData.type}`);
@@ -27,15 +51,24 @@ const parseHints = (rawHints: string): HintBase[] => {
 };
 
 const parseOtherInfo = (mapString: string): Map<string, string> => {
-    const jsonString = mapString.replace(/'/g, '"');
-    const obj = JSON.parse(jsonString);
-    return new Map<string, string>(Object.entries(obj));
+    let puzzle: Record<string, any>;
+    if (typeof mapString === "string") {
+        puzzle = JSON.parse(mapString.replace(/'/g, '"'));
+    } else {
+        puzzle = mapString;
+    }
+    return new Map<string, string>(Object.entries(puzzle));
 };
 
 const parseEncryptionMap = (mapString: string): EncryptionMap => {
-    const jsonString = mapString.replace(/'/g, '"');
-    const obj = JSON.parse(jsonString);
-    return new Map<string, string>(Object.entries(obj));
+    let parsed: Map<string, string>[];
+    if (typeof mapString === "string") {
+        parsed = JSON.parse(mapString.replace(/'/g, '"'));
+    } else {
+        parsed = mapString;
+    }
+    // @ts-ignore
+    return new Map<string, string>(Object.entries(parsed));
 };
 
 
@@ -55,27 +88,31 @@ if (typeof window !== "undefined") {
     logEvent(analytics, "page_view"); // Logs page load
 }
 
+export const fetchQuoteFromStorage = async (dateString: string): Promise<CryptographBase | null> => {
+    const puzzleData: string | object | null = await AsyncStorage.getItem(`quote_${dateString}`);
+    let puzzle: Record<string, any>;
+    if (puzzleData === null) return null
+    if (typeof puzzleData === "string") {
+        puzzle = JSON.parse(puzzleData);
+    } else {
+        puzzle = puzzleData;
+    }
+    return new CryptographBase(
+        puzzle.string_to_encrypt,
+        puzzle.puzzle_type,
+        parseHints(puzzle.hints),
+        parseEncryptionMap(puzzle.encryption_map),
+        parseOtherInfo(puzzle.other_info)
+    );
+}
 
 
 // --- Main fetchQuote Function ---
 const fetchQuote = async (dateString: string): Promise<CryptographBase | null> => {
     try {
         // 1. Check AsyncStorage
-        const storedPuzzle = await AsyncStorage.getItem(`quote_${dateString}`);
-        if (storedPuzzle) {
-            const puzzleData = JSON.parse(storedPuzzle);
-            try {
-                return new CryptographBase(
-                    puzzleData.string_to_encrypt,
-                    puzzleData.puzzle_type,
-                    parseHints(puzzleData.hints),
-                    parseEncryptionMap(puzzleData.encryption_map),
-                    parseOtherInfo(puzzleData.other_info)
-                );
-            } catch (error) {
-                console.error("Error parsing stored puzzle:", error);
-            }
-        }
+        const storedQuote = await fetchQuoteFromStorage(dateString);
+        if (storedQuote) return storedQuote;
 
         // 2. Fetch from network
         let response = await fetch(
