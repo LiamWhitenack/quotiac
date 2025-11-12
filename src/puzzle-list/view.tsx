@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useCallback, useState } from "react";
 import {
     View,
     Text,
@@ -8,16 +8,12 @@ import {
     Modal,
     Animated,
     Dimensions,
-    Linking,
     PanResponder,
 } from "react-native";
 import { useTheme } from "@/src/theme/ThemeContext";
-
-type PuzzleRouteItem = {
-    id: string;
-    date: string;
-    description: string;
-};
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import DateItemWidget from './date-tile';
+import { getPuzzleRouteItems, PuzzleRouteItem } from './check-existing';
 
 type PuzzlesViewProps = {
     visible: boolean;
@@ -29,15 +25,24 @@ export default function PuzzlesView({ visible, onClose, startGame }: PuzzlesView
     const { theme } = useTheme();
     const screenWidth = Dimensions.get("window").width;
     const slideAnim = useRef(new Animated.Value(screenWidth)).current;
+    const [puzzles, setPuzzles] = useState<PuzzleRouteItem[]>([]);
+    const fetchedOnce = useRef(false);
 
-    const navigation = useNavigation(); // ✅ Move hook to top level
+    // Fetch puzzles once
+    const fetchPuzzles = async () => {
+        const puzzleItems = await getPuzzleRouteItems();
+        puzzleItems.sort((a, b) => b.date.localeCompare(a.date));
+        setPuzzles(puzzleItems);
+    };
 
-    const links: PuzzleRouteItem[] = [
-        { id: "1", date: "20250911", description: "9/11" },
-        { id: "2", date: "20251031", description: "Halloween" },
-    ];
+    useEffect(() => {
+        if (!fetchedOnce.current) {
+            fetchPuzzles();
+            fetchedOnce.current = true;
+        }
+    }, []);
 
-
+    // Slide animation for modal
     useEffect(() => {
         Animated.timing(slideAnim, {
             toValue: visible ? 0 : screenWidth,
@@ -51,11 +56,10 @@ export default function PuzzlesView({ visible, onClose, startGame }: PuzzlesView
             toValue: screenWidth,
             duration: 250,
             useNativeDriver: true,
-        }).start(() => {
-            onClose?.();
-        });
+        }).start(() => onClose?.());
     };
 
+    // Pan gesture to close
     const panResponder = useRef(
         PanResponder.create({
             onMoveShouldSetPanResponder: (_, gestureState) => gestureState.dx > 10,
@@ -72,6 +76,27 @@ export default function PuzzlesView({ visible, onClose, startGame }: PuzzlesView
         })
     ).current;
 
+    // Stable callback for onPress
+    const openPuzzleCallback = useCallback(async (date: string) => {
+        try {
+            const puzzleData = await AsyncStorage.getItem(`puzzle:${date}`);
+            if (puzzleData) {
+                const puzzle = JSON.parse(puzzleData);
+                startGame?.(puzzle);
+            }
+        } catch (error) {
+            console.error("Failed to open puzzle:", error);
+        }
+    }, [startGame]);
+
+    // Memoized renderItem for FlatList
+    const renderItem = useCallback(
+        ({ item }: { item: PuzzleRouteItem }) => (
+            <DateItemWidget date={item.date} onPress={openPuzzleCallback} />
+        ),
+        [openPuzzleCallback]
+    );
+
     return (
         <Modal visible={visible} animationType="none" transparent onRequestClose={animateClose}>
             <Animated.View
@@ -83,21 +108,25 @@ export default function PuzzlesView({ visible, onClose, startGame }: PuzzlesView
                     padding: 20,
                 }}
             >
-                <Text style={{ fontSize: 24, fontWeight: "bold", color: theme.text, marginBottom: 12, textAlign: "center" }}>
+                <Text
+                    style={{
+                        fontSize: 24,
+                        fontWeight: "bold",
+                        color: theme.text,
+                        marginBottom: 12,
+                        textAlign: "center",
+                    }}
+                >
                     Previous Puzzles
                 </Text>
 
                 <FlatList
-                    data={links}
+                    data={puzzles}
                     keyExtractor={(item) => item.id}
-                    renderItem={({ item }) => (
-                        <TouchableOpacity
-                            style={{ paddingVertical: 12, borderBottomWidth: 1, borderColor: theme.border }}
-                            onPress={() => startGame(item.date)}
-                        >
-                            <Text style={{ color: theme.text, fontWeight: "600" }}>{item.description}</Text>
-                        </TouchableOpacity>
-                    )}
+                    renderItem={renderItem}
+                    initialNumToRender={5}
+                    windowSize={5}
+                    removeClippedSubviews
                 />
 
                 {onClose && (
@@ -119,4 +148,3 @@ export default function PuzzlesView({ visible, onClose, startGame }: PuzzlesView
         </Modal>
     );
 }
-
