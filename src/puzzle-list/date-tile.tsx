@@ -6,6 +6,7 @@ import { fetchQuoteFromStorage, loadPersistedState } from "../puzzles/get-puzzle
 import CryptographBase from "../puzzles/base";
 import { mapsAreEqual } from "../utils";
 import { inverseMap } from "../state";
+import { PuzzleRouteItem } from "./check-existing";
 
 type PuzzleTileItem = {
     date: string;
@@ -15,11 +16,11 @@ type PuzzleTileItem = {
 };
 
 type DateItemWidgetProps = {
-    date: string; // e.g. "2025-08-15"
+    item: PuzzleRouteItem;
     onPress: (date: string) => Promise<void>;
 };
 
-function DateItemWidget({ date, onPress }: DateItemWidgetProps) {
+function DateItemWidget({ item, onPress }: DateItemWidgetProps) {
     const { theme } = useTheme();
     const [puzzle, setPuzzle] = useState<PuzzleTileItem | null>(null);
     const [loading, setLoading] = useState(true);
@@ -28,11 +29,11 @@ function DateItemWidget({ date, onPress }: DateItemWidgetProps) {
         let isMounted = true; // prevent state updates if unmounted
         const fetchValue = async () => {
             if (isMounted) {
-                const crypt_base = await fetchQuoteFromStorage(date);
+                const crypt_base = await fetchQuoteFromStorage(item.date);
                 if (crypt_base) {
-                    const { decodingMap, givenHintLetters } = await loadPersistedState(date)
+                    const { decodingMap, givenHintLetters } = await loadPersistedState(item.date)
                     setPuzzle({
-                        date: date,
+                        date: item.date,
                         type: crypt_base.puzzleType,
                         finished: (decodingMap) ? mapsAreEqual(inverseMap(crypt_base.encodingMap), decodingMap) : false,
                         hints_used: (givenHintLetters) ? givenHintLetters.length : 0,
@@ -47,7 +48,7 @@ function DateItemWidget({ date, onPress }: DateItemWidgetProps) {
         return () => {
             isMounted = false;
         };
-    }, [date]);
+    }, [item.date]);
 
     return (
         <TouchableOpacity
@@ -59,7 +60,7 @@ function DateItemWidget({ date, onPress }: DateItemWidgetProps) {
                 justifyContent: "space-between",
                 alignItems: "center",
             }}
-            onPress={() => onPress(date)}
+            onPress={() => onPress(item.date)}
         >
             {loading ? (
                 <ActivityIndicator color={theme.text} />
@@ -78,8 +79,8 @@ function DateItemWidget({ date, onPress }: DateItemWidgetProps) {
                     </Text>
                 </>
             ) : (
-                <Text style={{ color: theme.text, fontWeight: "600" }}>
-                    No entry for {date}
+                <Text style={{ color: theme.subtext, fontWeight: "600" }}>
+                    {item.type}
                 </Text>
             )}
         </TouchableOpacity>
@@ -90,6 +91,6 @@ function DateItemWidget({ date, onPress }: DateItemWidgetProps) {
 
 // Memoize to avoid unnecessary re-renders
 export default React.memo(DateItemWidget, (prevProps, nextProps) => {
-    return prevProps.date === nextProps.date && prevProps.onPress === nextProps.onPress;
+    return prevProps.item === nextProps.item && prevProps.onPress === nextProps.onPress;
 });
 

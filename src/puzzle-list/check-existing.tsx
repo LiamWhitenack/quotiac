@@ -1,36 +1,36 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
 export type PuzzleRouteItem = {
-    id: string;
     date: string;
-    started: boolean;
+    type: string;
 };
 
 export async function getPuzzleRouteItems(): Promise<PuzzleRouteItem[]> {
     const today = new Date();
-    const startDate = new Date(2025, 7, 15); // August 15, 2025
 
-    const keysToCheck: { key: string; date: string }[] = [];
-    const current = new Date(startDate);
+    // Fetch the puzzle list from your GitHub JSON file
+    const response = await fetch(
+        "https://raw.githubusercontent.com/LiamWhitenack/quotiac-data/refs/heads/dev/resources/puzzle-list.json"
+    );
+    const data = await response.json(); // data is a dictionary like { "quote_20250815": { ...puzzleData... }, ... }
 
-    while (current <= today) {
-        const year = current.getFullYear();
-        const month = String(current.getMonth() + 1).padStart(2, "0");
-        const day = String(current.getDate()).padStart(2, "0");
-        const key = `quote_${year}${month}${day}`;
-        const formattedDate = `${year}${month}${day}`;
-        keysToCheck.push({ key, date: formattedDate });
-        current.setDate(current.getDate() + 1);
-    }
+    // Build the puzzle items from the JSON entries
+    const puzzleItems: PuzzleRouteItem[] = Object.entries(data)
+        .map(([date, type]) => {
+            console.log(date)
+            const year = Number(date.slice(0, 4));
+            const month = Number(date.slice(4, 6)) - 1;
+            const day = Number(date.slice(6, 8));
+            const dateObj = new Date(year, month, day);
 
-    // Retrieve existing keys from AsyncStorage
-    const existingKeys = await AsyncStorage.getAllKeys();
+            if (dateObj > today) return null;
 
-    const puzzleItems: PuzzleRouteItem[] = keysToCheck.map(({ key, date }) => ({
-        id: key,
-        date,
-        started: existingKeys.includes(key),
-    }));
+            return {
+                date,
+                type
+            };
+        })
+        .filter((item): item is PuzzleRouteItem => item !== null)
+        .sort((a, b) => a.date.localeCompare(b.date)); // ensure chronological order
 
     return puzzleItems;
 }
+

@@ -14,6 +14,7 @@ import { useTheme } from "@/src/theme/ThemeContext";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateItemWidget from './date-tile';
 import { getPuzzleRouteItems, PuzzleRouteItem } from './check-existing';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type PuzzlesViewProps = {
     visible: boolean;
@@ -78,19 +79,15 @@ export default function PuzzlesView({ visible, onClose, startGame }: PuzzlesView
 
     // Stable callback for onPress
     const openPuzzleCallback = useCallback(async (date: string) => {
-        try {
-            console.log("here")
-            startGame?.(date);
+        console.log("here")
+        startGame?.(date);
 
-        } catch (error) {
-            console.error("Failed to open puzzle:", error);
-        }
     }, [startGame]);
 
     // Memoized renderItem for FlatList
     const renderItem = useCallback(
         ({ item }: { item: PuzzleRouteItem }) => (
-            <DateItemWidget date={item.date} onPress={openPuzzleCallback} />
+            <DateItemWidget item={item} onPress={openPuzzleCallback} />
         ),
         [openPuzzleCallback]
     );
@@ -102,6 +99,7 @@ export default function PuzzlesView({ visible, onClose, startGame }: PuzzlesView
                 style={{
                     flex: 1,
                     backgroundColor: theme.background,
+                    marginTop: useSafeAreaInsets().top,
                     transform: [{ translateX: slideAnim }],
                     padding: 20,
                 }}
@@ -120,7 +118,7 @@ export default function PuzzlesView({ visible, onClose, startGame }: PuzzlesView
 
                 <FlatList
                     data={puzzles}
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={(item) => item.date}
                     renderItem={renderItem}
                     initialNumToRender={25}
                     windowSize={25}
@@ -133,7 +131,7 @@ export default function PuzzlesView({ visible, onClose, startGame }: PuzzlesView
                         style={{
                             marginTop: 20,
                             alignSelf: "center",
-                            backgroundColor: theme.elevatedSurface,
+                            backgroundColor: theme.primary,
                             borderRadius: 10,
                             paddingHorizontal: 20,
                             paddingVertical: 10,
