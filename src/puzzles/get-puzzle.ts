@@ -116,7 +116,7 @@ const fetchQuote = async (dateString: string): Promise<CryptographBase | null> =
 
         // 2. Fetch from network
         let response = await fetch(
-            `https://raw.githubusercontent.com/LiamWhitenack/codiac-puzzles/refs/heads/dev/resources/by-date/${dateString}.json`
+            `https://raw.githubusercontent.com/LiamWhitenack/quotiac-data/refs/heads/dev/resources/by-date/${dateString}.json`
         );
 
         let puzzleData;
@@ -124,7 +124,7 @@ const fetchQuote = async (dateString: string): Promise<CryptographBase | null> =
             puzzleData = await response.json();
         } else {
             const fallbackResponse = await fetch(
-                `https://raw.githubusercontent.com/LiamWhitenack/codiac-puzzles/refs/heads/dev/resources/auto-generated/${dateString}.json`
+                `https://raw.githubusercontent.com/LiamWhitenack/quotiac-data/refs/heads/dev/resources/auto-generated/${dateString}.json`
             );
             if (!fallbackResponse.ok) {
                 return null;
