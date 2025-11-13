@@ -119,7 +119,6 @@ class GameState {
                 await this.setDecodingMap(updatedMap);
                 this.updateKeyboardValues();
                 this.checkSolved();
-                await this.persistState();
                 break;
             }
         }
@@ -128,7 +127,6 @@ class GameState {
     async setDecodingMap(map: Map<string, string>) {
         this.decodingMap = map;
         this.inverseDecodingMap = inverseMap(map);
-        await this.persistState();
     }
 
     async reset() {

@@ -46,6 +46,7 @@ const QuotiacGame = ({
   function updateState() {
     const clone = state.clone();
     setGameState(clone);
+    clone.persistState()
   }
 
 
