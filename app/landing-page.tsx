@@ -153,15 +153,19 @@ export default function LandingPage({
 
             <Text style={landingPageStyles.dateText}>{displayDate}</Text>
 
-            <Modal
-                animationType="slide"
-                visible={showModal}
-                transparent
-                onRequestClose={() => setShowModal(false)}
-            >
-                <PuzzlesView startGame={startGame} visible={showModal} onClose={() => setShowModal(false)} />
-            </Modal>
+            {explorePuzzles(showModal, setShowModal, startGame)}
         </View>
     );
+}
+
+export function explorePuzzles(showModal: boolean, setShowModal: React.Dispatch<React.SetStateAction<boolean>>, startGame: (date: string) => void) {
+    return <Modal
+        animationType="slide"
+        visible={showModal}
+        transparent
+        onRequestClose={() => setShowModal(false)}
+    >
+        <PuzzlesView startGame={startGame} visible={showModal} onClose={() => setShowModal(false)} />
+    </Modal>;
 }
 

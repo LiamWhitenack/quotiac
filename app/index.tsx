@@ -43,6 +43,7 @@ export default function Index() {
     }, [fixedDate]);
 
     const startGame = async (date: string) => {
+        console.log("start " + date)
         if (eagerState && eagerState.puzzleDate === date) {
             setGameDate(date);
             setShowGame(true);
@@ -72,6 +73,7 @@ export default function Index() {
             <App
                 eagerState={eagerState?.puzzleDate === gameDate ? eagerState : null}
                 dateString={gameDate}
+                startNewGame={startGame}
             />
         );
     }
@@ -93,9 +95,10 @@ export default function Index() {
 type AppProps = {
     eagerState: GameState | null;
     dateString: string;
+    startNewGame: (date: string) => void;
 };
 
-function App({ eagerState, dateString }: AppProps) {
+function App({ eagerState, dateString, startNewGame }: AppProps) {
     const [gameState, setGameState] = useState<GameState | null>(null);
     const [routeDate, setRouteDate] = useState<string | undefined>(dateString);
     const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -106,6 +109,12 @@ function App({ eagerState, dateString }: AppProps) {
     // @ts-ignore
     useRouteDateSync(routeDate, setRouteDate, navigation);
 
+    // Wrap startNewGame so it updates routeDate
+    const handleStartNewGame = async (date: string) => {
+        setRouteDate(date);
+        setGameState(null); // reset so we show loading while fetching
+    };
+
     useEffect(() => {
         if (!routeDate) return;
 
@@ -113,7 +122,6 @@ function App({ eagerState, dateString }: AppProps) {
             if (routeDate === dateString && eagerState) {
                 setGameState(eagerState);
             } else {
-                console.log(routeDate)
                 const puzzle = await fetchQuote(routeDate);
                 if (!puzzle) throw Error();
                 const newState = await GameState.create(routeDate, puzzle);
@@ -135,7 +143,13 @@ function App({ eagerState, dateString }: AppProps) {
     return (
         <ThemeProvider>
             {/* @ts-ignore */}
-            <QuotiacGame state={gameState} setGameState={setGameState} />
+            <QuotiacGame
+                state={gameState}
+                // @ts-ignore
+                setGameState={setGameState}
+                startNewGame={handleStartNewGame} // use internal handler
+            />
         </ThemeProvider>
     );
 }
+

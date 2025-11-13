@@ -25,9 +25,11 @@ import { totalSolveAnimationDuration } from "./src/icon/durations";
 const QuotiacGame = ({
   state,
   setGameState,
+  startNewGame,
 }: {
   state: GameState;
   setGameState: React.Dispatch<React.SetStateAction<GameState>>;
+  startNewGame: (date: string) => void;
 }) => {
   const [completionModalShown, setCompletionModalShown] = useState(false);
   const [completionModalVisible, setCompletionModalVisible] = useState(false);
@@ -189,6 +191,7 @@ const QuotiacGame = ({
         <PuzzleCompleteModal
           state={state}
           visible={completionModalVisible && !completionModalShown}
+          startNewGame={startNewGame}
           onClose={() => {
             setCompletionModalShown(true);
             setCompletionModalVisible(false);
@@ -204,6 +207,7 @@ const QuotiacGame = ({
         <HelpModal
           modalVisible={helpModalVisible}
           setModalVisible={setHelpModalVisible}
+          startNewGame={startNewGame}
         />
       </Wrapper >
     </>

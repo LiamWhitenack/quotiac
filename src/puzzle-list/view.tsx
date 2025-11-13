@@ -104,17 +104,6 @@ export default function PuzzlesView({ visible, onClose, startGame }: PuzzlesView
                     padding: 20,
                 }}
             >
-                <Text
-                    style={{
-                        fontSize: 24,
-                        fontWeight: "bold",
-                        color: theme.text,
-                        marginBottom: 12,
-                        textAlign: "center",
-                    }}
-                >
-                    Previous Puzzles
-                </Text>
 
                 <FlatList
                     data={puzzles}
@@ -123,6 +112,7 @@ export default function PuzzlesView({ visible, onClose, startGame }: PuzzlesView
                     initialNumToRender={25}
                     windowSize={25}
                     showsVerticalScrollIndicator={false}
+                    style={{ marginTop: 50, marginBottom: 50 }}
                     removeClippedSubviews
                 />
 
