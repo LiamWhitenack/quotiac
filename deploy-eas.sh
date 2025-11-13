@@ -8,4 +8,4 @@ else
 fi
 
 npx expo export -p web
-eas deploy
+eas deploy --prod
