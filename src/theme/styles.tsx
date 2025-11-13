@@ -5,14 +5,29 @@ export const createAppStyles = (theme: Theme) =>
   StyleSheet.create({
     elevatedButton: {
       marginHorizontal: 8,
+      marginBottom: 8,
       backgroundColor: theme.primary,
+      paddingVertical: 12,
+      borderRadius: 30,
+      alignItems: "center",
+      paddingHorizontal: 0,
+    },
+    elevatedButtonText: {
+      color: theme.primaryInverse,
+      fontWeight: "600",
+      fontSize: 18,
+    },
+    invertedElevatedButton: {
+      marginHorizontal: 8,
       paddingVertical: 12,
       paddingHorizontal: 30,
       borderRadius: 30,
       alignItems: "center",
+      borderWidth: 2,
+      borderColor: theme.primary,
     },
-    elevatedButtonText: {
-      color: theme.primaryInverse,
+    invertedElevatedButtonText: {
+      color: theme.primary,
       fontWeight: "600",
       fontSize: 18,
     },

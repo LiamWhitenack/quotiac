@@ -7,7 +7,7 @@ import type { Theme } from "@/src/theme/themes";
 import CryptographBase from "@/src/puzzles/base";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-function inverseMap(map: Map<string, string>): Map<string, string> {
+export function inverseMap(map: Map<string, string>): Map<string, string> {
     const inverse = new Map<string, string>();
     map.forEach((v, k) => inverse.set(v, k));
     return inverse;
@@ -119,7 +119,6 @@ class GameState {
                 await this.setDecodingMap(updatedMap);
                 this.updateKeyboardValues();
                 this.checkSolved();
-                await this.persistState();
                 break;
             }
         }
@@ -128,7 +127,6 @@ class GameState {
     async setDecodingMap(map: Map<string, string>) {
         this.decodingMap = map;
         this.inverseDecodingMap = inverseMap(map);
-        await this.persistState();
     }
 
     async reset() {
