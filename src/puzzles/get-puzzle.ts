@@ -160,7 +160,6 @@ const fetchTutorialQuote = async (): Promise<CryptographBase> => {
     // TODO update this to use main when ready to use routing
     const response = await fetch(`https://raw.githubusercontent.com/LiamWhitenack/quotiac-puzzles/refs/heads/dev/resources/tutorial.json`);
     puzzleData = await response.json();
-    console.log(puzzleData);
     return new CryptographBase(puzzleData.string_to_encrypt, puzzleData.puzzle_type, parseHints(puzzleData.hints), parseEncryptionMap(puzzleData.encryption_map), parseOtherInfo(puzzleData.other_info));
 };
 

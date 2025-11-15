@@ -79,7 +79,6 @@ export default function PuzzlesView({ visible, onClose, startGame }: PuzzlesView
 
     // Stable callback for onPress
     const openPuzzleCallback = useCallback(async (date: string) => {
-        console.log("here")
         startGame?.(date);
 
     }, [startGame]);

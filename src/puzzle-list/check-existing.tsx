@@ -15,7 +15,6 @@ export async function getPuzzleRouteItems(): Promise<PuzzleRouteItem[]> {
     // Build the puzzle items from the JSON entries
     const puzzleItems: PuzzleRouteItem[] = Object.entries(data)
         .map(([date, type]) => {
-            console.log(date)
             const year = Number(date.slice(0, 4));
             const month = Number(date.slice(4, 6)) - 1;
             const day = Number(date.slice(6, 8));

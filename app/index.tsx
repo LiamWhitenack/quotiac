@@ -43,7 +43,6 @@ export default function Index() {
     }, [fixedDate]);
 
     const startGame = async (date: string) => {
-        console.log("start " + date)
         if (eagerState && eagerState.puzzleDate === date) {
             setGameDate(date);
             setShowGame(true);
