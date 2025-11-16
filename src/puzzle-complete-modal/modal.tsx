@@ -200,7 +200,12 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
 
             <TouchableOpacity
               style={[appStyles.invertedElevatedButton, { width: "80%" }]}
-              onPress={() => setShowExploreModal(true)}
+              onPress={() => {
+                onClose();
+                setTimeout(() => {
+                  setShowExploreModal(true);
+                }, 250);
+              }}
             >
               <Text style={appStyles.invertedElevatedButtonText}>Explore</Text>
             </TouchableOpacity>

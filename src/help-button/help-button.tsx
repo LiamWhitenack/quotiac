@@ -119,20 +119,27 @@ export default function HelpModal({
 
               <TouchableOpacity
                 key={"explore"}
-                onPress={() => setShowExploreModal(true)}
+                onPress={() => {
+                  setModalVisible(false);
+                  setTimeout(() => {
+                    setShowExploreModal(true);
+                  }, 250);
+                }}
                 style={[appStyles.invertedElevatedButton, styles.buttonSpacing]}
               >
                 <Text style={appStyles.invertedElevatedButtonText}>Explore</Text>
               </TouchableOpacity>
+
             </View>
           </Pressable>
         </Pressable>
-      </Modal>
+      </Modal >
 
       {/* Other modals unchanged */}
-      <InstructionsModal
+      < InstructionsModal
         isVisible={instructionsVisible}
-        onClose={() => setInstructionsVisible(false)}
+        onClose={() => setInstructionsVisible(false)
+        }
       />
       {explorePuzzles(showExploreModal, setShowExploreModal, startNewGame)}
     </>
