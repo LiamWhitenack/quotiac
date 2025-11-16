@@ -40,6 +40,7 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
   const styles = createStyles(theme);
   const appStyles = createAppStyles(theme);
 
+  const [isMounted, setIsMounted] = useState(false);
   const [currentStreak, setCurrentStreak] = useState(0);
   const [maxStreak, setMaxStreak] = useState(0);
   const [puzzlesCompleted, setPuzzlesCompleted] = useState(0);
@@ -57,10 +58,13 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
 
   const emojiString = modifiedEmojiArray.join(" ");
 
-  // Handle animation timing and load streaks on modal open
+  // Sync mounting state for fade-in / fade-out
   useEffect(() => {
     if (visible) {
+      setIsMounted(true);
       loadAndUpdateStreaks();
+    } else {
+      setIsMounted(false);
     }
   }, [visible]);
 
@@ -76,9 +80,7 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
         lastPlayed: null,
       };
 
-      if (data) {
-        stored = JSON.parse(data);
-      }
+      if (data) stored = JSON.parse(data);
 
       if (stored.lastPlayed === today) {
         setCurrentStreak(stored.currentStreak);
@@ -115,7 +117,9 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
   const handleShare = async () => {
     try {
       const today = new Date();
-      const formattedDate = `${String(today.getMonth() + 1).padStart(2, "0")}/${String(today.getDate()).padStart(2, "0")}/${String(today.getFullYear())}`;
+      const formattedDate = `${String(today.getMonth() + 1).padStart(2, "0")}/${String(
+        today.getDate()
+      ).padStart(2, "0")}/${today.getFullYear()}`;
       const shareableString = `${emojiString} - ${formattedDate}\nquotiac.io`;
 
       try {
@@ -146,7 +150,15 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
 
   return (
     <>
-      <Modal animationType="slide" transparent={true} visible={visible}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isMounted}
+        onRequestClose={onClose}
+        onDismiss={() => {
+          if (!visible) onClose();
+        }}
+      >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
 
@@ -192,8 +204,6 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
             >
               <Text style={appStyles.invertedElevatedButtonText}>Explore</Text>
             </TouchableOpacity>
-
-
           </View>
         </View>
       </Modal>
@@ -201,7 +211,6 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
       {explorePuzzles(showExploreModal, setShowExploreModal, startNewGame)}
     </>
   );
-
 };
 
 export default PuzzleCompleteModal;

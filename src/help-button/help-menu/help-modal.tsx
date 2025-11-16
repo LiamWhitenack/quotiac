@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import Modal from 'react-native-modal';
 import getPages from './help-modal-pages';
@@ -16,7 +16,17 @@ const CryptoHelpModal: React.FC<CryptoHelpModalProps> = ({ isVisible, onClose })
   const { theme, mode } = useTheme();
   const styles = createStyles(theme);
   const appStyles = createAppStyles(theme);
+  const [isMounted, setIsMounted] = useState(isVisible);
 
+  useEffect(() => {
+    if (isVisible) {
+      setIsMounted(true);    // mount immediately when opening
+    } else {
+      // wait for react-native-modal fade-out (default ~300ms)
+      const timeout = setTimeout(() => setIsMounted(false), 350);
+      return () => clearTimeout(timeout);
+    }
+  }, [isVisible]);
 
   const handleClose = () => {
     setPage(0);
@@ -24,15 +34,22 @@ const CryptoHelpModal: React.FC<CryptoHelpModalProps> = ({ isVisible, onClose })
   };
 
   const pages = getPages();
-
   const current = pages[page];
 
+  // 🔥 NEW: do not render when fully unmounted
+  if (!isMounted) return null;
+
   return (
-    <Modal isVisible={isVisible} backdropOpacity={0.4}>
+    <Modal
+      isVisible={true}   // 🔥 stays visible while mounted
+      backdropOpacity={0.4}
+      onBackdropPress={handleClose}
+      onBackButtonPress={handleClose}
+    >
       <View
         style={[
           styles.container,
-          { justifyContent: 'space-between' }
+          { justifyContent: "space-between" }
         ]}
       >
         <View style={{ flexShrink: 1 }}>
@@ -40,10 +57,12 @@ const CryptoHelpModal: React.FC<CryptoHelpModalProps> = ({ isVisible, onClose })
           <View style={styles.body}>{current.content}</View>
         </View>
 
-        {/* Footer Buttons with equal width */}
-        <View style={[styles.footer, { flexDirection: 'row' }]}>
+        <View style={[styles.footer, { flexDirection: "row" }]}>
           <TouchableOpacity
-            style={[appStyles.elevatedButton, { flex: 1, marginRight: 8, opacity: page === 0 ? 0 : 1 }]}
+            style={[
+              appStyles.elevatedButton,
+              { flex: 1, marginRight: 8, opacity: page === 0 ? 0 : 1 }
+            ]}
             onPress={() => setPage(page - 1)}
             disabled={page === 0}
           >

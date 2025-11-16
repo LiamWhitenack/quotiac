@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, View, TouchableOpacity, Text } from "react-native";
 import { createStyles } from "./styles";
 import GameState from "@/src/state";
@@ -20,10 +20,30 @@ const PuzzleDetailsModal: React.FC<PuzzleDetailsModalProps> = ({
   const { theme } = useTheme();
   const styles = createStyles(theme);
 
+  const [isMounted, setIsMounted] = useState(false);
+
   const hasDetails = state.puzzle.otherInfo.size > 0;
 
+  // Sync mount state with visible
+  useEffect(() => {
+    if (visible) {
+      setIsMounted(true);
+    } else {
+      setIsMounted(false);
+    }
+  }, [visible]);
+
   return (
-    <Modal animationType="slide" transparent={true} visible={visible}>
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={isMounted}
+      onRequestClose={onClose}
+      onDismiss={() => {
+        // When fade-out is finished and parent says "not visible", call onClose
+        if (!visible) onClose();
+      }}
+    >
       <TouchableOpacity
         style={[styles.modalOverlay, { backgroundColor: "rgba(0,0,0,0.5)" }]}
         activeOpacity={1}

@@ -158,14 +158,39 @@ export default function LandingPage({
     );
 }
 
-export function explorePuzzles(showModal: boolean, setShowModal: React.Dispatch<React.SetStateAction<boolean>>, startGame: (date: string) => void) {
-    return <Modal
-        animationType="slide"
-        visible={showModal}
-        transparent
-        onRequestClose={() => setShowModal(false)}
-    >
-        <PuzzlesView startGame={startGame} visible={showModal} onClose={() => setShowModal(false)} />
-    </Modal>;
+export function explorePuzzles(
+    showModal: boolean,
+    setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
+    startGame: (date: string) => void
+) {
+    const [isMounted, setIsMounted] = React.useState(showModal);
+
+    React.useEffect(() => {
+        if (showModal) {
+            setIsMounted(true); // mount immediately
+        } else {
+            // delay unmount until PuzzlesView finishes sliding out
+            const id = setTimeout(() => setIsMounted(false), 300);
+            return () => clearTimeout(id);
+        }
+    }, [showModal]);
+
+    if (!isMounted) return null;
+
+    return (
+        <Modal
+            animationType="none"
+            visible={true}
+            transparent
+            onRequestClose={() => setShowModal(false)}
+        >
+            <PuzzlesView
+                startGame={startGame}
+                visible={showModal}
+                onClose={() => setShowModal(false)}
+            />
+        </Modal>
+    );
 }
+
 

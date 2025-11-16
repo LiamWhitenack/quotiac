@@ -24,32 +24,44 @@ type PuzzlesViewProps = {
 
 export default function PuzzlesView({ visible, onClose, startGame }: PuzzlesViewProps) {
     const { theme } = useTheme();
+    const { top } = useSafeAreaInsets();
     const screenWidth = Dimensions.get("window").width;
     const slideAnim = useRef(new Animated.Value(screenWidth)).current;
+
     const [puzzles, setPuzzles] = useState<PuzzleRouteItem[]>([]);
     const fetchedOnce = useRef(false);
 
-    // Fetch puzzles once
-    const fetchPuzzles = async () => {
-        const puzzleItems = await getPuzzleRouteItems();
-        puzzleItems.sort((a, b) => b.date.localeCompare(a.date));
-        setPuzzles(puzzleItems);
-    };
+    // Mount state to prevent modal overlay from blocking touches
+    const [isMounted, setIsMounted] = useState(visible);
 
+    // Fetch puzzles once
     useEffect(() => {
         if (!fetchedOnce.current) {
-            fetchPuzzles();
+            (async () => {
+                const puzzleItems = await getPuzzleRouteItems();
+                puzzleItems.sort((a, b) => b.date.localeCompare(a.date));
+                setPuzzles(puzzleItems);
+            })();
             fetchedOnce.current = true;
         }
     }, []);
 
-    // Slide animation for modal
+    // Slide animation + mount control
     useEffect(() => {
+        if (visible) {
+            setIsMounted(true);   // show Modal immediately
+        }
+
         Animated.timing(slideAnim, {
             toValue: visible ? 0 : screenWidth,
             duration: 300,
             useNativeDriver: true,
-        }).start();
+        }).start(() => {
+            if (!visible) {
+                setIsMounted(false);  // fully unmount after animation
+                onClose?.();
+            }
+        });
     }, [visible]);
 
     const animateClose = () => {
@@ -57,18 +69,21 @@ export default function PuzzlesView({ visible, onClose, startGame }: PuzzlesView
             toValue: screenWidth,
             duration: 250,
             useNativeDriver: true,
-        }).start(() => onClose?.());
+        }).start(() => {
+            setIsMounted(false);
+            onClose?.();
+        });
     };
 
     // Pan gesture to close
     const panResponder = useRef(
         PanResponder.create({
-            onMoveShouldSetPanResponder: (_, gestureState) => gestureState.dx > 10,
-            onPanResponderMove: (_, gestureState) => {
-                if (gestureState.dx > 0) slideAnim.setValue(gestureState.dx);
+            onMoveShouldSetPanResponder: (_, g) => g.dx > 10,
+            onPanResponderMove: (_, g) => {
+                if (g.dx > 0) slideAnim.setValue(g.dx);
             },
-            onPanResponderRelease: (_, gestureState) => {
-                if (gestureState.dx > screenWidth * 0.3) {
+            onPanResponderRelease: (_, g) => {
+                if (g.dx > screenWidth * 0.3) {
                     animateClose();
                 } else {
                     Animated.spring(slideAnim, { toValue: 0, useNativeDriver: true }).start();
@@ -77,33 +92,39 @@ export default function PuzzlesView({ visible, onClose, startGame }: PuzzlesView
         })
     ).current;
 
-    // Stable callback for onPress
-    const openPuzzleCallback = useCallback(async (date: string) => {
-        startGame?.(date);
+    const openPuzzleCallback = useCallback(
+        (date: string) => startGame?.(date),
+        [startGame]
+    );
 
-    }, [startGame]);
-
-    // Memoized renderItem for FlatList
     const renderItem = useCallback(
         ({ item }: { item: PuzzleRouteItem }) => (
+            // @ts-ignore
             <DateItemWidget item={item} onPress={openPuzzleCallback} />
         ),
         [openPuzzleCallback]
     );
 
+    // Prevent Modal overlay from blocking touches when closed
+    if (!isMounted) return null;
+
     return (
-        <Modal visible={visible} animationType="none" transparent onRequestClose={animateClose}>
+        <Modal
+            visible={true}
+            animationType="none"
+            transparent
+            onRequestClose={animateClose}
+        >
             <Animated.View
                 {...panResponder.panHandlers}
                 style={{
                     flex: 1,
                     backgroundColor: theme.background,
-                    marginTop: useSafeAreaInsets().top,
+                    marginTop: top,
                     transform: [{ translateX: slideAnim }],
                     padding: 20,
                 }}
             >
-
                 <FlatList
                     data={puzzles}
                     keyExtractor={(item) => item.date}
@@ -127,10 +148,13 @@ export default function PuzzlesView({ visible, onClose, startGame }: PuzzlesView
                         }}
                         onPress={animateClose}
                     >
-                        <Text style={{ color: theme.primaryInverse, fontWeight: "600" }}>Close</Text>
+                        <Text style={{ color: theme.primaryInverse, fontWeight: "600" }}>
+                            Close
+                        </Text>
                     </TouchableOpacity>
                 )}
             </Animated.View>
         </Modal>
     );
 }
+

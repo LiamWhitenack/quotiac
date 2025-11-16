@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -29,7 +29,23 @@ export default function HelpModal({
   const styles = createStyles(theme);
   const appStyles = createAppStyles(theme);
 
-  // New state to control InstructionsModal visibility
+  const [isMounted, setIsMounted] = useState(modalVisible);
+
+  useEffect(() => {
+    if (modalVisible) {
+      setIsMounted(true);   // mount immediately when opening
+    }
+
+    // If closing, wait for fade animation to finish
+    if (!modalVisible) {
+      const timeout = setTimeout(() => {
+        setIsMounted(false); // unmount after fade completes
+      }, 250); // matches fade timing
+
+      return () => clearTimeout(timeout);
+    }
+  }, [modalVisible]);
+
   const [instructionsVisible, setInstructionsVisible] = useState(false);
 
   const [showExploreModal, setShowExploreModal] = useState(false);
@@ -38,8 +54,8 @@ export default function HelpModal({
     {
       label: "How to Play",
       onPress: () => {
-        setModalVisible(false);          // Close this menu modal
-        setInstructionsVisible(true);   // Show InstructionsModal
+        setModalVisible(false);
+        setInstructionsVisible(true);
       },
     },
     {
@@ -62,11 +78,22 @@ export default function HelpModal({
     },
   ];
 
+  // 🔥 NEW: do not render the modal if unmounted
+  if (!isMounted) return (
+    <>
+      <InstructionsModal
+        isVisible={instructionsVisible}
+        onClose={() => setInstructionsVisible(false)}
+      />
+      {explorePuzzles(showExploreModal, setShowExploreModal, startNewGame)}
+    </>
+  );
+
   return (
     <>
-      {/* Your original menu modal */}
+      {/* Your original menu modal (unchanged except visible={true}) */}
       <Modal
-        visible={modalVisible}
+        visible={true}   // 🔥 stays true while mounted
         transparent
         animationType="fade"
         onRequestClose={() => setModalVisible(false)}
@@ -89,9 +116,10 @@ export default function HelpModal({
                   <Text style={appStyles.elevatedButtonText}>{item.label}</Text>
                 </TouchableOpacity>
               ))}
+
               <TouchableOpacity
                 key={"explore"}
-                onPress={() => { setShowExploreModal(true) }}
+                onPress={() => setShowExploreModal(true)}
                 style={[appStyles.invertedElevatedButton, styles.buttonSpacing]}
               >
                 <Text style={appStyles.invertedElevatedButtonText}>Explore</Text>
@@ -101,6 +129,7 @@ export default function HelpModal({
         </Pressable>
       </Modal>
 
+      {/* Other modals unchanged */}
       <InstructionsModal
         isVisible={instructionsVisible}
         onClose={() => setInstructionsVisible(false)}
@@ -109,6 +138,7 @@ export default function HelpModal({
     </>
   );
 }
+
 
 export const createStyles = (theme: Theme) =>
   StyleSheet.create({
