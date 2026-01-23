@@ -124,11 +124,7 @@ export default function LandingPage({
 
             <Text
                 style={[
-                    {
-                        textAlign: "center",
-                        color: theme.text,
-                        alignSelf: "center",
-                    },
+                    { textAlign: "center", color: theme.text, alignSelf: "center" },
                     landingPageStyles.subtitle,
                 ]}
                 numberOfLines={2}
