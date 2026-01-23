@@ -25,9 +25,11 @@ import { totalSolveAnimationDuration } from "./src/icon/durations";
 const QuotiacGame = ({
   state,
   setGameState,
+  startNewGame,
 }: {
   state: GameState;
   setGameState: React.Dispatch<React.SetStateAction<GameState>>;
+  startNewGame: (date: string) => void;
 }) => {
   const [completionModalShown, setCompletionModalShown] = useState(false);
   const [completionModalVisible, setCompletionModalVisible] = useState(false);
@@ -46,6 +48,7 @@ const QuotiacGame = ({
   function updateState() {
     const clone = state.clone();
     setGameState(clone);
+    clone.persistState()
   }
 
 
@@ -131,6 +134,7 @@ const QuotiacGame = ({
                   name="information"
                   size={32}
                   style={{ position: "absolute", top: 0, left: 0 }}
+                  color={theme.text}
                 />
               </View>
             </TouchableOpacity>
@@ -187,6 +191,7 @@ const QuotiacGame = ({
         <PuzzleCompleteModal
           state={state}
           visible={completionModalVisible && !completionModalShown}
+          startNewGame={startNewGame}
           onClose={() => {
             setCompletionModalShown(true);
             setCompletionModalVisible(false);
@@ -202,6 +207,7 @@ const QuotiacGame = ({
         <HelpModal
           modalVisible={helpModalVisible}
           setModalVisible={setHelpModalVisible}
+          startNewGame={startNewGame}
         />
       </Wrapper >
     </>
