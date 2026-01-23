@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, TouchableOpacity, Image, Platform, Dimensions, StyleSheet } from "react-native";
 import { createAppStyles } from "@/src/theme/styles";
 import { useTheme } from "@/src/theme/ThemeContext";
@@ -111,8 +111,21 @@ export default function LandingPage({
     const landingPageStyles = createLandingPageStyles(theme);
     const displayDate = formatDate(fixedDate);
 
+    // Automatically trigger Play after 1 minute (60,000ms)
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (!urlDate || urlDate === todayDate) {
+                startGame(fixedDate);
+            } else {
+                startGame(todayDate); // or whichever you want by default
+            }
+        }, 60000); // 60000 ms = 1 minute
+
+        // Cleanup in case component unmounts before timer fires
+        return () => clearTimeout(timer);
+    }, [urlDate, todayDate, fixedDate, startGame]);
+
     return (
-        // @ts-ignore
         <View style={landingPageStyles.container}>
             <InfiniteLockAnimation />
 
@@ -122,11 +135,7 @@ export default function LandingPage({
 
             <Text
                 style={[
-                    {
-                        textAlign: "center",
-                        color: theme.text,
-                        alignSelf: "center",
-                    },
+                    { textAlign: "center", color: theme.text, alignSelf: "center" },
                     landingPageStyles.subtitle,
                 ]}
                 numberOfLines={2}
@@ -161,8 +170,7 @@ export default function LandingPage({
                         </Text>
                     </TouchableOpacity>
                 </>
-            )
-            }
+            )}
             <Text style={landingPageStyles.dateText}>{displayDate}</Text>
         </View>
     );
