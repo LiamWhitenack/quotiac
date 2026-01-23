@@ -15,28 +15,55 @@ const HINT_TYPE_MAP = new Map<SupportedHintTypeName, new (...args: any[]) => Hin
 
 
 
-const parseHints = (rawHints: string): HintBase[] => {
-    const validJson = rawHints.replace(/'/g, '"');
+const parseHints = (rawHints: string | { letter: string; type: string }[]): HintBase[] => {
+    // Step 1: If it's a string, parse it; otherwise, use as-is
+    let parsedHints: { letter: string; type: string }[];
+    if (typeof rawHints === "string") {
+        // replace single quotes with double quotes just in case
+        const validJson = rawHints.replace(/'/g, '"');
+        parsedHints = JSON.parse(validJson);
+    } else {
+        parsedHints = rawHints;
+    }
 
-    const parsed: { letter: string; type: string }[] = JSON.parse(validJson);
-    return parsed.map((hintData: any) => {
+    // Step 2: Map to HintBase instances
+    return parsedHints.map((hintData) => {
         const HintClass = HINT_TYPE_MAP.get(hintData.type as SupportedHintTypeName);
         if (!HintClass) throw new Error(`Unsupported hint type: ${hintData.type}`);
         return new HintClass(hintData.letter);
     });
 };
 
-const parseOtherInfo = (mapString: string): Map<string, string> => {
-    const jsonString = mapString.replace(/'/g, '"');
-    const obj = JSON.parse(jsonString);
+
+const parseOtherInfo = (mapInput: string | Record<string, string>): Map<string, string> => {
+    let obj: Record<string, string>;
+
+    if (typeof mapInput === "string") {
+        // replace single quotes with double quotes if needed
+        const jsonString = mapInput.replace(/'/g, '"');
+        obj = JSON.parse(jsonString);
+    } else {
+        obj = mapInput;
+    }
+
     return new Map<string, string>(Object.entries(obj));
 };
 
-const parseEncryptionMap = (mapString: string): EncryptionMap => {
-    const jsonString = mapString.replace(/'/g, '"');
-    const obj = JSON.parse(jsonString);
+
+const parseEncryptionMap = (mapInput: string | Record<string, string>): Map<string, string> => {
+    let obj: Record<string, string>;
+
+    if (typeof mapInput === "string") {
+        // replace single quotes with double quotes if needed
+        const jsonString = mapInput.replace(/'/g, '"');
+        obj = JSON.parse(jsonString);
+    } else {
+        obj = mapInput;
+    }
+
     return new Map<string, string>(Object.entries(obj));
 };
+
 
 
 // --- Google Analytics Helpers ---
