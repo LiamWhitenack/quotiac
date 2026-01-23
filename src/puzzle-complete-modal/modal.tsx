@@ -18,10 +18,12 @@ import CustomIonicons from "@/src/custom-icons";
 import { createStyles } from "./styles";
 import { createAppStyles } from "../theme/styles";
 import SolvingLockAnimation from "../icon/solving-animation";
+import { explorePuzzles } from "@/app/landing-page";
 
 type PuzzleCompleteModalProps = {
   state: GameState;
   visible: boolean;
+  startNewGame: (date: string) => void;
   onClose: () => void;
 };
 
@@ -30,6 +32,7 @@ const STORAGE_KEY = "streaks";
 const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
   state,
   visible,
+  startNewGame,
   onClose,
 }) => {
   const viewShotRef = useRef<ViewShot>(null);
@@ -40,6 +43,8 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
   const [currentStreak, setCurrentStreak] = useState(0);
   const [maxStreak, setMaxStreak] = useState(0);
   const [puzzlesCompleted, setPuzzlesCompleted] = useState(0);
+
+  const [showExploreModal, setShowExploreModal] = useState(false);
 
   const originalEmojis = ["\u{1F632}", "\u{1F601}", "\u{1F642}", "\u{1F60C}", "\u{1F636}"];
   const hintEmoji = "\u{1F4A1}";
@@ -140,47 +145,63 @@ const PuzzleCompleteModal: React.FC<PuzzleCompleteModalProps> = ({
   );
 
   return (
-    <Modal animationType="slide" transparent={true} visible={visible}>
-      <View style={styles.modalOverlay}>
-        <View style={styles.modalContent}>
+    <>
+      <Modal animationType="slide" transparent={true} visible={visible}>
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
 
-          <View style={styles.modalHeader}>
-            <Text style={styles.modalTitle}>Congratulations!</Text>
-            <TouchableOpacity onPress={onClose}>
-              <CustomIonicons name="close" size={24} color="gray" />
-            </TouchableOpacity>
-          </View>
-
-          <View style={{ height: 20 }} />
-
-          <View style={{ alignItems: "center" }}>
-            <Text style={{ fontSize: 28, lineHeight: 36, textAlign: "center" }}>
-              {emojiString}
-            </Text>
-
-            <View
-              style={{
-                flexDirection: "row",
-                marginTop: 20,
-                justifyContent: "space-around",
-              }}
-            >
-              <StreakStat label1="Completed" value={puzzlesCompleted} />
-              <StreakStat label1="Current" label2="Streak" value={currentStreak} />
-              <StreakStat label1="Max" label2="Streak" value={maxStreak} />
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Congratulations!</Text>
+              <TouchableOpacity onPress={onClose}>
+                <CustomIonicons name="close" size={24} color="gray" />
+              </TouchableOpacity>
             </View>
+
+            <View style={{ height: 20 }} />
+
+            <View style={{ alignItems: "center" }}>
+              <Text style={{ fontSize: 28, lineHeight: 36, textAlign: "center" }}>
+                {emojiString}
+              </Text>
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  marginTop: 20,
+                  justifyContent: "space-around",
+                }}
+              >
+                <StreakStat label1="Completed" value={puzzlesCompleted} />
+                <StreakStat label1="Current" label2="Streak" value={currentStreak} />
+                <StreakStat label1="Max" label2="Streak" value={maxStreak} />
+              </View>
+            </View>
+
+            <View style={{ height: 20 }} />
+
+            <TouchableOpacity
+              style={[appStyles.elevatedButton, { width: "80%" }]}
+              onPress={handleShare}
+            >
+              <Text style={appStyles.elevatedButtonText}>Share</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[appStyles.invertedElevatedButton, { width: "80%" }]}
+              onPress={() => setShowExploreModal(true)}
+            >
+              <Text style={appStyles.invertedElevatedButtonText}>Explore</Text>
+            </TouchableOpacity>
+
+
           </View>
-
-          <View style={{ height: 20 }} />
-
-          <TouchableOpacity style={appStyles.elevatedButton} onPress={handleShare}>
-            <Text style={appStyles.elevatedButtonText}>Share your results</Text>
-          </TouchableOpacity>
         </View>
-      </View>
-    </Modal>
+      </Modal>
 
+      {explorePuzzles(showExploreModal, setShowExploreModal, startNewGame)}
+    </>
   );
+
 };
 
 export default PuzzleCompleteModal;

@@ -12,15 +12,18 @@ import { useTheme } from "../theme/ThemeContext";
 import InstructionsModal from "./help-menu/help-modal";
 import { Theme } from "../theme/themes";
 import { createAppStyles } from "../theme/styles";
+import { explorePuzzles } from "@/app/landing-page";
 
 interface HelpModalProps {
   modalVisible: boolean;
   setModalVisible: (visible: boolean) => void;
+  startNewGame: (date: string) => void;
 }
 
 export default function HelpModal({
   modalVisible,
   setModalVisible,
+  startNewGame,
 }: HelpModalProps) {
   const { theme } = useTheme();
   const styles = createStyles(theme);
@@ -28,6 +31,8 @@ export default function HelpModal({
 
   // New state to control InstructionsModal visibility
   const [instructionsVisible, setInstructionsVisible] = useState(false);
+
+  const [showExploreModal, setShowExploreModal] = useState(false);
 
   const menuItems = [
     {
@@ -52,12 +57,6 @@ export default function HelpModal({
         Linking.openURL(
           "https://docs.google.com/forms/d/1kchnuu5kwrTfz8Kuc5djRuAwbJpSdilYFv-VHBYyt8Q/"
         );
-        setModalVisible(false);
-      },
-    },
-    {
-      label: "Play",
-      onPress: () => {
         setModalVisible(false);
       },
     },
@@ -90,6 +89,13 @@ export default function HelpModal({
                   <Text style={appStyles.elevatedButtonText}>{item.label}</Text>
                 </TouchableOpacity>
               ))}
+              <TouchableOpacity
+                key={"explore"}
+                onPress={() => { setShowExploreModal(true) }}
+                style={[appStyles.invertedElevatedButton, styles.buttonSpacing]}
+              >
+                <Text style={appStyles.invertedElevatedButtonText}>Explore</Text>
+              </TouchableOpacity>
             </View>
           </Pressable>
         </Pressable>
@@ -99,6 +105,7 @@ export default function HelpModal({
         isVisible={instructionsVisible}
         onClose={() => setInstructionsVisible(false)}
       />
+      {explorePuzzles(showExploreModal, setShowExploreModal, startNewGame)}
     </>
   );
 }

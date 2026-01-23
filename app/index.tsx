@@ -1,14 +1,13 @@
 import QuotiacGame from "@/App";
 import { ThemeProvider, useTheme } from "@/src/theme/ThemeContext";
 import React, { useEffect, useState, useMemo } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { useNavigation } from "expo-router";
 import GameState from "@/src/state";
 import { fetchTodayQuote as fetchQuote } from "@/src/puzzles/get-puzzle";
 import { todayString } from "@/src/utils";
 import LandingPage from "./landing-page";
-import { useNavigation } from "expo-router";
-import { useAppBootstrap, useRouteDateSync } from "@/src/hooks";
 import LoadingPage from "./loading-page";
+import { useAppBootstrap, useRouteDateSync } from "@/src/hooks";
 
 function getDateFromURL(): string | null {
     try {
@@ -24,25 +23,27 @@ export default function Index() {
     const [showGame, setShowGame] = useState(false);
     const [gameDate, setGameDate] = useState<string | null>(null);
     const [eagerState, setEagerState] = useState<GameState | null>(null);
+    const [loading, setLoading] = useState(true);
 
     const todayDate = useMemo(() => todayString(), []);
     const urlDate = useMemo(() => getDateFromURL(), []);
     const fixedDate = urlDate || todayDate;
 
-
-    // Eagerly fetch for the default (fixed) date
     useEffect(() => {
         (async () => {
-            const puzzle = await fetchQuote(fixedDate);
-            if (!puzzle) {
-                throw Error()
+            try {
+                const puzzle = await fetchQuote(fixedDate);
+                if (!puzzle) throw Error();
+                const gameState = await GameState.create(fixedDate, puzzle);
+                setEagerState(gameState);
+            } finally {
+                setLoading(false);
             }
-            const gameState = await GameState.create(fixedDate, puzzle);
-            setEagerState(gameState);
         })();
     }, [fixedDate]);
 
     const startGame = async (date: string) => {
+        console.log("start " + date)
         if (eagerState && eagerState.puzzleDate === date) {
             setGameDate(date);
             setShowGame(true);
@@ -53,11 +54,26 @@ export default function Index() {
         }
     };
 
-    if (showGame && gameDate) {
+    useEffect(() => {
+        if (urlDate && eagerState) {
+            startGame(urlDate);
+        }
+    }, [urlDate, eagerState]);
+
+    if (loading) {
+        return (
+            <ThemeProvider>
+                <LoadingPage />
+            </ThemeProvider>
+        );
+    }
+
+    if (gameDate) {
         return (
             <App
                 eagerState={eagerState?.puzzleDate === gameDate ? eagerState : null}
                 dateString={gameDate}
+                startNewGame={startGame}
             />
         );
     }
@@ -76,13 +92,13 @@ export default function Index() {
 }
 
 
-
 type AppProps = {
     eagerState: GameState | null;
     dateString: string;
+    startNewGame: (date: string) => void;
 };
 
-function App({ eagerState, dateString }: AppProps) {
+function App({ eagerState, dateString, startNewGame }: AppProps) {
     const [gameState, setGameState] = useState<GameState | null>(null);
     const [routeDate, setRouteDate] = useState<string | undefined>(dateString);
     const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -90,8 +106,14 @@ function App({ eagerState, dateString }: AppProps) {
     const { theme } = useTheme();
 
     useAppBootstrap(setFontsLoaded);
-    {/* @ts-ignore */ }
+    // @ts-ignore
     useRouteDateSync(routeDate, setRouteDate, navigation);
+
+    // Wrap startNewGame so it updates routeDate
+    const handleStartNewGame = async (date: string) => {
+        setRouteDate(date);
+        setGameState(null); // reset so we show loading while fetching
+    };
 
     useEffect(() => {
         if (!routeDate) return;
@@ -101,9 +123,7 @@ function App({ eagerState, dateString }: AppProps) {
                 setGameState(eagerState);
             } else {
                 const puzzle = await fetchQuote(routeDate);
-                if (!puzzle) {
-                    throw Error()
-                }
+                if (!puzzle) throw Error();
                 const newState = await GameState.create(routeDate, puzzle);
                 setGameState(newState);
             }
@@ -123,7 +143,13 @@ function App({ eagerState, dateString }: AppProps) {
     return (
         <ThemeProvider>
             {/* @ts-ignore */}
-            <QuotiacGame state={gameState} setGameState={setGameState} />
+            <QuotiacGame
+                state={gameState}
+                // @ts-ignore
+                setGameState={setGameState}
+                startNewGame={handleStartNewGame} // use internal handler
+            />
         </ThemeProvider>
     );
 }
+
