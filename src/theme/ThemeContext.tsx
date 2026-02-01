@@ -29,7 +29,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 
   let theme: Theme;
 
-  if (todayString() == "20250904") {
+  if (todayString() == "20250904" || todayString() == "20260201") {
     theme = nflTheme;
   } else if (mode === "light") {
     theme = lightTheme;
